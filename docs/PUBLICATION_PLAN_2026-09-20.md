@@ -29,7 +29,7 @@ are modified and the items below are untracked.
 | `docs/FOUNDRY_CAPABILITY_INVENTORY.md`, `docs/SECURITY_AND_GOVERNANCE_EVIDENCE.md`, `docs/OPERATIONS_MONITORING_AND_COST.md`, `docs/ROUTINES_SKILLS_TOOLS_MEMORY_DESIGN.md` | Added 2026-09-21 |
 | `scripts/export_runtime_evidence.py`, `scripts/redact_foundry_captures.py`, the Runtime Evidence view in `control-center/` | Added 2026-09-21 |
 | `evidence/screenshots/F10-WORKFLOW.png`, `F10-COMPLIANCE.png`, `evidence/app-screenshots/APP10.png` | Redacted Foundry captures and the new application capture |
-| `submission/video/GridResolve_Final_Video.mp4` | Finished 2026-09-21: 172.1 s, 1920x1080, about 15 MB, well under GitHub's 100 MB file limit |
+| `submission/video/GridResolve_Final_Video.mp4` | Finished 2026-09-21: 172.1 s, 1920x1080, about 8 MB, well under GitHub's 100 MB file limit |
 
 ## Must stay out
 

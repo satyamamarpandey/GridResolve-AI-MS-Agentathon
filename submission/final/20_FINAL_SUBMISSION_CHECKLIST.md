@@ -18,7 +18,7 @@ not judged "regardless of reason or fault".
 
 | Rule | Requirement | Status |
 | --- | --- | --- |
-| Entry information | A video, "no more than 3 minutes in duration and 150MB in size", via the Founderz platform | **BUILT**: `submission/video/GridResolve_Final_Video.mp4`, 172.1 seconds, about 15 MB. Watch it once with sound before uploading |
+| Entry information | A video, "no more than 3 minutes in duration and 150MB in size", via the Founderz platform | **BUILT**: `submission/video/GridResolve_Final_Video.mp4`, 172.1 seconds, about 8 MB. Watch it once with sound before uploading |
 | Entry information | "a brief written description of the issue the AI agent addresses, the impact of the AI agent, and how the agent was built using ... Microsoft Foundry" | Ready: `02_SUBMISSION_100_WORDS.md`, `01_EXECUTIVE_SUMMARY.md`. Paste-ready text is in `21_FOUNDERZ_SUBMISSION_TEXT.md` |
 | AI agent | "a clear purpose and audience, a summary of how it was built and refined, screen shots and example interactions and key lessons learned" | Ready: deck slides 1, 3, 4 and 6, `JUDGE_NARRATIVE.md` sections 3 and 6 |
 | Supporting documentation | Optional. "PPTX, PDF, DOCX, DOC, PPT or TXT" | Ready: `GridResolve_AI_Submission_Deck.pptx`, eight slides. Markdown is **not** an accepted format, so export `JUDGE_NARRATIVE.md` to PDF if you want to attach it |
