@@ -1,0 +1,47 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# build output
+control-center/dist/
+submission/video/build/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ruff_cache/
+.pytest_cache/
+
+# environment and secrets, never commit
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.json
+local.settings.json
+
+# editor and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# logs
+*.log
+npm-debug.log*
+debug.log
+
+# narration audio, large binary added by the operator
+submission/video/narration.wav
+
+# unredacted screenshot originals, kept locally for provenance, never published
+evidence/_originals_unredacted/
+
+# superseded or locally rebuilt video cuts, not part of the submission
+submission/video/GridResolve_AI_DRAFT.mp4
+submission/video/GridResolve_AI_FINAL.mp4

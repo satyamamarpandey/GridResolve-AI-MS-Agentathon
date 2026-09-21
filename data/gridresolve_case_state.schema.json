@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridresolve.example/schemas/case-state-3.0.json",
+  "title": "GridResolve AI Shared Case State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "workflow_version",
+    "case_state",
+    "dataset_version",
+    "policy_version",
+    "customer_request",
+    "triage",
+    "evidence_ledger",
+    "policy_ledger",
+    "claim_ledger",
+    "resolution_plan",
+    "customer_message",
+    "compliance_result",
+    "correction_count",
+    "escalation",
+    "final_disposition",
+    "audit_record"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^SYN-CASE-[0-9]{4}$"
+    },
+    "workflow_version": {
+      "type": "string",
+      "const": "GridResolveAIWorkflow-v4"
+    },
+    "case_state": {
+      "type": "string",
+      "enum": [
+        "INTAKE",
+        "INVESTIGATING",
+        "PLANNING",
+        "DRAFTING",
+        "COMPLIANCE_REVIEW",
+        "CORRECTION",
+        "HUMAN_REVIEW",
+        "APPROVED",
+        "CLOSED",
+        "CANNOT_RESOLVE_SAFELY"
+      ]
+    },
+    "dataset_version": {
+      "type": "string",
+      "const": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    "policy_version": {
+      "type": "string",
+      "const": "GRIDRESOLVE-POLICY-2.0"
+    },
+    "customer_request": {
+      "type": "string"
+    },
+    "triage": {
+      "type": "object"
+    },
+    "evidence_ledger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "evidence_id",
+          "source_type",
+          "source_record_id",
+          "field",
+          "value",
+          "observation",
+          "data_version"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string"
+          },
+          "source_type": {
+            "type": "string"
+          },
+          "source_record_id": {
+            "type": "string"
+          },
+          "period": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "field": {
+            "type": "string"
+          },
+          "value": {},
+          "observation": {
+            "type": "string"
+          },
+          "source_timestamp": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "data_version": {
+            "type": "string"
+          },
+          "freshness_status": {
+            "enum": [
+              "CURRENT",
+              "STALE",
+              "UNKNOWN"
+            ]
+          }
+        }
+      }
+    },
+    "policy_ledger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "policy_version",
+          "rule",
+          "effect_on_resolution"
+        ],
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "section": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rule": {
+            "type": "string"
+          },
+          "applies_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "effect_on_resolution": {
+            "type": "string"
+          },
+          "conflict_status": {
+            "enum": [
+              "NONE",
+              "CONFLICT",
+              "UNKNOWN"
+            ]
+          }
+        }
+      }
+    },
+    "claim_ledger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "claim_id",
+          "claim_text",
+          "claim_type",
+          "source_agent",
+          "evidence_ids",
+          "policy_ids",
+          "confidence",
+          "status"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "claim_text": {
+            "type": "string"
+          },
+          "claim_type": {
+            "type": "string"
+          },
+          "source_agent": {
+            "enum": [
+              "ResolutionPlannerAgent",
+              "CustomerCommunicationAgent"
+            ]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "policy_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "enum": [
+              "HIGH",
+              "MEDIUM",
+              "LOW",
+              "INSUFFICIENT"
+            ]
+          },
+          "status": {
+            "enum": [
+              "SUPPORTED",
+              "PARTIALLY_SUPPORTED",
+              "UNSUPPORTED",
+              "POLICY_REQUIRED",
+              "HUMAN_REVIEW_REQUIRED"
+            ]
+          }
+        }
+      }
+    },
+    "resolution_plan": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "customer_message": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "compliance_result": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "correction_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "escalation": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "final_disposition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "audit_record": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "workflow_version": {
+      "type": "string",
+      "description": "Copied from the case input in the first user message."
+    },
+    "dataset_version": {
+      "type": "string"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "participating_agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "agent_name": {
+            "type": "string",
+            "enum": [
+              "CaseTriageAgent",
+              "AccountEvidenceAgent",
+              "UsageAnomalyAgent",
+              "PolicyKnowledgeAgent",
+              "ResolutionPlannerAgent",
+              "CustomerCommunicationAgent",
+              "EvidenceComplianceAgent",
+              "EscalationCoordinatorAgent",
+              "CaseAuditAgent"
+            ]
+          },
+          "agent_version": {
+            "type": "string",
+            "enum": [
+              "NOT_OBSERVED"
+            ],
+            "description": "Agent versions are platform metadata. They are never visible in this conversation."
+          },
+          "output_status": {
+            "type": "string",
+            "enum": [
+              "RECEIVED",
+              "MISSING_OR_MALFORMED",
+              "NOT_INVOKED"
+            ],
+            "description": "RECEIVED only when the output after that agent's WORKFLOW STEP message is a JSON object. NOT_INVOKED only when no WORKFLOW STEP message names the agent."
+          }
+        },
+        "required": [
+          "agent_name",
+          "agent_version",
+          "output_status"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "triage_result": {
+      "type": "string"
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "claim_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resolution_status": {
+      "type": "string"
+    },
+    "compliance_route_token": {
+      "type": "string",
+      "enum": [
+        "APPROVED",
+        "ESCALATE",
+        "NO_VALID_TOKEN"
+      ],
+      "description": "Read the final line of the step 7 output first. APPROVED when it ends in GRIDRESOLVE_APPROVED, ESCALATE when it ends in GRIDRESOLVE_ESCALATE, NO_VALID_TOKEN otherwise."
+    },
+    "message_compliance_decision": {
+      "type": "string",
+      "enum": [
+        "APPROVE",
+        "REJECT_AND_REPLAN",
+        "REJECT_AND_REWRITE",
+        "HUMAN_REVIEW_REQUIRED",
+        "ESCALATED_WITHOUT_DECISION_OBJECT",
+        "NOT_OBSERVED"
+      ],
+      "description": "The decision value in the step 7 JSON object. APPROVE only when compliance_route_token is APPROVED. ESCALATED_WITHOUT_DECISION_OBJECT when the token is ESCALATE and no decision object is present."
+    },
+    "compliance_reasons": {
+      "type": "string",
+      "description": "The compliance_summary and failed_checks of step 7, or NOT_OBSERVED when step 7 gave none."
+    },
+    "correction_count": {
+      "type": "integer"
+    },
+    "correction_history": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "case_human_review_status": {
+      "type": "string",
+      "enum": [
+        "HUMAN_REVIEW_REQUIRED",
+        "NONE_REQUIRED"
+      ],
+      "description": "About the case, never about the message."
+    },
+    "human_review_status": {
+      "type": "string",
+      "enum": [
+        "HUMAN_REVIEW_REQUIRED",
+        "NONE_REQUIRED"
+      ],
+      "description": "The same value as case_human_review_status."
+    },
+    "escalation": {
+      "type": "object",
+      "properties": {
+        "escalation_package_present": {
+          "type": "boolean"
+        },
+        "recommended_reviewer": {
+          "type": "string"
+        },
+        "escalation_reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "escalation_package_present",
+        "recommended_reviewer",
+        "escalation_reason"
+      ],
+      "additionalProperties": false
+    },
+    "final_disposition": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "PENDING_HUMAN_REVIEW",
+        "CANNOT_RESOLVE_SAFELY"
+      ],
+      "description": "PENDING_HUMAN_REVIEW whenever the case still needs a person."
+    },
+    "audit_completeness": {
+      "type": "string",
+      "enum": [
+        "COMPLETE",
+        "INCOMPLETE"
+      ],
+      "description": "INCOMPLETE when any output is MISSING_OR_MALFORMED."
+    },
+    "missing_audit_information": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "audit_notes": {
+      "type": "string"
+    },
+    "execution_status": {
+      "type": "string",
+      "enum": [
+        "RUNTIME_EXECUTED",
+        "RUNTIME_FAILED"
+      ],
+      "description": "RUNTIME_FAILED when a required upstream output is MISSING_OR_MALFORMED."
+    },
+    "record_basis": {
+      "type": "string",
+      "enum": [
+        "MODEL_PRODUCED_FROM_CONVERSATION"
+      ],
+      "description": "Always this value."
+    }
+  },
+  "required": [
+    "case_id",
+    "workflow_version",
+    "dataset_version",
+    "policy_version",
+    "participating_agents",
+    "triage_result",
+    "evidence_ids",
+    "claim_ids",
+    "policy_ids",
+    "resolution_status",
+    "compliance_route_token",
+    "message_compliance_decision",
+    "compliance_reasons",
+    "correction_count",
+    "correction_history",
+    "case_human_review_status",
+    "human_review_status",
+    "escalation",
+    "final_disposition",
+    "audit_completeness",
+    "missing_audit_information",
+    "audit_notes",
+    "execution_status",
+    "record_basis"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,35 @@
+{
+  "rubric_id": "GRIDRESOLVE-RUBRIC-EVIDENCE-FIDELITY",
+  "dimension": "Evidence Fidelity",
+  "weight": 0.25,
+  "question": "Does every material statement in the response rest on a record in the case input, with the right value?",
+  "anchors": {
+    "5": "Every figure and finding matches a case record and cites its evidence id. Missing evidence is named as missing.",
+    "4": "All figures match. One finding lacks an evidence id but is plainly supported by the context.",
+    "3": "All figures match. Several findings are supported but not cited.",
+    "2": "One figure or finding is not in the case input, or a value is wrong.",
+    "1": "The response states a cause, a figure or a record that the case input does not contain."
+  },
+  "automatic_fail": [
+    "A meter fault is confirmed without diagnostic evidence",
+    "A dollar or kWh figure that is not in the case input and is not a difference of two values that are"
+  ],
+  "deterministic_checks_that_overlap": [
+    "billing_arithmetic",
+    "meter_reconciliation",
+    "evidence_id_validity",
+    "unsupported_meter_failure_claims"
+  ],
+  "what_only_a_model_can_judge": "Whether a finding stated in prose is actually supported by the cited records, beyond matching identifiers and numbers.",
+  "status": "NOT_EXECUTED",
+  "status_note": "Written for a model-based evaluator. No evaluator has been run with it. There are no scores.",
+  "dataset": "evaluation/datasets/captured_foundry_interactions.jsonl, or prepared_cases.jsonl once responses exist",
+  "inputs": {
+    "query": "what the agent was asked",
+    "response": "what the agent wrote",
+    "context": "the synthetic case input",
+    "ground_truth": "from ground_truth.jsonl, joined on case_id"
+  },
+  "scale": "1 to 5, integers. 3 is the lowest acceptable score.",
+  "weights_source": "gridresolve_evaluation_suite.jsonl, _meta.rubric"
+}

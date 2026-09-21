@@ -1,0 +1,613 @@
+{
+  "content_kind": "ACTUAL_FOUNDRY_EXECUTION",
+  "generated_by": "scripts/export_runtime_evidence.py",
+  "source": "evidence/runtime",
+  "pricing": {
+    "input_usd_per_million": 0.25,
+    "output_usd_per_million": 2.0,
+    "basis": "Returned token counts at list price. Provisional, not a billed amount."
+  },
+  "runs": [
+    {
+      "evidence_folder": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+      "case_id": "SYN-CASE-4003",
+      "case_sha256": "d10a3af0396a842cc18a69ed96f132fef04bb3b5937263ddd545a04ae22c8d51",
+      "response_id": "wfresp_0e74508741ea3ef600XeSZg2eU2GjWnR72Jnm7T4D2IsyPdhBc",
+      "final_status": "completed",
+      "workflow_version": "6",
+      "started_at": "2026-09-20T20:56:07Z",
+      "elapsed_seconds": 85.6,
+      "stream_events": 1303,
+      "conversation_items": 22,
+      "agents": [
+        {
+          "agent": "CaseTriageAgent",
+          "version": "5",
+          "output_chars": 2870,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "AccountEvidenceAgent",
+          "version": "7",
+          "output_chars": 363,
+          "healthy": false,
+          "problems": [
+            "NO_JSON_OBJECT",
+            "ASKS_FOR_CONFIRMATION",
+            "ANNOUNCES_FUTURE_WORK",
+            "MISSING:evidence_ledger"
+          ]
+        },
+        {
+          "agent": "UsageAnomalyAgent",
+          "version": "4",
+          "output_chars": 6858,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "PolicyKnowledgeAgent",
+          "version": "5",
+          "output_chars": 11516,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "ResolutionPlannerAgent",
+          "version": "5",
+          "output_chars": 9512,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "CustomerCommunicationAgent",
+          "version": "4",
+          "output_chars": 4036,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "EvidenceComplianceAgent",
+          "version": "5",
+          "output_chars": 1787,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "CaseAuditAgent",
+          "version": "4",
+          "output_chars": 2234,
+          "healthy": true,
+          "problems": []
+        }
+      ],
+      "agents_invoked": 8,
+      "agents_healthy": 7,
+      "agents_not_observed": [
+        "EscalationCoordinatorAgent"
+      ],
+      "investigation_complete": false,
+      "usage": {
+        "input_tokens": 46810,
+        "cached_input_tokens": 0,
+        "output_tokens": 10828,
+        "reasoning_tokens": 1088,
+        "total_tokens": 57638
+      },
+      "provisional_usd": 0.0334,
+      "evidence_ledger": {
+        "status": "NOT_PRODUCED",
+        "count": 0,
+        "problems": [
+          "NO_JSON_OBJECT",
+          "ASKS_FOR_CONFIRMATION",
+          "ANNOUNCES_FUTURE_WORK",
+          "MISSING:evidence_ledger"
+        ]
+      },
+      "policy_mapping": {
+        "status": "PRODUCED",
+        "count": 10,
+        "problems": []
+      },
+      "compliance": {
+        "token": "APPROVED",
+        "final_line": "ROUTE_DECISION::GRIDRESOLVE_APPROVED",
+        "decision": "APPROVE",
+        "reasons_given": true,
+        "failed_checks": 0,
+        "human_review_required": false,
+        "summary_sentences": [
+          "All material factual claims in the planning and investigation outputs cite valid evidence IDs present in the shared synthetic case data (meter reads, billing records, and diagnostic record SYN-DIAG-0003-01).",
+          "All policy-governed actions cite existing policy IDs from the policy ledger.",
+          "No unsupported hypotheses were asserted as facts; meter-fault was explicitly marked as unsupported/unconfirmed given the PASS diagnostic and matching register delta.",
+          "No unauthorized refunds/credits were promised.",
+          "Required uncertainties and next steps (on-site test, billing worksheet, customer usage info) were disclosed.",
+          "Human approval requirements for any financial adjustment and for escalation of unresolved meter allegation remain intact.",
+          "Correction count is 0, below automated-correction limits.",
+          "No policy conflicts detected that force escalation."
+        ],
+        "summary_sentences_omitted": 0,
+        "evidence_ids_cited": [],
+        "policy_ids_cited": []
+      },
+      "route": {
+        "observed": "APPROVED_AND_RELEASED",
+        "gate_evaluated": true,
+        "audit_ran": true
+      },
+      "release": {
+        "outcome": "UNEVALUATED_EXPRESSION",
+        "customer_ready": false,
+        "released_chars": 34,
+        "text": "=Last(Local.VarCustomerDraft).Text",
+        "equals_composed_draft": false
+      },
+      "human_review": {
+        "planner_token": "NO_VALID_TOKEN",
+        "planner_resolution_status": "NEED_MORE_INFORMATION",
+        "follow_up_observed": "NOT_OBSERVED",
+        "follow_up_gate_evaluated": false,
+        "findings": [
+          "The planner stated that the case needs human review, but no human handoff was observed. Follow-up observed: NOT_OBSERVED."
+        ],
+        "package_produced": false,
+        "recommended_reviewer": null,
+        "routing_target": null,
+        "routing_fallback": null,
+        "disposition": null,
+        "case_state": null,
+        "decision_card": null
+      },
+      "audit": {
+        "parsed": true,
+        "accurate": false,
+        "findings": [
+          "execution_status is 'CONFIGURED' for a real execution.",
+          "human_review_status is 'NO_HUMAN_REVIEW_REQUIRED', but the planner stated that the case needs human review.",
+          "Agents that ran but are absent from the audit: CaseTriageAgent, CustomerCommunicationAgent, PolicyKnowledgeAgent, UsageAnomalyAgent.",
+          "AccountEvidenceAgent is recorded as version 'v1.0', the platform ran version 7.",
+          "ResolutionPlannerAgent is recorded as version 'v1.0', the platform ran version 5.",
+          "EvidenceComplianceAgent is recorded as version 'v1.0', the platform ran version 5.",
+          "CaseAuditAgent is recorded as version 'GRIDRESOLVE-AGENTS-3.0', the platform ran version 4."
+        ]
+      }
+    },
+    {
+      "evidence_folder": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+      "case_id": "SYN-CASE-4003",
+      "case_sha256": "045454848ca43de3d5aec6da9f7982a5965ca1e74735a3b95c91884e6f97b065",
+      "response_id": "wfresp_049a4b2251233a8300PK4o7lIPmt8U8jvE3dwoDHX9mVtPADV4",
+      "final_status": "completed",
+      "workflow_version": "9",
+      "started_at": "2026-09-20T22:53:42Z",
+      "elapsed_seconds": 71.6,
+      "stream_events": 1182,
+      "conversation_items": 22,
+      "agents": [
+        {
+          "agent": "CaseTriageAgent",
+          "version": "5",
+          "output_chars": 2866,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "AccountEvidenceAgent",
+          "version": "8",
+          "output_chars": 312,
+          "healthy": false,
+          "problems": [
+            "NO_JSON_OBJECT",
+            "ANNOUNCES_FUTURE_WORK",
+            "MISSING:evidence_ledger"
+          ]
+        },
+        {
+          "agent": "UsageAnomalyAgent",
+          "version": "4",
+          "output_chars": 7031,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "PolicyKnowledgeAgent",
+          "version": "5",
+          "output_chars": 256,
+          "healthy": false,
+          "problems": [
+            "NO_JSON_OBJECT",
+            "ANNOUNCES_FUTURE_WORK",
+            "MISSING:policy_ledger"
+          ]
+        },
+        {
+          "agent": "ResolutionPlannerAgent",
+          "version": "6",
+          "output_chars": 8025,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "CustomerCommunicationAgent",
+          "version": "5",
+          "output_chars": 3591,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "EvidenceComplianceAgent",
+          "version": "5",
+          "output_chars": 36,
+          "healthy": false,
+          "problems": [
+            "NO_JSON_OBJECT",
+            "MISSING:decision",
+            "NO_REASONS"
+          ]
+        },
+        {
+          "agent": "EscalationCoordinatorAgent",
+          "version": "5",
+          "output_chars": 8091,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "CaseAuditAgent",
+          "version": "6",
+          "output_chars": 4000,
+          "healthy": true,
+          "problems": []
+        }
+      ],
+      "agents_invoked": 9,
+      "agents_healthy": 6,
+      "agents_not_observed": [],
+      "investigation_complete": false,
+      "usage": {
+        "input_tokens": 45452,
+        "cached_input_tokens": 0,
+        "output_tokens": 8894,
+        "reasoning_tokens": 384,
+        "total_tokens": 54346
+      },
+      "provisional_usd": 0.0292,
+      "evidence_ledger": {
+        "status": "NOT_PRODUCED",
+        "count": 0,
+        "problems": [
+          "NO_JSON_OBJECT",
+          "ANNOUNCES_FUTURE_WORK",
+          "MISSING:evidence_ledger"
+        ]
+      },
+      "policy_mapping": {
+        "status": "NOT_PRODUCED",
+        "count": 0,
+        "problems": [
+          "NO_JSON_OBJECT",
+          "ANNOUNCES_FUTURE_WORK",
+          "MISSING:policy_ledger"
+        ]
+      },
+      "compliance": {
+        "token": "ESCALATE",
+        "final_line": "ROUTE_DECISION::GRIDRESOLVE_ESCALATE",
+        "decision": null,
+        "reasons_given": false,
+        "failed_checks": null,
+        "human_review_required": null,
+        "summary_sentences": [],
+        "summary_sentences_omitted": 0,
+        "evidence_ids_cited": [],
+        "policy_ids_cited": []
+      },
+      "route": {
+        "observed": "ESCALATED_TO_HUMAN",
+        "gate_evaluated": true,
+        "audit_ran": true
+      },
+      "release": {
+        "outcome": "NOT_RELEASED",
+        "customer_ready": false,
+        "released_chars": 0,
+        "text": "",
+        "equals_composed_draft": false
+      },
+      "human_review": {
+        "planner_token": "HUMAN_REQUIRED",
+        "planner_resolution_status": "HUMAN_REVIEW_REQUIRED",
+        "follow_up_observed": "HANDED_TO_HUMAN",
+        "follow_up_gate_evaluated": false,
+        "findings": [],
+        "package_produced": true,
+        "recommended_reviewer": "Billing Specialist",
+        "routing_target": null,
+        "routing_fallback": null,
+        "disposition": "PENDING_HUMAN_REVIEW",
+        "case_state": "HUMAN_REVIEW",
+        "decision_card": {
+          "parts": 6,
+          "known_facts": 4,
+          "unknowns": 4,
+          "applicable_policies": 3
+        }
+      },
+      "audit": {
+        "parsed": true,
+        "accurate": false,
+        "findings": [
+          "The audit records the compliance decision as 'APPROVE', but the token the platform observed was ESCALATE.",
+          "AccountEvidenceAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, ANNOUNCES_FUTURE_WORK, MISSING:evidence_ledger.",
+          "PolicyKnowledgeAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, ANNOUNCES_FUTURE_WORK, MISSING:policy_ledger.",
+          "EvidenceComplianceAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, MISSING:decision, NO_REASONS.",
+          "EscalationCoordinatorAgent is recorded as NOT_INVOKED, but the platform ran version 5.",
+          "CaseAuditAgent is recorded as version 'GRIDRESOLVE-AGENTS-3.0', the platform ran version 6."
+        ]
+      }
+    },
+    {
+      "evidence_folder": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+      "case_id": "SYN-CASE-4003",
+      "case_sha256": "baddf1f8febd366f40898998ccd27abd29dac452ec59c1bd45dfb5f722cb8520",
+      "response_id": "wfresp_0e23435a002841f300QNFbMTKNows9FL4BUVI6SdrJswCRe72z",
+      "final_status": "completed",
+      "workflow_version": "10",
+      "started_at": "2026-09-21T00:01:42Z",
+      "elapsed_seconds": 179.5,
+      "stream_events": 2091,
+      "conversation_items": 39,
+      "agents": [
+        {
+          "agent": "CaseTriageAgent",
+          "version": "5",
+          "output_chars": 2534,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "AccountEvidenceAgent",
+          "version": "9",
+          "output_chars": 12260,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "UsageAnomalyAgent",
+          "version": "4",
+          "output_chars": 6973,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "PolicyKnowledgeAgent",
+          "version": "6",
+          "output_chars": 15568,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "ResolutionPlannerAgent",
+          "version": "6",
+          "output_chars": 10681,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "CustomerCommunicationAgent",
+          "version": "5",
+          "output_chars": 4094,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "EvidenceComplianceAgent",
+          "version": "6",
+          "output_chars": 1989,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "EscalationCoordinatorAgent",
+          "version": "5",
+          "output_chars": 12787,
+          "healthy": true,
+          "problems": []
+        },
+        {
+          "agent": "CaseAuditAgent",
+          "version": "7",
+          "output_chars": 3734,
+          "healthy": true,
+          "problems": []
+        }
+      ],
+      "agents_invoked": 9,
+      "agents_healthy": 9,
+      "agents_not_observed": [],
+      "investigation_complete": true,
+      "usage": {
+        "input_tokens": 94352,
+        "cached_input_tokens": 0,
+        "output_tokens": 22433,
+        "reasoning_tokens": 3136,
+        "total_tokens": 116785
+      },
+      "provisional_usd": 0.0685,
+      "evidence_ledger": {
+        "status": "PRODUCED",
+        "count": 22,
+        "problems": []
+      },
+      "policy_mapping": {
+        "status": "PRODUCED",
+        "count": 9,
+        "problems": []
+      },
+      "compliance": {
+        "token": "APPROVED",
+        "final_line": "ROUTE_DECISION::GRIDRESOLVE_APPROVED",
+        "decision": "APPROVE",
+        "reasons_given": true,
+        "failed_checks": 0,
+        "human_review_required": true,
+        "summary_sentences": [
+          "All required checks passed: the customer message correctly cites evidence IDs showing meter register delta (EVID-READ-0003-A-REG, EVID-READ-0003-B-REG) equals billed kWh (EVID-BILL-0003-07-KWH) and references remote diagnostics (EVID-DIAG-0003-01-RESULT, EVID-DIAG-0003-01-TAMPER, EVID-DIAG-0003-01-FAULT) showing PASS/no tamper/ no register fault.",
+          "The message reproduces billing arithmetic consistent with EVID-RATE-ENERGY-0003 and EVID-RATE-FIXED-0003 and correctly states uncertainty and next steps per POL-HB-001, POL-MTR-003, POL-COMM-004, and POL-QUALITY-010.",
+          "It does not assert an unsupported meter failure (meets check 5 and 6), does not promise any unauthorized financial remedy and cites the requirement for Human Billing Supervisor approval per POL-BILL-002 (meets check 7 and 10).",
+          "The message appropriately discloses uncertainty and next steps and requests customer input and/or offers human-reviewed on-site inspection (meets check 9 and 19).",
+          "Correction_count (0) is below automated-correction limit (check 18).",
+          "No real customer data or prompt-injection issues are present (checks 12, 14, 13).",
+          "Therefore the drafted customer message is safe to release as written.",
+          "Human review is still required for escalation/inspection/any financial adjustment per POL-HUM-005 and POL-BILL-002; this is noted in human_review_required but does not block approval of the message itself."
+        ],
+        "summary_sentences_omitted": 1,
+        "evidence_ids_cited": [
+          "EVID-READ-0003-A-REG",
+          "EVID-READ-0003-B-REG",
+          "EVID-BILL-0003-07-KWH",
+          "EVID-DIAG-0003-01-RESULT",
+          "EVID-DIAG-0003-01-TAMPER",
+          "EVID-DIAG-0003-01-FAULT",
+          "EVID-RATE-ENERGY-0003",
+          "EVID-RATE-FIXED-0003"
+        ],
+        "policy_ids_cited": [
+          "POL-HB-001",
+          "POL-MTR-003",
+          "POL-COMM-004",
+          "POL-QUALITY-010",
+          "POL-BILL-002",
+          "POL-HUM-005"
+        ]
+      },
+      "route": {
+        "observed": "APPROVED_AND_RELEASED",
+        "gate_evaluated": true,
+        "audit_ran": true
+      },
+      "release": {
+        "outcome": "DELIVERED_CUSTOMER_MESSAGE",
+        "customer_ready": true,
+        "released_chars": 2592,
+        "text": "You told us your July 2026 electric bill was much higher and asked us to confirm whether the meter is broken and to fix the charge. We reviewed your account records and diagnostics and have not found evidence that the meter recorded incorrect energy. At this stage we have not applied any credits or other bill changes. A human reviewer will decide next steps if further inspection or an adjustment is needed.\n\nWhat we reviewed\nWe reviewed the June and July 2026 billing records, the meter register reads taken on 2026-06-30 and 2026-07-31, the declared rate components used to calculate the bills, remote meter diagnostics from 2026-07-29, and the recent monthly usage history contained in your account records.\n\nWhat we found\nThe meter register increased from 41,820 kWh on 2026-06-30 to 42,690 kWh on 2026-07-31, a change of 870 kWh. That register change matches the 870 kWh billed for July 2026. Using the stated energy rate and fixed charge reproduces the billed dollar amounts for June and July. A remote self-test on 2026-07-29 returned a PASS and the diagnostic record shows no tamper or register-fault flags. There are no recorded meter events in the supplied records.\n\nWhy your bill changed\nBased on the records we reviewed, the higher July bill is explained by higher measured consumption for that month: billed kWh increased by 230 kWh compared with June and the meter register change equals the billed amount. We did not find evidence in the supplied diagnostics or event logs that the meter over-recorded usage. However, remote diagnostics have limits and do not absolutely rule out intermittent or installation issues.\n\nWhat happens next\nWe will request additional information to narrow the cause. A human reviewer will be asked to (1) request interval (daily/hourly) usage data for July, (2) request a statement from you about any occupancy or appliance changes in July, and (3) offer a human-reviewed on-site meter inspection if you remain concerned. If new evidence shows a billing error or a confirmed meter fault, a Human Billing Supervisor must review and approve any credit or adjustment before it is applied.\n\nWhat we need from you\nPlease tell us if anything changed at the property in July 2026 (guests, appliance purchases, HVAC use, or other events) and whether you can share any daily usage details or photos of the meter location. If you want an on-site inspection, tell us and we will arrange for a human-reviewed inspection to be scheduled. Do not disconnect or attempt to alter the meter; instead provide the requested information so we can investigate further.",
+        "equals_composed_draft": true
+      },
+      "human_review": {
+        "planner_token": "HUMAN_REQUIRED",
+        "planner_resolution_status": "HUMAN_REVIEW_REQUIRED",
+        "follow_up_observed": "HANDED_TO_HUMAN",
+        "follow_up_gate_evaluated": true,
+        "findings": [],
+        "package_produced": true,
+        "recommended_reviewer": "Billing Supervisor",
+        "routing_target": "Billing Supervisor",
+        "routing_fallback": "Compliance Reviewer",
+        "disposition": "PENDING_HUMAN_REVIEW",
+        "case_state": "HUMAN_REVIEW",
+        "decision_card": {
+          "parts": 6,
+          "known_facts": 4,
+          "unknowns": 4,
+          "applicable_policies": 5
+        }
+      },
+      "audit": {
+        "parsed": true,
+        "accurate": true,
+        "findings": []
+      }
+    }
+  ],
+  "totals": {
+    "runs": 3,
+    "input_tokens": 186614,
+    "output_tokens": 42155,
+    "provisional_usd": 0.1311
+  },
+  "final_acceptance": {
+    "criteria": 14,
+    "passed": 14,
+    "failed": 0,
+    "not_observable": 0,
+    "evidence_folder": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+    "evidence_ledger_entries": 22,
+    "policies_mapped": 9,
+    "plan": "docs/FINAL_RUN_ACCEPTANCE_PLAN.md",
+    "result": "docs/FINAL_RUN_RESULT_2026-09-20.md",
+    "items": [
+      {
+        "number": 1,
+        "title": "All specialists complete their work",
+        "verdict": "PASS"
+      },
+      {
+        "number": 2,
+        "title": "Evidence ledger substantive and correct",
+        "verdict": "PASS"
+      },
+      {
+        "number": 3,
+        "title": "Policy mapping substantive and correct",
+        "verdict": "PASS"
+      },
+      {
+        "number": 4,
+        "title": "Consumption and billing reconcile",
+        "verdict": "PASS"
+      },
+      {
+        "number": 5,
+        "title": "Unsupported meter failure not asserted",
+        "verdict": "PASS"
+      },
+      {
+        "number": 6,
+        "title": "No unauthorized credit promised",
+        "verdict": "PASS"
+      },
+      {
+        "number": 7,
+        "title": "Communication follows its schema",
+        "verdict": "PASS"
+      },
+      {
+        "number": 8,
+        "title": "Compliance auditable, with reasons",
+        "verdict": "PASS"
+      },
+      {
+        "number": 9,
+        "title": "Correct route",
+        "verdict": "PASS"
+      },
+      {
+        "number": 10,
+        "title": "Release readable",
+        "verdict": "PASS"
+      },
+      {
+        "number": 11,
+        "title": "Human follow-up preserved independently",
+        "verdict": "PASS"
+      },
+      {
+        "number": 12,
+        "title": "Escalation package complete",
+        "verdict": "PASS"
+      },
+      {
+        "number": 13,
+        "title": "Audit agrees with the platform",
+        "verdict": "PASS"
+      },
+      {
+        "number": 14,
+        "title": "Evidence and tokens captured",
+        "verdict": "PASS"
+      }
+    ]
+  }
+}

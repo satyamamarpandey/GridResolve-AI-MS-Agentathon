@@ -1,0 +1,150 @@
+{
+  "basis": {
+    "platform_observed": [
+      "route",
+      "participation",
+      "distinct_agents",
+      "release"
+    ],
+    "model_produced": [
+      "compliance",
+      "case_follow_up.planner_*",
+      "audit.audit_*"
+    ],
+    "note": "Platform-observed fields come from service metadata and delivered text. Model-produced fields are what an agent wrote. Where they disagree the platform fields win."
+  },
+  "route": {
+    "route": "ESCALATED_TO_HUMAN",
+    "gate_evaluated": true,
+    "case_follow_up": "HANDED_TO_HUMAN",
+    "follow_up_gate_evaluated": false,
+    "audit_ran": true,
+    "agents_observed": [
+      "CaseTriageAgent",
+      "AccountEvidenceAgent",
+      "UsageAnomalyAgent",
+      "PolicyKnowledgeAgent",
+      "ResolutionPlannerAgent",
+      "CustomerCommunicationAgent",
+      "EvidenceComplianceAgent",
+      "EscalationCoordinatorAgent",
+      "CaseAuditAgent"
+    ],
+    "agents_not_observed": []
+  },
+  "participation": [
+    {
+      "agent": "CaseTriageAgent",
+      "version": "5",
+      "inner_response_id": "resp_049a4b2251233a83006ab063fcd0dc8190a557e242398d48a3",
+      "output_chars": 2866
+    },
+    {
+      "agent": "AccountEvidenceAgent",
+      "version": "8",
+      "inner_response_id": "resp_049a4b2251233a83006ab0640374a0819085462d92f2265eba",
+      "output_chars": 312
+    },
+    {
+      "agent": "UsageAnomalyAgent",
+      "version": "4",
+      "inner_response_id": "resp_049a4b2251233a83006ab064052b0c8190b7892e557927d07b",
+      "output_chars": 7031
+    },
+    {
+      "agent": "PolicyKnowledgeAgent",
+      "version": "5",
+      "inner_response_id": "resp_049a4b2251233a83006ab0640fd0508190a7200fa752335ad6",
+      "output_chars": 256
+    },
+    {
+      "agent": "ResolutionPlannerAgent",
+      "version": "6",
+      "inner_response_id": "resp_049a4b2251233a83006ab064114a748190a2fcacecbd12a293",
+      "output_chars": 8025
+    },
+    {
+      "agent": "CustomerCommunicationAgent",
+      "version": "5",
+      "inner_response_id": "resp_049a4b2251233a83006ab0641ef6648190bd7c60a274edb035",
+      "output_chars": 3591
+    },
+    {
+      "agent": "EvidenceComplianceAgent",
+      "version": "5",
+      "inner_response_id": "resp_049a4b2251233a83006ab064272cd88190b0e44229653f6283",
+      "output_chars": 36
+    },
+    {
+      "agent": "EscalationCoordinatorAgent",
+      "version": "5",
+      "inner_response_id": "resp_049a4b2251233a83006ab064285c188190acf517b9188374e7",
+      "output_chars": 8091
+    },
+    {
+      "agent": "CaseAuditAgent",
+      "version": "6",
+      "inner_response_id": "resp_049a4b2251233a83006ab0643625948190b540cbe0f7edae85",
+      "output_chars": 4000
+    }
+  ],
+  "distinct_agents": 9,
+  "unhealthy_outputs": [
+    {
+      "agent": "AccountEvidenceAgent",
+      "problems": [
+        "NO_JSON_OBJECT"
+      ],
+      "output_chars": 312,
+      "preview": "Note: The workflow requires an evidence_ledger and detailed structured outputs (billing_comparison, meter_read_status, e"
+    },
+    {
+      "agent": "PolicyKnowledgeAgent",
+      "problems": [
+        "NO_JSON_OBJECT"
+      ],
+      "output_chars": 256,
+      "preview": "Now I will produce the mandated policy mapping, constraints, conflicts, adjustment eligibility, disclosures, human appro"
+    },
+    {
+      "agent": "EvidenceComplianceAgent",
+      "problems": [
+        "NO_JSON_OBJECT"
+      ],
+      "output_chars": 36,
+      "preview": "ROUTE_DECISION::GRIDRESOLVE_ESCALATE"
+    }
+  ],
+  "compliance": {
+    "token": "ESCALATE",
+    "final_line": "ROUTE_DECISION::GRIDRESOLVE_ESCALATE"
+  },
+  "release": {
+    "outcome": "NOT_RELEASED",
+    "released_chars": 0,
+    "draft_chars": 3591,
+    "released_preview": "",
+    "customer_ready": false,
+    "identifiers_in_release": []
+  },
+  "case_follow_up": {
+    "planner_token": "HUMAN_REQUIRED",
+    "planner_states_human_review_reason": true,
+    "planner_resolution_status": "HUMAN_REVIEW_REQUIRED",
+    "observed": "HANDED_TO_HUMAN",
+    "findings": []
+  },
+  "audit": {
+    "audit_parsed": true,
+    "audit_execution_status": "RUNTIME_EXECUTED",
+    "audit_workflow_version": "GridResolveAIWorkflow v9",
+    "audit_agents_listed": 9,
+    "audit_entries": 9,
+    "platform_agents_observed": 9,
+    "accurate": false,
+    "findings": [
+      "EscalationCoordinatorAgent is recorded as NOT_INVOKED, but the platform ran version 5.",
+      "CaseAuditAgent is recorded as version 'GRIDRESOLVE-AGENTS-3.0', the platform ran version 6."
+    ]
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "workflow_version",
+    "case_state",
+    "customer_summary",
+    "what_we_reviewed",
+    "what_we_found",
+    "why_bill_changed",
+    "what_happens_next",
+    "customer_action_needed",
+    "internal_claim_ids",
+    "internal_evidence_ids",
+    "internal_policy_ids",
+    "communication_risk_flags",
+    "required_disclosures_included"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "workflow_version": {
+      "type": "string"
+    },
+    "case_state": {
+      "type": "string"
+    },
+    "customer_summary": {
+      "type": "string",
+      "description": "Customer-visible. Sent to the customer exactly as written, under its own heading. Complete plain-language prose. No claim, evidence or policy identifiers."
+    },
+    "what_we_reviewed": {
+      "type": "string",
+      "description": "Customer-visible. Sent to the customer exactly as written, under its own heading. Complete plain-language prose. No claim, evidence or policy identifiers."
+    },
+    "what_we_found": {
+      "type": "string",
+      "description": "Customer-visible. Sent to the customer exactly as written, under its own heading. Complete plain-language prose. No claim, evidence or policy identifiers."
+    },
+    "why_bill_changed": {
+      "type": "string",
+      "description": "Customer-visible. Sent to the customer exactly as written, under its own heading. Complete plain-language prose. No claim, evidence or policy identifiers."
+    },
+    "what_happens_next": {
+      "type": "string",
+      "description": "Customer-visible. Sent to the customer exactly as written, under its own heading. Complete plain-language prose. No claim, evidence or policy identifiers."
+    },
+    "customer_action_needed": {
+      "type": "string",
+      "description": "Customer-visible. Sent to the customer exactly as written, under its own heading. Complete plain-language prose. No claim, evidence or policy identifiers."
+    },
+    "internal_claim_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Internal provenance. Never sent to the customer."
+    },
+    "internal_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Internal provenance. Never sent to the customer."
+    },
+    "internal_policy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Internal provenance. Never sent to the customer."
+    },
+    "communication_risk_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "safety",
+        "legal",
+        "regulatory",
+        "fraud",
+        "vulnerable_customer",
+        "privacy",
+        "prompt_injection",
+        "real_data_contamination",
+        "human_review_required"
+      ],
+      "properties": {
+        "safety": {
+          "type": "boolean"
+        },
+        "legal": {
+          "type": "boolean"
+        },
+        "regulatory": {
+          "type": "boolean"
+        },
+        "fraud": {
+          "type": "boolean"
+        },
+        "vulnerable_customer": {
+          "type": "boolean"
+        },
+        "privacy": {
+          "type": "boolean"
+        },
+        "prompt_injection": {
+          "type": "boolean"
+        },
+        "real_data_contamination": {
+          "type": "boolean"
+        },
+        "human_review_required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "required_disclosures_included": {
+      "type": "boolean"
+    }
+  }
+}

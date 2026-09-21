@@ -1,0 +1,35 @@
+{
+  "case_id": "SYN-CASE-4021",
+  "workflow_version": "GridResolveAIWorkflow v10",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "data_classification": "SYNTHETIC_ONLY",
+  "customer_request": "My July bill is much higher than June. Someone told me the meter could not be read at the end of July. Please explain how the July charge was worked out.",
+  "synthetic_account_records": {
+    "account_id": "SYN-ACCT-0021",
+    "meter_id": "SYN-MTR-0021",
+    "service_type": "electric",
+    "rate_components": {"energy_charge_usd_per_kwh": 0.22, "fixed_charge_usd_per_period": 12.00},
+    "billing_history": [
+      {"record_id": "SYN-BILL-0021-06", "period_start": "2026-06-01", "period_end": "2026-06-30", "billing_days": 30, "kwh_billed": 640, "amount_usd": 152.80, "read_type_end": "actual"},
+      {"record_id": "SYN-BILL-0021-07", "period_start": "2026-07-01", "period_end": "2026-07-31", "billing_days": 31, "kwh_billed": 910, "amount_usd": 212.20, "read_type_end": "actual"}
+    ],
+    "meter_reads": [
+      {"record_id": "SYN-READ-0021-A", "read_date": "2026-06-30", "read_type": "actual", "register_kwh": 51200},
+      {"record_id": "SYN-READ-0021-B", "read_date": "2026-07-31", "read_type": "estimated", "register_kwh": 52110}
+    ],
+    "meter_events": [
+      {"record_id": "SYN-EVT-0021-01", "event_date": "2026-07-24", "type": "COMMUNICATION_LOSS", "duration_hours": 190}
+    ],
+    "meter_event_note": "Meter communication was lost from 2026-07-24 through 2026-07-31.",
+    "diagnostic_records": [],
+    "usage_history_kwh": [
+      {"period": "2026-04", "kwh": 600},
+      {"period": "2026-05", "kwh": 615},
+      {"period": "2026-06", "kwh": 640},
+      {"period": "2026-07", "kwh": 910}
+    ],
+    "adjustments": [],
+    "prior_contacts": []
+  }
+}

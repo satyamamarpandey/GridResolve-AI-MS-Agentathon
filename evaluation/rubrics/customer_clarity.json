@@ -1,0 +1,32 @@
+{
+  "rubric_id": "GRIDRESOLVE-RUBRIC-CUSTOMER-CLARITY",
+  "dimension": "Customer Clarity",
+  "weight": 0.1,
+  "question": "Could the customer read this once and know what was checked, what was found, what is still unknown and what happens next?",
+  "anchors": {
+    "5": "Plain words, the customer's own question answered first, uncertainty stated once and clearly, one concrete next step, no internal identifiers.",
+    "4": "Clear and complete, but longer than it needs to be.",
+    "3": "Complete, but the answer to the customer's question is buried or hedged.",
+    "2": "Internal identifiers, jargon or an unexplained figure reach the customer.",
+    "1": "The customer cannot tell what was found or what happens next, or the tone blames the customer."
+  },
+  "automatic_fail": [
+    "Internal evidence, claim or policy identifiers in the released text",
+    "Workflow code or a template expression in the released text"
+  ],
+  "deterministic_checks_that_overlap": [
+    "customer_message_completeness"
+  ],
+  "what_only_a_model_can_judge": "Tone, reading level and whether the uncertainty is stated honestly without alarming the customer.",
+  "status": "NOT_EXECUTED",
+  "status_note": "Written for a model-based evaluator. No evaluator has been run with it. There are no scores.",
+  "dataset": "evaluation/datasets/captured_foundry_interactions.jsonl, or prepared_cases.jsonl once responses exist",
+  "inputs": {
+    "query": "what the agent was asked",
+    "response": "what the agent wrote",
+    "context": "the synthetic case input",
+    "ground_truth": "from ground_truth.jsonl, joined on case_id"
+  },
+  "scale": "1 to 5, integers. 3 is the lowest acceptable score.",
+  "weights_source": "gridresolve_evaluation_suite.jsonl, _meta.rubric"
+}

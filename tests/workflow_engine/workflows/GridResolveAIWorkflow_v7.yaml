@@ -1,0 +1,109 @@
+kind: workflow
+trigger:
+  kind: OnConversationStart
+  id: trigger_wf
+  actions:
+    - kind: InvokeAzureAgent
+      id: node-1789696603365
+      agent:
+        name: CaseTriageAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarTriage
+    - kind: InvokeAzureAgent
+      id: node-1789696645054
+      agent:
+        name: AccountEvidenceAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarEvidence
+    - kind: InvokeAzureAgent
+      id: node-1789696697430
+      agent:
+        name: UsageAnomalyAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarUsage
+    - kind: InvokeAzureAgent
+      id: node-1789696718717
+      agent:
+        name: PolicyKnowledgeAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarPolicy
+    - kind: InvokeAzureAgent
+      id: node-1789696778418
+      agent:
+        name: ResolutionPlannerAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarPlan
+    - kind: InvokeAzureAgent
+      id: node-1789696813306
+      agent:
+        name: CustomerCommunicationAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarCustomerDraft
+    - kind: InvokeAzureAgent
+      id: node-1789696841174
+      agent:
+        name: EvidenceComplianceAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.Var1497
+    - kind: ConditionGroup
+      id: node-1789696874113
+      conditions:
+        - condition: '=With({t: Last(Local.Var1497).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED"))))'
+          id: if-node-approved-release
+          actions:
+            - kind: SendActivity
+              id: node-release-approved-message
+              activity: "{Last(Local.VarCustomerDraft).Text}"
+        - condition: "true"
+          id: if-node-failclosed-escalate
+          actions:
+            - kind: InvokeAzureAgent
+              id: node-1789697115060
+              agent:
+                name: EscalationCoordinatorAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: ""
+              output:
+                autoSend: true
+                messages: Local.VarEscalation
+    - kind: InvokeAzureAgent
+      id: node-1789697069548
+      agent:
+        name: CaseAuditAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+        messages: Local.VarAudit
+id: ""
+name: GridResolveAIWorkflow

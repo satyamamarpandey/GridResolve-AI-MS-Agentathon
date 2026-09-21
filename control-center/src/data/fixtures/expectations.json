@@ -1,0 +1,50 @@
+{
+  "test_fixture": "SYN-CASE-4003",
+  "classification": "SYNTHETIC_ONLY",
+  "execution_status": "NOT_EXECUTED",
+  "purpose": "LOCAL_FRONTEND_TEST_ONLY",
+  "input_snapshot": "SYN-CASE-4003_UI_01_INTAKE.json",
+  "investigation_snapshot": "SYN-CASE-4003_UI_02_INVESTIGATING.json",
+  "rejection_snapshot": "SYN-CASE-4003_UI_03_SIMULATED_REJECTION.json",
+  "expected_ui_assertions": [
+    {
+      "view": "Overview",
+      "check": "Shows a synthetic case without counting it as a live executed workflow."
+    },
+    {
+      "view": "Cases",
+      "check": "SYN-CASE-4003 can be selected and customer request is visible."
+    },
+    {
+      "view": "Evidence Explorer",
+      "check": "Clicking evidence shows its value and provenance; synthetic meter diagnostics do not assert fault."
+    },
+    {
+      "view": "Claims",
+      "check": "SYN-CL-4003-02 is visibly UNSUPPORTED and links to no affirmative diagnostic evidence."
+    },
+    {
+      "view": "Agent Workflow",
+      "check": "Shows saved configured agent graph; simulated case snapshot must not animate as a real Foundry execution."
+    },
+    {
+      "view": "Governance",
+      "check": "Simulated compliance decision rejects the unsupported meter-failure assertion and surfaces POL-MTR-003."
+    },
+    {
+      "view": "Supervisor Review",
+      "check": "Shows a simulated pending specialist decision, without recording approval or actual reviewer action."
+    },
+    {
+      "view": "Offline assistant",
+      "check": "Explains from supplied synthetic evidence that meter failure is not confirmed; makes no refund promise."
+    },
+    {
+      "view": "Audit / monitoring",
+      "check": "Shows SIMULATED_UI_DISPLAY_ONLY and NOT_EXECUTED, no invented trace IDs, tokens, latency or runtime charges."
+    }
+  ],
+  "expected_root_cause": "NO_SUPPORTED_ROOT_CAUSE",
+  "expected_route": "REJECT_UNSUPPORTED_METER_CLAIM",
+  "note": "Expectations are separated from inputs and must not be sent to Foundry agents."
+}

@@ -1,0 +1,283 @@
+{
+  "solution": "GridResolve AI",
+  "prepared_utc": "2026-09-19",
+  "project": "[FOUNDRY_PROJECT_REDACTED]",
+  "resource": "[FOUNDRY_RESOURCE_REDACTED]",
+  "resource_group": "[RESOURCE_GROUP_REDACTED]",
+  "region": "westus3",
+  "workflow": {
+    "name": "GridResolveAIWorkflow",
+    "current_version": 10,
+    "previous_version": 9,
+    "status": "RUNTIME_DEMONSTRATED_ONCE_ON_V10_SYNTHETIC_CASE",
+    "nodes": [
+      "Start",
+      "CaseTriageAgent",
+      "AccountEvidenceAgent",
+      "UsageAnomalyAgent",
+      "PolicyKnowledgeAgent",
+      "ResolutionPlannerAgent",
+      "CustomerCommunicationAgent",
+      "EvidenceComplianceAgent",
+      "ConditionGroup_FailClosed",
+      "SendActivity_ReleaseApprovedMessage",
+      "ConditionGroup_CaseFollowUp",
+      "EscalationCoordinatorAgent",
+      "CaseAuditAgent",
+      "End"
+    ],
+    "fail_closed_condition": "=And(<ROUTE_DECISION::GRIDRESOLVE_APPROVED exactly once, alone on the final line of Last(Local.Var1497).Text, no escalation token>, <six readable customer fields>, <evidence, usage, policy and compliance outputs each a JSON object holding its key field>). Exact text: tests/powerfx_gate/gate_v6.txt, readable_v9.txt, investigated_v10.txt",
+    "routing_note": "All three gate terms must hold before anything is released. Every other outcome, including a missing token, malformed output, a blank customer field or a stalled specialist, takes the fail-closed escalation branch. After a release, a separate follow-up decision reads the planner's CASE_FOLLOWUP token and defaults to a human handoff. Version 4 used Not(\"APPROVE\" in output), which matched explanatory prose such as 'cannot approve'. Versions 4 and 5 do not compile on the real Power Fx engine against a table of message records; version 6 corrected that.",
+    "release_control": "Investigation agents and the draft customer message run with autoSend false. The six customer-facing fields of the draft are released only by SendActivity on the approved branch, through a template. On the fail-closed branch nothing is sent to the customer and the EscalationCoordinatorAgent prepares a human review package.",
+    "known_limitations": [
+      "Specialist investigation is sequential, not parallel",
+      "Automated replan and rewrite loops are not built",
+      "Workflow v10 has executed once, on one synthetic case. One run is one sample of a non-deterministic system",
+      "The fail-closed branch was observed in the hosted service on v9, not on v10",
+      "No human is actually notified on a handoff, and the reviewer is a role, not a named person",
+      "A field missing from the communication JSON stops the run at the gate with nothing sent and no audit",
+      "Foundry Workflows Preview retires on 2026-12-01"
+    ],
+    "invocation": "Every agent node passes an explicit literal input message naming its workflow step. Text: tests/workflow_engine/invocation_messages_v10.json"
+  },
+  "agents": [
+    {
+      "name": "CaseTriageAgent",
+      "version": 5,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": false
+    },
+    {
+      "name": "AccountEvidenceAgent",
+      "version": 9,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": true
+    },
+    {
+      "name": "UsageAnomalyAgent",
+      "version": 4,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": false
+    },
+    {
+      "name": "PolicyKnowledgeAgent",
+      "version": 6,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": true
+    },
+    {
+      "name": "ResolutionPlannerAgent",
+      "version": 6,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": false
+    },
+    {
+      "name": "CustomerCommunicationAgent",
+      "version": 5,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": true
+    },
+    {
+      "name": "EvidenceComplianceAgent",
+      "version": 6,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": false
+    },
+    {
+      "name": "EscalationCoordinatorAgent",
+      "version": 5,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": false
+    },
+    {
+      "name": "CaseAuditAgent",
+      "version": 7,
+      "model": "gpt-5-mini",
+      "tools": [],
+      "status": "RUNTIME_OBSERVED_FINAL_RUN",
+      "strict_output_schema": true
+    }
+  ],
+  "versions": {
+    "agent_contract": "GRIDRESOLVE-AGENTS-3.1",
+    "dataset": "GRIDRESOLVE-SYNTH-2.0",
+    "policy": "GRIDRESOLVE-POLICY-2.0",
+    "evaluation": "GRIDRESOLVE-EVAL-2.0",
+    "red_team": "GRIDRESOLVE-REDTEAM-2.0"
+  },
+  "ai_gateway": {
+    "created": false,
+    "status": "PREPARED_NOT_EXECUTED",
+    "reason": "Zero base and dependent cost could not be proven because the feature is powered by Azure API Management Basic v2"
+  },
+  "files": [
+    "GridResolve_AI_Submission_Dossier.md",
+    "gridresolve_case_state.schema.json",
+    "gridresolve_synthetic_pack.json",
+    "gridresolve_evaluation_suite.jsonl",
+    "gridresolve_red_team_pack.jsonl",
+    "gridresolve_submission_manifest.json",
+    "tests/test_routing_and_data.py",
+    "docs/STATIC_AUDIT.md",
+    "docs/WORKFLOW_V4_RUNTIME_MAP.md",
+    "docs/AGENT_RUNTIME_PREFLIGHT.md",
+    "submission/SYN-CASE-4003_input.json"
+  ],
+  "screenshots": [
+    {
+      "id": "S02",
+      "file": "evidence/screenshots/S02.png",
+      "status": "ON_DISK_CAPTURED_2026-09-20_BEFORE_THE_REAL_RUNS"
+    },
+    {
+      "id": "S04",
+      "file": "evidence/screenshots/S04.png",
+      "status": "ON_DISK_CAPTURED_2026-09-20_BEFORE_THE_REAL_RUNS"
+    },
+    {
+      "id": "S09",
+      "file": "evidence/screenshots/S09.png",
+      "status": "ON_DISK_CAPTURED_2026-09-20_BEFORE_THE_REAL_RUNS"
+    },
+    {
+      "id": "APP02",
+      "file": "evidence/app-screenshots/APP02.png",
+      "status": "ON_DISK_CAPTURED_2026-09-20_BEFORE_THE_REAL_RUNS"
+    },
+    {
+      "id": "APP04",
+      "file": "evidence/app-screenshots/APP04.png",
+      "status": "ON_DISK_CAPTURED_2026-09-20_BEFORE_THE_REAL_RUNS"
+    },
+    {
+      "id": "APP09",
+      "file": "evidence/app-screenshots/APP09.png",
+      "status": "ON_DISK_CAPTURED_2026-09-20_BEFORE_THE_REAL_RUNS"
+    }
+  ],
+  "screenshot_note": "Six authentic captures are on disk. All were taken before the real runs. S02, S04, S09 and APP09 show workflow v5, earlier agent versions or 'never run', which was true when captured and is not the current state. Fresh Foundry portal captures of workflow v10 are still needed. See submission/final/18_SCREENSHOT_MANIFEST.md.",
+  "updated_utc": "2026-09-21",
+  "status_reference": "docs/CURRENT_STATUS.md",
+  "runtime_executions": {
+    "count": 3,
+    "case": "SYN-CASE-4003",
+    "evidence_root": "evidence/runtime/",
+    "runs": [
+      {
+        "run": 1,
+        "workflow_version": 6,
+        "folder": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+        "route": "approved",
+        "sent_to_customer": "an unevaluated expression",
+        "agents_that_did_their_work": "7 of 8",
+        "input_tokens": 46810,
+        "output_tokens": 10828,
+        "provisional_cost_usd": 0.0334,
+        "record": "docs/FIRST_RUN_AND_CORRECTIONS_2026-09-20.md"
+      },
+      {
+        "run": 2,
+        "workflow_version": 9,
+        "folder": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+        "route": "fail-closed escalation, compliance gave no reasons",
+        "sent_to_customer": "nothing",
+        "agents_that_did_their_work": "6 of 9",
+        "input_tokens": 45452,
+        "output_tokens": 8894,
+        "provisional_cost_usd": 0.0292,
+        "record": "docs/SECOND_RUN_RESULT_2026-09-20.md"
+      },
+      {
+        "run": 3,
+        "workflow_version": 10,
+        "folder": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+        "route": "approved and released, then handed to human follow-up",
+        "sent_to_customer": "a readable six-part message, 2592 characters",
+        "agents_that_did_their_work": "9 of 9",
+        "evidence_ledger_entries": 22,
+        "policies_mapped": 9,
+        "audit_findings": 0,
+        "acceptance": "14 of 14 PASS against docs/FINAL_RUN_ACCEPTANCE_PLAN.md",
+        "input_tokens": 94352,
+        "output_tokens": 22433,
+        "provisional_cost_usd": 0.0685,
+        "record": "docs/FINAL_RUN_RESULT_2026-09-20.md"
+      }
+    ],
+    "not_observed": [
+      "the fail-closed branch on v10",
+      "the follow-up branch where no human is needed",
+      "any case other than SYN-CASE-4003",
+      "any second run of v10"
+    ],
+    "classification": "runtime-demonstrated, production-oriented prototype. Not production-ready"
+  },
+  "cost_audit": {
+    "workflow_executions": 3,
+    "agent_runs_outside_the_workflow": 0,
+    "playground_messages": 0,
+    "evaluation_runs": 0,
+    "llm_judge_calls": 0,
+    "embedding_calls": 0,
+    "bing_calls": 0,
+    "foundry_iq_runs": 0,
+    "azure_ai_search_provisioned": false,
+    "new_model_deployments": 0,
+    "new_endpoints": 0,
+    "new_paid_monitoring_resources": 0,
+    "provisional_total_usd": 0.1311,
+    "provisional_basis": "returned token counts at list price, gpt-5-mini Global Standard",
+    "confirmed_billed_usd": "NOT_YET_VISIBLE",
+    "cost_management_query": "returned no cost rows after the final run. This is not a confirmed 0.00",
+    "billing_lag_warning": true,
+    "control_plane_operations_only": "Agent and workflow versions were created through the Foundry control plane, which does not invoke a model"
+  },
+  "verification": {
+    "local_checks_total": 1174,
+    "routing_and_data": 83,
+    "synthetic_data": 151,
+    "control_center": 156,
+    "foundry_runner_mocked": 357,
+    "workflow_engine": 91,
+    "evaluation_package": 198,
+    "integration_contracts": 138,
+    "agent_framework_parity_checks": 11,
+    "power_fx_real_engine_cases": 105,
+    "live_configuration_read_only_checks": 94,
+    "note": "None of these calls a model. None is Foundry execution evidence"
+  },
+  "prepared_not_executed": [
+    "30-case evaluation suite",
+    "16 red-team scenarios"
+  ],
+  "runtime_and_verification_records": [
+    "docs/CURRENT_STATUS.md",
+    "docs/FINAL_RUN_ACCEPTANCE_PLAN.md",
+    "docs/FINAL_RUN_RESULT_2026-09-20.md",
+    "docs/V10_CORRECTIONS_2026-09-20.md",
+    "docs/SECOND_RUN_RESULT_2026-09-20.md",
+    "docs/FIRST_RUN_AND_CORRECTIONS_2026-09-20.md",
+    "docs/CORRECTION_2026-09-20.md",
+    "tests/validate_synthetic_data.py",
+    "tests/test_foundry_runner.py",
+    "tests/test_workflow_engine.py",
+    "tests/verify_live_config.py",
+    "tests/workflow_engine/workflows/GridResolveAIWorkflow_v10.yaml"
+  ]
+}

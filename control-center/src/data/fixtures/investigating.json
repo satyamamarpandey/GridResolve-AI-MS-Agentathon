@@ -1,0 +1,193 @@
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow-v4",
+  "case_state": "INVESTIGATING",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "customer_request": "My bill jumped significantly this month. The meter has to be broken. Please confirm the meter caused the increase and fix the charge.",
+  "triage": {
+    "intent": "HIGH_BILL",
+    "meter_concern": true,
+    "requested_action": "CONFIRM_METER_FAILURE_AND_ADJUST_BILL",
+    "display_status": "SIMULATED_UI_TEST_NOT_AGENT_OUTPUT"
+  },
+  "evidence_ledger": [
+    {
+      "evidence_id": "SYN-EV-4003-01",
+      "source_type": "synthetic_billing",
+      "source_record_id": "SYN-BILL-4003-PREV",
+      "period": "PREVIOUS_30_DAYS",
+      "field": "amount_usd",
+      "value": 152.8,
+      "observation": "Previous illustrative synthetic bill amount.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    },
+    {
+      "evidence_id": "SYN-EV-4003-02",
+      "source_type": "synthetic_billing",
+      "source_record_id": "SYN-BILL-4003-CURR",
+      "period": "CURRENT_31_DAYS",
+      "field": "amount_usd",
+      "value": 203.4,
+      "observation": "Current illustrative synthetic bill amount.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    },
+    {
+      "evidence_id": "SYN-EV-4003-03",
+      "source_type": "synthetic_usage",
+      "source_record_id": "SYN-USAGE-4003-PREV",
+      "period": "PREVIOUS_30_DAYS",
+      "field": "usage_kwh",
+      "value": 640,
+      "observation": "Previous synthetic period total usage.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    },
+    {
+      "evidence_id": "SYN-EV-4003-04",
+      "source_type": "synthetic_usage",
+      "source_record_id": "SYN-USAGE-4003-CURR",
+      "period": "CURRENT_31_DAYS",
+      "field": "usage_kwh",
+      "value": 870,
+      "observation": "Current synthetic period total usage.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    },
+    {
+      "evidence_id": "SYN-EV-4003-05",
+      "source_type": "synthetic_billing",
+      "source_record_id": "SYN-BILL-4003-CURR",
+      "period": "CURRENT_31_DAYS",
+      "field": "billing_days",
+      "value": 31,
+      "observation": "Current billing period is 1 day longer than previous.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    },
+    {
+      "evidence_id": "SYN-EV-4003-06",
+      "source_type": "synthetic_meter",
+      "source_record_id": "SYN-MTR-4003",
+      "period": "CURRENT_31_DAYS",
+      "field": "meter_reads",
+      "value": {
+        "read_type": "ACTUAL",
+        "start_kwh": 41820,
+        "end_kwh": 42690
+      },
+      "observation": "Recorded actual reads yield 870 kWh; this alone does not establish meter accuracy or failure.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    },
+    {
+      "evidence_id": "SYN-EV-4003-07",
+      "source_type": "synthetic_meter",
+      "source_record_id": "SYN-MTR-4003",
+      "period": "CURRENT_31_DAYS",
+      "field": "meter_events",
+      "value": [],
+      "observation": "No meter failure events recorded in the synthetic evidence provided; lack of events does not prove flawless operation.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    },
+    {
+      "evidence_id": "SYN-EV-4003-08",
+      "source_type": "synthetic_meter",
+      "source_record_id": "SYN-MTR-4003",
+      "period": "CURRENT_31_DAYS",
+      "field": "diagnostic_status",
+      "value": "NO_FAULT_DETECTED",
+      "observation": "No fault detected in synthetic diagnostic record; there is no affirmative support for meter failure.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    },
+    {
+      "evidence_id": "SYN-EV-4003-09",
+      "source_type": "synthetic_billing",
+      "source_record_id": "SYN-BILL-4003-CURR",
+      "period": "CURRENT_31_DAYS",
+      "field": "duplicate_charge_detected",
+      "value": false,
+      "observation": "No duplicate charge shown in the supplied synthetic billing record.",
+      "source_timestamp": "2026-09-15T12:00:00Z",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0",
+      "freshness_status": "CURRENT"
+    }
+  ],
+  "policy_ledger": [
+    {
+      "policy_id": "POL-HB-001",
+      "policy_version": "2.0",
+      "section": null,
+      "rule": "High Bill Investigation: explain only supported causes; disclose uncertainty.",
+      "applies_to": [
+        "SYN-CASE-4003"
+      ],
+      "effect_on_resolution": "Compare current and prior bills and usage; no unsupported causal assertion.",
+      "conflict_status": "NONE"
+    },
+    {
+      "policy_id": "POL-MTR-003",
+      "policy_version": "2.0",
+      "section": null,
+      "rule": "Meter Concern Handling: do not confirm failure without explicit diagnostic evidence.",
+      "applies_to": [
+        "SYN-CASE-4003"
+      ],
+      "effect_on_resolution": "Meter failure assertion is not supported; unresolved concern can be reviewed.",
+      "conflict_status": "NONE"
+    },
+    {
+      "policy_id": "POL-COMM-004",
+      "policy_version": "2.0",
+      "section": null,
+      "rule": "Customer Communication Requirements: use only supported claims and clear next steps.",
+      "applies_to": [
+        "SYN-CASE-4003"
+      ],
+      "effect_on_resolution": "Remove unsupported causal wording from any customer message.",
+      "conflict_status": "NONE"
+    },
+    {
+      "policy_id": "POL-HUM-005",
+      "policy_version": "2.0",
+      "section": null,
+      "rule": "Mandatory Human Escalation: unresolved meter allegation requires appropriate specialist review.",
+      "applies_to": [
+        "SYN-CASE-4003"
+      ],
+      "effect_on_resolution": "Prepare a human review decision card rather than promise meter replacement.",
+      "conflict_status": "NONE"
+    },
+    {
+      "policy_id": "POL-AUDIT-007",
+      "policy_version": "2.0",
+      "section": null,
+      "rule": "Case Evidence and Audit Requirements: preserve provenance and disposition.",
+      "applies_to": [
+        "SYN-CASE-4003"
+      ],
+      "effect_on_resolution": "Retain evidence, claim and policy IDs in the demonstration audit display.",
+      "conflict_status": "NONE"
+    }
+  ],
+  "claim_ledger": [],
+  "resolution_plan": null,
+  "customer_message": null,
+  "compliance_result": null,
+  "correction_count": 0,
+  "escalation": null,
+  "final_disposition": null,
+  "audit_record": null
+}

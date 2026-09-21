@@ -1,0 +1,17 @@
+{
+  "deployments": [
+    {
+      "name": "gpt-5-mini",
+      "model": "gpt-5-mini",
+      "version": "2025-08-07",
+      "sku": "GlobalStandard",
+      "capacity_k_tpm": 50
+    },
+    {
+      "name": "text-embedding-3-large",
+      "sku": "Standard",
+      "capacity_k_tpm": 120
+    }
+  ],
+  "region": "westus3"
+}

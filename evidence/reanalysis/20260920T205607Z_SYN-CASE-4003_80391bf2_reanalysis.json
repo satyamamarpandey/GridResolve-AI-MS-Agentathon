@@ -1,0 +1,219 @@
+{
+  "what_this_is": "Derived offline on 2026-09-20, after the run, from the untouched artifacts in evidence/runtime. It is not an execution and nothing here was produced by a model call made for this file.",
+  "how_to_reproduce": "python -m runner analyze --run-dir evidence/runtime/20260920T205607Z_SYN-CASE-4003_80391bf2",
+  "analysis": {
+    "derived_offline_from": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+    "workflow": "GridResolveAIWorkflow v6",
+    "case_sha256": "d10a3af0396a842cc18a69ed96f132fef04bb3b5937263ddd545a04ae22c8d51",
+    "stream_events": 1303,
+    "basis": {
+      "platform_observed": [
+        "route",
+        "participation",
+        "distinct_agents",
+        "release",
+        "unhealthy_outputs",
+        "investigation"
+      ],
+      "model_produced": [
+        "compliance",
+        "case_follow_up.planner_*",
+        "audit.audit_*"
+      ],
+      "note": "Platform-observed fields come from service metadata and delivered text. Model-produced fields are what an agent wrote. Where they disagree the platform fields win."
+    },
+    "route": {
+      "route": "APPROVED_AND_RELEASED",
+      "gate_evaluated": true,
+      "case_follow_up": "NOT_OBSERVED",
+      "follow_up_gate_evaluated": false,
+      "audit_ran": true,
+      "agents_observed": [
+        "CaseTriageAgent",
+        "AccountEvidenceAgent",
+        "UsageAnomalyAgent",
+        "PolicyKnowledgeAgent",
+        "ResolutionPlannerAgent",
+        "CustomerCommunicationAgent",
+        "EvidenceComplianceAgent",
+        "CaseAuditAgent"
+      ],
+      "agents_not_observed": [
+        "EscalationCoordinatorAgent"
+      ]
+    },
+    "participation": [
+      {
+        "agent": "CaseTriageAgent",
+        "version": "5",
+        "inner_response_id": "resp_0e74508741ea3ef6006ab0486afa00819080c3c8e6b85d415f",
+        "output_chars": 2870
+      },
+      {
+        "agent": "AccountEvidenceAgent",
+        "version": "7",
+        "inner_response_id": "resp_0e74508741ea3ef6006ab04871bf508190a7fa80249ac015ed",
+        "output_chars": 363
+      },
+      {
+        "agent": "UsageAnomalyAgent",
+        "version": "4",
+        "inner_response_id": "resp_0e74508741ea3ef6006ab048739e28819089161343413631aa",
+        "output_chars": 6858
+      },
+      {
+        "agent": "PolicyKnowledgeAgent",
+        "version": "5",
+        "inner_response_id": "resp_0e74508741ea3ef6006ab0487ff4e881908016e635e6f1713c",
+        "output_chars": 11516
+      },
+      {
+        "agent": "ResolutionPlannerAgent",
+        "version": "5",
+        "inner_response_id": "resp_0e74508741ea3ef6006ab04890a14c8190853488206881ed62",
+        "output_chars": 9512
+      },
+      {
+        "agent": "CustomerCommunicationAgent",
+        "version": "4",
+        "inner_response_id": "resp_0e74508741ea3ef6006ab048a17e5081908ea3aeac67452db9",
+        "output_chars": 4036
+      },
+      {
+        "agent": "EvidenceComplianceAgent",
+        "version": "5",
+        "inner_response_id": "resp_0e74508741ea3ef6006ab048aa425881909c1e07934006660e",
+        "output_chars": 1787
+      },
+      {
+        "agent": "CaseAuditAgent",
+        "version": "4",
+        "inner_response_id": "resp_0e74508741ea3ef6006ab048b0ee10819094897dd6ea5b6eb6",
+        "output_chars": 2234
+      }
+    ],
+    "distinct_agents": 8,
+    "unhealthy_outputs": [
+      {
+        "agent": "AccountEvidenceAgent",
+        "problems": [
+          "NO_JSON_OBJECT",
+          "ASKS_FOR_CONFIRMATION",
+          "ANNOUNCES_FUTURE_WORK",
+          "MISSING:evidence_ledger"
+        ],
+        "output_chars": 363,
+        "preview": "Per instructions, this response is the intake/triage. If you want, I will now produce the full INVESTIGATING-state JSON "
+      }
+    ],
+    "investigation": {
+      "complete": false,
+      "incomplete_stages": [
+        "AccountEvidenceAgent"
+      ],
+      "stages_not_run": []
+    },
+    "compliance": {
+      "token": "APPROVED",
+      "final_line": "ROUTE_DECISION::GRIDRESOLVE_APPROVED"
+    },
+    "release": {
+      "outcome": "UNEVALUATED_EXPRESSION",
+      "released_chars": 34,
+      "draft_chars": 4036,
+      "released_preview": "=Last(Local.VarCustomerDraft).Text",
+      "customer_ready": false,
+      "identifiers_in_release": []
+    },
+    "case_follow_up": {
+      "planner_token": "NO_VALID_TOKEN",
+      "planner_states_human_review_reason": true,
+      "planner_resolution_status": "NEED_MORE_INFORMATION",
+      "observed": "NOT_OBSERVED",
+      "findings": [
+        "The planner stated that the case needs human review, but no human handoff was observed. Follow-up observed: NOT_OBSERVED."
+      ]
+    },
+    "audit": {
+      "audit_parsed": true,
+      "audit_execution_status": "CONFIGURED",
+      "audit_workflow_version": "GridResolveAIWorkflow v6",
+      "audit_agents_listed": 4,
+      "audit_entries": 4,
+      "platform_agents_observed": 8,
+      "accurate": false,
+      "findings": [
+        "execution_status is 'CONFIGURED' for a real execution.",
+        "human_review_status is 'NO_HUMAN_REVIEW_REQUIRED', but the planner stated that the case needs human review.",
+        "Agents that ran but are absent from the audit: CaseTriageAgent, CustomerCommunicationAgent, PolicyKnowledgeAgent, UsageAnomalyAgent.",
+        "AccountEvidenceAgent is recorded as version 'v1.0', the platform ran version 7.",
+        "ResolutionPlannerAgent is recorded as version 'v1.0', the platform ran version 5.",
+        "EvidenceComplianceAgent is recorded as version 'v1.0', the platform ran version 5.",
+        "CaseAuditAgent is recorded as version 'GRIDRESOLVE-AGENTS-3.0', the platform ran version 4."
+      ]
+    }
+  },
+  "inner_response_usage": {
+    "source": "Read-only GET of each inner response id listed under participation, made on 2026-09-20 after the run.",
+    "per_agent": [
+      {
+        "agent": "CaseTriageAgent",
+        "input_tokens": 1228,
+        "cached_input_tokens": 0,
+        "output_tokens": 895
+      },
+      {
+        "agent": "AccountEvidenceAgent",
+        "input_tokens": 2613,
+        "cached_input_tokens": 0,
+        "output_tokens": 80
+      },
+      {
+        "agent": "UsageAnomalyAgent",
+        "input_tokens": 2102,
+        "cached_input_tokens": 0,
+        "output_tokens": 1937
+      },
+      {
+        "agent": "PolicyKnowledgeAgent",
+        "input_tokens": 4449,
+        "cached_input_tokens": 0,
+        "output_tokens": 2405
+      },
+      {
+        "agent": "ResolutionPlannerAgent",
+        "input_tokens": 6627,
+        "cached_input_tokens": 0,
+        "output_tokens": 2432
+      },
+      {
+        "agent": "CustomerCommunicationAgent",
+        "input_tokens": 8873,
+        "cached_input_tokens": 0,
+        "output_tokens": 1035
+      },
+      {
+        "agent": "EvidenceComplianceAgent",
+        "input_tokens": 10221,
+        "cached_input_tokens": 0,
+        "output_tokens": 618
+      },
+      {
+        "agent": "CaseAuditAgent",
+        "input_tokens": 10697,
+        "cached_input_tokens": 0,
+        "output_tokens": 1426
+      }
+    ],
+    "sum_input_tokens": 46810,
+    "sum_output_tokens": 10828,
+    "workflow_response_usage": {
+      "input_tokens": 46810,
+      "output_tokens": 10828
+    },
+    "sums_match_workflow_usage": true,
+    "cost_usd_from_tokens": 0.0334,
+    "cost_status": "PROVISIONAL. Computed from reported tokens and list prices. Not yet reconciled with Azure billing."
+  },
+  "regenerated": "analysis block regenerated offline on 2026-09-20 with the runner as corrected after the second run. The run artifacts were read and not modified. No model call."
+}

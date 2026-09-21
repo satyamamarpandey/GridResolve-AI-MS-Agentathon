@@ -1,0 +1,570 @@
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow v9",
+  "case_state": "INTAKE",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "intent": "Customer reports a sudden high bill and asserts the meter is broken; requests confirmation and correction.",
+  "investigation_type": "HIGH_BILL",
+  "billing_period": {
+    "period_start": "2026-07-01",
+    "period_end": "2026-07-31",
+    "billing_days": 31,
+    "kwh_billed": 870,
+    "amount_usd": 203.40,
+    "read_type_end": "actual"
+  },
+  "required_evidence": [
+    "Meter register reads for disputed and prior periods (provided)",
+    "Meter diagnostic and self-test results (provided)",
+    "Complete billing calculation showing application of rate components to billed kWh",
+    "Historical usage trend (provided)",
+    "Customer-provided information on occupancy, appliances, or usage pattern changes during the period",
+    "Weather/temperature data for billing period (to explain seasonal consumption)",
+    "Any recent rate or tariff changes affecting the account (rate sheet/policy lookup)"
+  ],
+  "missing_evidence": [
+    "Customer statement about occupancy/behavior or known appliance/malfunction changes in July 2026",
+    "Weather/temperature summary for July 2026 at service location",
+    "Detailed bill calculation (itemized bill showing energy vs fixed charges; not included explicitly in synthetic record)",
+    "On-site meter inspection or physical tamper evidence (no meter events recorded; none present)",
+    "Any third-party usage verification (e.g., smart home logs) if available"
+  ],
+  "account_evidence_required": true,
+  "usage_analysis_required": true,
+  "policy_lookup_required": true,
+  "risk_flags": {
+    "safety": false,
+    "legal": false,
+    "regulatory": true,
+    "fraud": false,
+    "vulnerable_customer": false,
+    "privacy": false,
+    "prompt_injection": false,
+    "real_data_contamination": false
+  },
+  "risk_class": "MEDIUM",
+  "confidence": "HIGH",
+  "human_review_candidate": true,
+  "triage_summary": "Customer reports a large increase from 640 kWh in June to 870 kWh in July and asserts the meter is broken. Synthetic account shows consecutive actual reads (41820 -> 42690), an increase consistent with billed kWh, and a remote self-test on 2026-07-29 with result PASS and no tamper or register fault flags. No meter events or prior adjustments recorded. Required next steps: verify billing calculation and rate application, obtain customer confirmation of any usage/occupancy changes or appliance issues, retrieve local weather/temperature for July 2026, and determine whether an on-site inspection or escalation is warranted per policy. Because the customer alleges meter failure, flag for human review and follow regulator/billing accuracy policy lookup before any correction or commitment."
+}
+Note: The workflow requires an evidence_ledger and detailed structured outputs (billing_comparison, meter_read_status, etc.). The assistant's previous message was incomplete per AUTOMATED INVOCATION and BOUNDARY. I'll now produce the full mandated JSON output including evidence_ledger and all required sections.
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow v9",
+  "case_state": "INVESTIGATING",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "usage_pattern": {
+    "description": "Sustained level usage in April–June followed by a marked single-period increase in July.",
+    "seasonality": "Not enough evidence to assert seasonal driver; only one large jump observed in July 2026 within provided history (Apr–Jul)."
+  },
+  "comparison_periods": [
+    {
+      "period_label": "Prior period (June 2026)",
+      "period_start": "2026-06-01",
+      "period_end": "2026-06-30",
+      "billing_days": 30,
+      "kwh": 640,
+      "read_type": "actual",
+      "evidence_ids": ["SYN-BILL-0003-06", "SYN-READ-0003-A"]
+    },
+    {
+      "period_label": "Disputed period (July 2026)",
+      "period_start": "2026-07-01",
+      "period_end": "2026-07-31",
+      "billing_days": 31,
+      "kwh": 870,
+      "read_type": "actual",
+      "evidence_ids": ["SYN-BILL-0003-07", "SYN-READ-0003-B"]
+    },
+    {
+      "period_label": "Historical months (Apr–May 2026)",
+      "periods": [
+        {"period": "2026-04", "kwh": 590, "evidence_ids": ["usage_history_kwh"]},
+        {"period": "2026-05", "kwh": 610, "evidence_ids": ["usage_history_kwh"]}
+      ]
+    }
+  ],
+  "anomalies": [
+    {
+      "anomaly_id": "A-001-spike-jul2026",
+      "period": "2026-07-01 to 2026-07-31",
+      "observation": "Usage increased from 640 kWh in June to 870 kWh in July (+230 kWh; +35.9% vs prior month).",
+      "magnitude_description": "Large single-period increase (≈36% month-over-month; 870 kWh is highest in the 4-month provided history).",
+      "supporting_evidence_ids": ["SYN-BILL-0003-06", "SYN-BILL-0003-07", "SYN-READ-0003-A", "SYN-READ-0003-B", "usage_history_kwh"],
+      "confidence": "HIGH"
+    },
+    {
+      "anomaly_id": "A-002-read_consistency",
+      "period": "2026-06-30 to 2026-07-31",
+      "observation": "Register change between actual reads matches billed usage (register 41820 -> 42690 equals 870 kWh).",
+      "magnitude_description": "Meter register delta equals billed kWh for July, indicating internal consistency between reads and bill.",
+      "supporting_evidence_ids": ["SYN-READ-0003-A", "SYN-READ-0003-B", "SYN-BILL-0003-07"],
+      "confidence": "HIGH"
+    },
+    {
+      "anomaly_id": "A-003-no_meter_events_or_tamper",
+      "period": "2026-06-01 to 2026-07-31",
+      "observation": "No meter events recorded and remote self-test on 2026-07-29 returned PASS with tamper_flag=false and register_fault_flag=false.",
+      "magnitude_description": "Diagnostic records do not indicate meter fault or tampering during the disputed timeframe.",
+      "supporting_evidence_ids": ["meter_event_note", "SYN-DIAG-0003-01"],
+      "confidence": "HIGH"
+    }
+  ],
+  "supported_explanations": [
+    {
+      "explanation_id": "E-001-usage_increase_supported_by_reads",
+      "explanation": "The billed increase for July 2026 is supported by the meter register delta between actual reads: 41820 (2026-06-30) to 42690 (2026-07-31) which equals 870 kWh, matching the billed kWh for July.",
+      "supporting_evidence_ids": ["SYN-READ-0003-A", "SYN-READ-0003-B", "SYN-BILL-0003-07"]
+    },
+    {
+      "explanation_id": "E-002-no_diagnostic_indication_of_meter_failure",
+      "explanation": "Remote diagnostics performed on 2026-07-29 returned PASS and show tamper_flag=false and register_fault_flag=false; no meter events were recorded for the period, so there is no evidence in the provided records of a meter fault or tamper event.",
+      "supporting_evidence_ids": ["SYN-DIAG-0003-01", "meter_event_note"]
+    }
+  ],
+  "unsupported_hypotheses": [
+    {
+      "hypothesis_id": "H-001-meter_failed_causing_high_bill",
+      "hypothesis": "The meter is defective and caused the high July bill.",
+      "reason": "Not supported by the provided evidence: actual register reads explain the billed kWh and remote diagnostic shows PASS with no tamper or register fault flags. No meter events are recorded. Therefore the synthetic evidence does not support meter failure as the cause.",
+      "supporting_evidence_ids": ["SYN-READ-0003-A", "SYN-READ-0003-B", "SYN-DIAG-0003-01", "meter_event_note"]
+    },
+    {
+      "hypothesis_id": "H-002-billing_error_due_to_estimated_read_transition",
+      "hypothesis": "Bill increased because an estimated-to-actual transition or read-type change caused correction.",
+      "reason": "Unsupported: both the June and July end reads are marked 'actual' in the provided billing records and meter_reads; there is no evidence of estimated reads or an estimated-to-actual transition in these periods.",
+      "supporting_evidence_ids": ["SYN-BILL-0003-06", "SYN-BILL-0003-07", "SYN-READ-0003-A", "SYN-READ-0003-B"]
+    }
+  ],
+  "confidence_rationale": "High confidence in the account-level conclusions because consecutive actual meter register reads are provided that mathematically equal the billed kWh for July, and a contemporaneous remote diagnostic shows PASS with no tamper or register fault flags. Conclusions about non-meter causes (e.g., occupant behavior, weather, appliance fault) are not made because those data are not present in the evidence.",
+  "required_additional_evidence": [
+    {
+      "item": "Customer statement on occupancy/behavior/appliance changes",
+      "reason": "To determine whether legitimate usage change explains the increase (not provided in synthetic records)."
+    },
+    {
+      "item": "Local weather/temperature summary for July 2026",
+      "reason": "To assess whether weather-driven load (e.g., cooling degree days) plausibly explains a one-month spike."
+    },
+    {
+      "item": "Itemized bill or billing calculation",
+      "reason": "To verify how the billed amount was calculated from usage and rate components and to check for any adjustments or charge errors."
+    },
+    {
+      "item": "On-site meter inspection report (if customer still suspects meter failure)",
+      "reason": "Remote diagnostics show PASS, but policy may require physical inspection to conclusively rule out physical tamper or installation issues."
+    },
+    {
+      "item": "Any additional meter diagnostics or meter manufacturer logs",
+      "reason": "To corroborate remote self-test results with device-level logs if available."
+    }
+  ],
+  "usage_summary": {
+    "apparent_change": "Usage rose from 640 kWh (June 2026) to 870 kWh (July 2026), a +230 kWh increase (+35.9%). July 2026 is the highest month in the supplied 4-month history.",
+    "meter_read_consistency": "Meter register reads are internally consistent: 42690 - 41820 = 870 kWh, which equals billed kWh for July.",
+    "diagnostics": "Remote self-test on 2026-07-29: PASS; tamper_flag=false; register_fault_flag=false.",
+    "billing_note": "Rate components provided (energy charge $0.22/kWh + $12 fixed). Using those rates, energy component for 870 kWh would be $191.40 plus fixed charge $12 equals $203.40, which matches the provided billed amount for July (SYN-BILL-0003-07)."
+  }
+}
+Now I will produce the mandated policy mapping, constraints, conflicts, adjustment eligibility, disclosures, human approval, missing policy determination, and a compact policy_summary per the synthetic ledger. This will be the final required JSON response.
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow v9",
+  "case_state": "PLANNING",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "resolution_status": "HUMAN_REVIEW_REQUIRED",
+  "root_cause_classification": "MULTI_FACTOR",
+  "supported_findings": [
+    {
+      "finding_id": "F-001-meter_reads_support_billed_usage",
+      "finding_text": "Actual meter register reads (41820 on 2026-06-30 to 42690 on 2026-07-31) equal the billed July usage of 870 kWh; billed amount matches provided rate components (870 kWh * $0.22 + $12 = $203.40).",
+      "provenance": [
+        {
+          "claim_id": "C-READS_MATCH_BILL",
+          "claim_text": "Meter register delta equals billed kWh for July and billing calculation using provided rates matches billed amount.",
+          "claim_type": "FACT",
+          "source_agent": "AccountEvidenceAgent",
+          "evidence_ids": ["SYN-READ-0003-A", "SYN-READ-0003-B", "SYN-BILL-0003-07"],
+          "policy_ids": [],
+          "confidence": "HIGH",
+          "status": "SUPPORTED"
+        }
+      ]
+    },
+    {
+      "finding_id": "F-002-diagnostics_show_no_meter_fault",
+      "finding_text": "Remote self-test on 2026-07-29 returned PASS with tamper_flag=false and register_fault_flag=false; no meter events recorded.",
+      "provenance": [
+        {
+          "claim_id": "C-DIAG_PASS",
+          "claim_text": "Remote diagnostic recorded PASS and no tamper or register faults were flagged during the disputed timeframe.",
+          "claim_type": "FACT",
+          "source_agent": "AccountEvidenceAgent",
+          "evidence_ids": ["SYN-DIAG-0003-01", "meter_event_note"],
+          "policy_ids": [],
+          "confidence": "HIGH",
+          "status": "SUPPORTED"
+        }
+      ]
+    }
+  ],
+  "uncertainties": [
+    "No customer-supplied explanation of changes to occupancy, appliance usage, or behavior for July 2026; thus the cause of the usage increase cannot be fully attributed to an identifiable non-meter factor.",
+    "No weather or cooling/heating-degree-day data provided for July 2026 to assess possible environmental causes of increased consumption.",
+    "Remote diagnostics do not fully eliminate possibility of intermittent or physical installation faults that only an on-site inspection could detect.",
+    "Absence of itemized bill file in the evidence ledger leaves open the need to verify line-by-line billing and potential non-usage charges (though provided calculation matches the billed amount using given rates)."
+  ],
+  "recommended_actions": [
+    {
+      "action_id": "R-001-request_customer_usage_info",
+      "action": "Contact the customer (via standard channel) to request information about occupancy, appliance use (e.g., new A/C, EV charger), or other behavior changes in July 2026. Ask for any supporting evidence (photos, logs).",
+      "required": true,
+      "human_approval_required": false,
+      "policy_dependencies": ["POL-PRIV-001"]
+    },
+    {
+      "action_id": "R-002-obtain_weather_data",
+      "action": "Retrieve local weather/temperature data for July 2026 (cooling degree days) to evaluate whether weather explains increased usage.",
+      "required": true,
+      "human_approval_required": false,
+      "policy_dependencies": []
+    },
+    {
+      "action_id": "R-003-verify_itemized_bill",
+      "action": "Generate or request the itemized bill calculation and verify rate application, energy charges, taxes, and any other fees match the account's rate components and billed amount.",
+      "required": true,
+      "human_approval_required": false,
+      "policy_dependencies": ["POL-BILL-001"]
+    },
+    {
+      "action_id": "R-004-schedule_on_site_inspection_if_customer_persists",
+      "action": "If the customer remains convinced the meter is defective after providing usage context and seeing diagnostics, schedule an on-site meter inspection per field operations policy and inform the customer of potential costs and timelines.",
+      "required": true,
+      "human_approval_required": true,
+      "policy_dependencies": ["POL-MTR-003", "POL-BILL-002"]
+    },
+    {
+      "action_id": "R-005-escalate_for_financial_remedy_consideration",
+      "action": "If investigation uncovers a verified billing error or meter failure after on-site inspection, escalate to billing adjustments team; all financial adjustments require POL-BILL-002 and explicit human approval.",
+      "required": true,
+      "human_approval_required": true,
+      "policy_dependencies": ["POL-BILL-002"]
+    }
+  ],
+  "customer_adjustment": {
+    "eligible": false,
+    "amount_usd": 0,
+    "rationale": "No supported evidence of a billing error or meter fault in the provided records. Meter reads and remote diagnostics support the billed usage and amount. Financial adjustment not recommended without further human review or additional evidence (on-site inspection or itemized billing error). POL-BILL-002 mandates human approval for any credit or refund."
+  },
+  "claim_ledger": [
+    {
+      "claim_id": "CL-001",
+      "claim_text": "Meter is broken and caused the July 2026 bill increase; customer requests meter confirmation and charge correction.",
+      "claim_type": "CUSTOMER_ALLEGATION",
+      "source_agent": "Customer",
+      "evidence_ids": [],
+      "policy_ids": [],
+      "confidence": "LOW",
+      "status": "UNSUPPORTED"
+    },
+    {
+      "claim_id": "CL-002",
+      "claim_text": "Meter register reads equal billed usage for July 2026 (42690 - 41820 = 870 kWh) and billed amount matches provided rates.",
+      "claim_type": "FACT",
+      "source_agent": "AccountEvidenceAgent",
+      "evidence_ids": ["SYN-READ-0003-A", "SYN-READ-0003-B", "SYN-BILL-0003-07", "rate_components"],
+      "policy_ids": [],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CL-003",
+      "claim_text": "Remote diagnostic on 2026-07-29 returned PASS with tamper_flag=false and register_fault_flag=false; no meter events during relevant period.",
+      "claim_type": "FACT",
+      "source_agent": "AccountEvidenceAgent",
+      "evidence_ids": ["SYN-DIAG-0003-01", "meter_event_note"],
+      "policy_ids": [],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CL-004",
+      "claim_text": "No billing adjustment is recommended at this time based on provided evidence.",
+      "claim_type": "POLICY_ACTION",
+      "source_agent": "ResolutionPlannerAgent",
+      "evidence_ids": ["CL-002", "CL-003"],
+      "policy_ids": ["POL-BILL-002"],
+      "confidence": "HIGH",
+      "status": "POLICY_REQUIRED"
+    }
+  ],
+  "evidence_ids": [
+    "SYN-BILL-0003-06",
+    "SYN-BILL-0003-07",
+    "SYN-READ-0003-A",
+    "SYN-READ-0003-B",
+    "SYN-DIAG-0003-01",
+    "usage_history_kwh",
+    "meter_event_note",
+    "rate_components"
+  ],
+  "policy_ids": [
+    "POL-BILL-001",
+    "POL-BILL-002",
+    "POL-MTR-003",
+    "POL-PRIV-001"
+  ],
+  "confidence": "HIGH",
+  "reasoning_summary": "Consecutive actual meter reads match the billed July usage (42690 − 41820 = 870 kWh) and the billed dollar amount equals the supplied rate calculation; remote diagnostics show PASS with no tamper or register fault flags and no meter events are recorded. Therefore, current evidence does not support meter failure or a billing error. Further investigation should collect customer usage context, local weather data, and an itemized bill; if the customer still suspects meter fault, schedule on-site inspection. Financial adjustments require human approval under POL-BILL-002.",
+  "human_review_reason": "Customer alleges meter failure and requests charge correction despite account evidence showing read and diagnostic consistency. Policy requires human approval for any financial remedy (POL-BILL-002) and field inspection scheduling (POL-MTR-003). Additional customer-supplied usage context and on-site inspection results (if requested) are needed before any adjustment.",
+  "correction_count": 0
+}
+CASE_FOLLOWUP::HUMAN_REQUIRED
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow v9",
+  "case_state": "DRAFTING",
+  "customer_summary": "We reviewed your account because your July 2026 bill increased substantially compared with prior months and you asked that we check whether the meter caused the increase. Based on the records we have, the meter register change between the actual reads on 2026-06-30 and 2026-07-31 equals the billed usage for July, and a remote diagnostic run on 2026-07-29 passed with no tamper or register-fault flags. We do not yet have evidence that the meter itself failed.",
+  "what_we_reviewed": "We examined the account billing records and meter reads for June and July 2026, the provided usage history for April–July 2026, and the meter diagnostic record from 2026-07-29. Specifically, we reviewed the June and July billed records, the actual register reads dated 2026-06-30 and 2026-07-31, the remote self-test result, and the note that no meter events were recorded between 2026-06-01 and 2026-07-31.",
+  "what_we_found": "The meter register increased from 41,820 to 42,690 between the June and July read dates, which equals 870 kWh — the same kWh quantity billed for July 2026. Using the rate information you have on file (energy charge $0.22/kWh plus $12 fixed charge), that usage calculates to the billed amount for July. The remote self-test result shows PASS and does not flag tampering or a register fault, and there are no recorded meter events in the provided timeframe. These records support that the billed usage and charge match the meter reads and the provided rates.",
+  "why_bill_changed": "The bill is higher because the recorded energy use for July 2026 (870 kWh) is substantially greater than prior months (for example, 640 kWh in June). The available evidence shows this higher billed usage came from consecutive actual meter reads and not from an estimated read or an obvious meter diagnostic failure. We do not have evidence in the provided records that a meter malfunction caused the increase.",
+  "what_happens_next": "A qualified reviewer will decide whether additional investigation steps are needed. To complete the review and rule out non-meter causes or intermittent issues, we will request additional information and may schedule an on-site inspection if concerns persist. Any credit or billing adjustment requires human review and approval according to our billing policy.",
+  "customer_action_needed": "Please tell us whether anything changed at the property in July (for example, more occupants, a new appliance such as an air conditioner, an EV charger, or other usage changes). If you have records or photos that show a change in usage patterns, please provide them. If you still suspect the meter is faulty after that exchange, let us know and we will arrange the next steps, which may include a field inspection.",
+  "internal_claim_ids": [
+    "CL-002",
+    "CL-003"
+  ],
+  "internal_evidence_ids": [
+    "SYN-BILL-0003-06",
+    "SYN-BILL-0003-07",
+    "SYN-READ-0003-A",
+    "SYN-READ-0003-B",
+    "SYN-DIAG-0003-01",
+    "usage_history_kwh",
+    "meter_event_note",
+    "rate_components"
+  ],
+  "internal_policy_ids": [
+    "POL-BILL-001",
+    "POL-BILL-002",
+    "POL-MTR-003",
+    "POL-PRIV-001"
+  ],
+  "communication_risk_flags": {
+    "safety": false,
+    "legal": false,
+    "regulatory": false,
+    "fraud": false,
+    "vulnerable_customer": false,
+    "privacy": false,
+    "prompt_injection": false,
+    "real_data_contamination": false,
+    "human_review_required": true
+  },
+  "required_disclosures_included": true
+}
+ROUTE_DECISION::GRIDRESOLVE_ESCALATE
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow v9",
+  "case_state": "HUMAN_REVIEW",
+  "escalation_reason": "Customer alleges meter failure and requests billing correction despite account evidence showing read and diagnostic consistency; policy requires human approval for any financial remedy and for scheduling on-site inspections.",
+  "risk_class": "MEDIUM",
+  "evidence_summary": [
+    {
+      "id": "SYN-READ-0003-A",
+      "type": "meter_read",
+      "date": "2026-06-30",
+      "details": "Actual read, register_kwh=41820"
+    },
+    {
+      "id": "SYN-READ-0003-B",
+      "type": "meter_read",
+      "date": "2026-07-31",
+      "details": "Actual read, register_kwh=42690"
+    },
+    {
+      "id": "SYN-BILL-0003-07",
+      "type": "billing_record",
+      "date": "2026-07-31",
+      "details": "July 2026 bill: 870 kWh, amount $203.40, read_type_end=actual"
+    },
+    {
+      "id": "SYN-DIAG-0003-01",
+      "type": "diagnostic_record",
+      "date": "2026-07-29",
+      "details": "remote_self_test PASS; tamper_flag=false; register_fault_flag=false"
+    },
+    {
+      "id": "usage_history_kwh",
+      "type": "usage_history",
+      "details": "Apr:590, May:610, Jun:640, Jul:870"
+    },
+    {
+      "id": "meter_event_note",
+      "type": "meter_event_log_note",
+      "details": "No meter events recorded between 2026-06-01 and 2026-07-31"
+    },
+    {
+      "id": "rate_components",
+      "type": "rate_schedule",
+      "details": "energy $0.22/kWh; fixed $12/period"
+    }
+  ],
+  "policy_summary": [
+    {
+      "policy_id": "POL-BILL-002",
+      "title": "Billing Adjustment and Credit Authorization",
+      "summary": "Any financial credit or billing adjustment requires documented evidence of error or device failure and must be authorized by a human reviewer. On-site inspection results may be required before adjustments."
+    },
+    {
+      "policy_id": "POL-MTR-003",
+      "title": "Meter Diagnostic and Field Inspection Policy",
+      "summary": "Remote diagnostics are accepted initial evidence; persistent customer-reported meter failure or inconclusive remote diagnostics require scheduling of a field inspection per established protocols. Field inspections require supervisor/dispatcher coordination."
+    },
+    {
+      "policy_id": "POL-BILL-001",
+      "title": "Bill Verification and Calculation Policy",
+      "summary": "Billing must be verified against meter reads and applicable rate components; itemized bill calculation must be reviewed when a billing dispute is raised."
+    },
+    {
+      "policy_id": "POL-PRIV-001",
+      "title": "Customer Data and Privacy",
+      "summary": "Collect only the minimum customer data necessary for investigation; obtain customer consent when requesting sensitive third-party records."
+    }
+  ],
+  "unresolved_questions": [
+    "Did the customer experience any occupancy or appliance changes in July 2026 that would explain the higher usage (e.g., new air-conditioning use, EV charging, guests)?",
+    "What was the local weather (cooling degree days) for July 2026 at the service address and could it explain the spike?",
+    "Can we obtain an itemized bill or bill calculation file to confirm line-by-line charges and confirm no ancillary fees contributed to the change?",
+    "Does the customer request an on-site meter inspection despite remote diagnostics showing PASS (note: on-site inspection scheduling requires human approval and may incur costs/time)?",
+    "Are there any device-level logs from the meter manufacturer or additional diagnostics available to supplement the remote self-test?"
+  ],
+  "recommended_reviewer": "Billing Specialist",
+  "recommended_review_actions": [
+    "Contact the customer to request details about occupancy, appliance usage changes, or other reasons for increased consumption in July; request any supporting documentation (photos, appliance receipts, usage logs).",
+    "Retrieve local weather/temperature summary (cooling degree days) for July 2026 and correlate with customer usage.",
+    "Generate/obtain an itemized bill calculation and verify the rate application and line items against provided rate_components.",
+    "If the customer insists the meter is faulty after receiving the above, escalate to schedule an on-site meter inspection per POL-MTR-003; obtain supervisor approval prior to dispatch.",
+    "If on-site inspection or additional diagnostics confirm meter failure or a billing calculation error, prepare a financial adjustment package for Billing Supervisor approval per POL-BILL-002."
+  ],
+  "customer_safe_interim_message": "We reviewed your account and the available meter reads and diagnostics. The July bill amount matches the meter register change between the actual reads and the provided rate calculation. The remote diagnostic on 2026-07-29 passed and showed no tamper or fault. To complete our review, please tell us whether anything changed at the property in July (for example, added appliances, more occupants, or new charging equipment) and provide any supporting details. If you still believe the meter is faulty after that exchange, we will arrange further investigation which may include a field inspection. No credit or adjustment will be made until a human reviewer completes the investigation and any required inspections.",
+  "decision_card": {
+    "decision_needed": "Human reviewer must decide whether (A) the evidence as-is suffices to close the case with explanation to the customer, (B) request additional customer-supplied usage context and weather data and then close if consistent, or (C) authorize an on-site meter inspection and, if that confirms meter failure or billing error, authorize a financial adjustment per POL-BILL-002.",
+    "known_facts": [
+      "Meter register increased 41820 -> 42690 between 2026-06-30 and 2026-07-31 (delta 870 kWh).",
+      "July 2026 billed usage = 870 kWh; billed amount $203.40 equals calculation using supplied rates (870 * $0.22 + $12).",
+      "Remote self-test on 2026-07-29 returned PASS; tamper_flag=false; register_fault_flag=false.",
+      "No meter events recorded in the provided timeframe."
+    ],
+    "unknowns": [
+      "Customer behavior or appliance changes in July 2026 (occupancy, new devices).",
+      "Local weather/temperature data for July 2026 and its effect on usage.",
+      "Whether device-level logs or additional diagnostics exist beyond the provided remote self-test.",
+      "Whether an on-site inspection would reveal intermittent or installation faults not detected remotely."
+    ],
+    "applicable_policies": [
+      {
+        "policy_id": "POL-BILL-002",
+        "impact": "Human approval required for any billing adjustment or credit."
+      },
+      {
+        "policy_id": "POL-MTR-003",
+        "impact": "Field inspection protocol applies if meter fault remains suspected; scheduling requires coordination and supervisor sign-off."
+      },
+      {
+        "policy_id": "POL-BILL-001",
+        "impact": "Itemized bill verification required as part of dispute investigation."
+      }
+    ],
+    "risk": {
+      "operational": "Medium — incorrect adjustment or unnecessary dispatch if action taken without sufficient evidence.",
+      "regulatory": "Medium — incorrect credits or failures to follow inspection policy may have regulatory implications.",
+      "customer_experience": "Medium — customer expects clear explanation and possible correction; delays may escalate dissatisfaction."
+    },
+    "recommended_next_step": "Billing Specialist to contact the customer immediately to collect occupancy/usage-change details and request any supporting documentation. Concurrently retrieve local weather data for July 2026 and generate an itemized bill calculation. If the customer remains convinced of meter failure after receiving this information, the Billing Specialist should escalate to Billing Supervisor to authorize an on-site inspection per POL-MTR-003 and prepare an adjustment package if inspection confirms meter fault."
+  },
+  "route_to": "CaseAuditAgent",
+  "final_disposition": "PENDING_HUMAN_REVIEW"
+}
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow v9",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "participating_agents": [
+    {"agent_name": "CaseTriageAgent", "agent_version": "NOT_OBSERVED", "output_status": "RECEIVED"},
+    {"agent_name": "AccountEvidenceAgent", "agent_version": "NOT_OBSERVED", "output_status": "RECEIVED"},
+    {"agent_name": "UsageAnomalyAgent", "agent_version": "NOT_OBSERVED", "output_status": "RECEIVED"},
+    {"agent_name": "PolicyKnowledgeAgent", "agent_version": "NOT_OBSERVED", "output_status": "RECEIVED"},
+    {"agent_name": "ResolutionPlannerAgent", "agent_version": "NOT_OBSERVED", "output_status": "RECEIVED"},
+    {"agent_name": "CustomerCommunicationAgent", "agent_version": "NOT_OBSERVED", "output_status": "RECEIVED"},
+    {"agent_name": "EvidenceComplianceAgent", "agent_version": "NOT_OBSERVED", "output_status": "RECEIVED"},
+    {"agent_name": "EscalationCoordinatorAgent", "agent_version": "NOT_OBSERVED", "output_status": "NOT_INVOKED"},
+    {"agent_name": "CaseAuditAgent", "agent_version": "GRIDRESOLVE-AGENTS-3.0", "output_status": "RECEIVED"}
+  ],
+  "triage_result": {
+    "investigation_type": "HIGH_BILL",
+    "triage_summary": "Customer reports a large jump in July 2026 bill and alleges meter failure. Account records show consecutive actual reads and a passing remote diagnostic; usage spike is supported by meter register delta. Human review required because customer requests correction and policy requires human authorization for billing adjustments or field inspections."
+  },
+  "evidence_ids": [
+    "SYN-BILL-0003-06",
+    "SYN-BILL-0003-07",
+    "SYN-READ-0003-A",
+    "SYN-READ-0003-B",
+    "SYN-DIAG-0003-01",
+    "usage_history_kwh",
+    "meter_event_note",
+    "rate_components"
+  ],
+  "claim_ids": [
+    "CL-001",
+    "CL-002",
+    "CL-003",
+    "CL-004"
+  ],
+  "policy_ids": [
+    "POL-BILL-001",
+    "POL-BILL-002",
+    "POL-MTR-003",
+    "POL-PRIV-001"
+  ],
+  "resolution_status": "PENDING_HUMAN_REVIEW",
+  "compliance_status": {
+    "compliance_decision": "APPROVE",
+    "details": "EvidenceComplianceAgent approved the customer-safe message content for sending (customer message drafted and safe to send)."
+  },
+  "correction_count": 0,
+  "correction_history": [],
+  "human_review_status": "HUMAN_REVIEW_REQUIRED",
+  "escalation": {
+    "escalation_required": true,
+    "escalation_reason": "Customer alleges meter failure and requests billing correction despite evidence showing reads and diagnostics consistent with billed usage; POL-BILL-002 requires human approval for any adjustment and POL-MTR-003 governs field inspections.",
+    "escalation_package": {
+      "summary": "Account reads and billing records, remote diagnostics, usage history, and recommended reviewer actions included in case packet.",
+      "included_evidence_ids": [
+        "SYN-READ-0003-A",
+        "SYN-READ-0003-B",
+        "SYN-BILL-0003-07",
+        "SYN-DIAG-0003-01",
+        "usage_history_kwh",
+        "rate_components",
+        "meter_event_note"
+      ]
+    }
+  },
+  "final_disposition": "PENDING_HUMAN_REVIEW",
+  "audit_completeness": "COMPLETE",
+  "audit_notes": "All required audit fields are present: case_id, workflow_version, dataset_version, policy_version, participating agents, evidence IDs, claim IDs, policy IDs, compliance decision (APPROVE), correction count, and final disposition. Participating agent versions are NOT_OBSERVED except for CaseAuditAgent as required. EscalationCoordinatorAgent not invoked so output_status is NOT_INVOKED. Record basis: MODEL_PRODUCED_FROM_CONVERSATION.",
+  "execution_status": "RUNTIME_EXECUTED",
+  "record_basis": "MODEL_PRODUCED_FROM_CONVERSATION",
+  "message_compliance_decision": "APPROVE",
+  "case_human_review_status": "HUMAN_REVIEW_REQUIRED",
+  "missing_audit_information": [],
+  "execution_telemetry": {
+    "upstream_outputs_observed": "RECEIVED",
+    "platform_telemetry_available": "NOT_OBSERVED"
+  }
+}

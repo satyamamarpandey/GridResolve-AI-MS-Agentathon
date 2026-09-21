@@ -1,0 +1,149 @@
+kind: workflow
+trigger:
+  kind: OnConversationStart
+  id: trigger_wf
+  actions:
+    - kind: InvokeAzureAgent
+      id: node-1789696603365
+      agent:
+        name: CaseTriageAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarTriage
+    - kind: InvokeAzureAgent
+      id: node-1789696645054
+      agent:
+        name: AccountEvidenceAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarEvidence
+    - kind: InvokeAzureAgent
+      id: node-1789696697430
+      agent:
+        name: UsageAnomalyAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarUsage
+    - kind: InvokeAzureAgent
+      id: node-1789696718717
+      agent:
+        name: PolicyKnowledgeAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarPolicy
+    - kind: InvokeAzureAgent
+      id: node-1789696778418
+      agent:
+        name: ResolutionPlannerAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarPlan
+    - kind: InvokeAzureAgent
+      id: node-1789696813306
+      agent:
+        name: CustomerCommunicationAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.VarCustomerDraft
+        responseObject: Local.VarCustomerMessage
+    - kind: InvokeAzureAgent
+      id: node-1789696841174
+      agent:
+        name: EvidenceComplianceAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: false
+        messages: Local.Var1497
+    - kind: ConditionGroup
+      id: node-1789696874113
+      conditions:
+        - condition: '=And(With({t: Last(Local.Var1497).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")))), !IsBlank(Local.VarCustomerMessage.customer_summary) && !IsBlank(Local.VarCustomerMessage.what_we_reviewed) && !IsBlank(Local.VarCustomerMessage.what_we_found) && !IsBlank(Local.VarCustomerMessage.why_bill_changed) && !IsBlank(Local.VarCustomerMessage.what_happens_next) && !IsBlank(Local.VarCustomerMessage.customer_action_needed))'
+          id: if-node-approved-release
+          actions:
+            - kind: SendActivity
+              id: node-release-approved-message
+              activity: |-
+                {Local.VarCustomerMessage.customer_summary}
+
+                What we reviewed
+                {Local.VarCustomerMessage.what_we_reviewed}
+
+                What we found
+                {Local.VarCustomerMessage.what_we_found}
+
+                Why your bill changed
+                {Local.VarCustomerMessage.why_bill_changed}
+
+                What happens next
+                {Local.VarCustomerMessage.what_happens_next}
+
+                What we need from you
+                {Local.VarCustomerMessage.customer_action_needed}
+            - kind: ConditionGroup
+              id: node-case-followup-gate
+              conditions:
+                - condition: '=With({t: Last(Local.VarPlan).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("CASE_FOLLOWUP::HUMAN_REQUIRED" in t) && (Len(t) - Len(Substitute(t, "CASE_FOLLOWUP::NONE_REQUIRED", "")) = Len("CASE_FOLLOWUP::NONE_REQUIRED")) && ("CASE_FOLLOWUP::NONE_REQUIRED" exactin l) && (Len(l) = Len("CASE_FOLLOWUP::NONE_REQUIRED"))))'
+                  id: if-node-no-human-followup
+                  actions:
+                    - kind: SetVariable
+                      id: node-record-no-followup
+                      variable: Local.VarCaseFollowUp
+                      value: ="NONE_REQUIRED"
+                - condition: "true"
+                  id: if-node-human-followup
+                  actions:
+                    - kind: InvokeAzureAgent
+                      id: node-followup-handoff
+                      agent:
+                        name: EscalationCoordinatorAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: ""
+                      output:
+                        autoSend: true
+                        messages: Local.VarFollowUpHandoff
+        - condition: "true"
+          id: if-node-failclosed-escalate
+          actions:
+            - kind: InvokeAzureAgent
+              id: node-1789697115060
+              agent:
+                name: EscalationCoordinatorAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: ""
+              output:
+                autoSend: true
+                messages: Local.VarEscalation
+    - kind: InvokeAzureAgent
+      id: node-1789697069548
+      agent:
+        name: CaseAuditAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+        messages: Local.VarAudit
+id: ""
+name: GridResolveAIWorkflow

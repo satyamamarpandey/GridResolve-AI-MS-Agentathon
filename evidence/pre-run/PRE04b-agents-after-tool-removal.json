@@ -1,0 +1,104 @@
+{
+  "captured_utc": "2026-09-18",
+  "source": "Foundry agents API GET (read-only) after new tool-free versions",
+  "after_change": [
+    {
+      "name": "CaseAuditAgent",
+      "version": "3",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "EscalationCoordinatorAgent",
+      "version": "3",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "EvidenceComplianceAgent",
+      "version": "4",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "CustomerCommunicationAgent",
+      "version": "3",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "ResolutionPlannerAgent",
+      "version": "4",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "PolicyKnowledgeAgent",
+      "version": "4",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "UsageAnomalyAgent",
+      "version": "3",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "AccountEvidenceAgent",
+      "version": "5",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "CaseTriageAgent",
+      "version": "4",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": []
+    },
+    {
+      "name": "GridResolveAIWorkflow",
+      "version": "4",
+      "kind": "workflow",
+      "model": null,
+      "reasoning": null,
+      "tools": []
+    }
+  ]
+}

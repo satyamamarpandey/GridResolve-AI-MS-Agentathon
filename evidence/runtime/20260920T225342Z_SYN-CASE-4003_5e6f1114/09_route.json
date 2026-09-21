@@ -1,0 +1,19 @@
+{
+  "route": "ESCALATED_TO_HUMAN",
+  "gate_evaluated": true,
+  "case_follow_up": "HANDED_TO_HUMAN",
+  "follow_up_gate_evaluated": false,
+  "audit_ran": true,
+  "agents_observed": [
+    "CaseTriageAgent",
+    "AccountEvidenceAgent",
+    "UsageAnomalyAgent",
+    "PolicyKnowledgeAgent",
+    "ResolutionPlannerAgent",
+    "CustomerCommunicationAgent",
+    "EvidenceComplianceAgent",
+    "EscalationCoordinatorAgent",
+    "CaseAuditAgent"
+  ],
+  "agents_not_observed": []
+}

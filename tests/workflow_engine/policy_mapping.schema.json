@@ -1,0 +1,218 @@
+{
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "workflow_version": {
+      "type": "string"
+    },
+    "case_state": {
+      "type": "string"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "policy_ledger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string"
+          },
+          "rule": {
+            "type": "string"
+          },
+          "applies_to": {
+            "type": "string"
+          },
+          "effect_on_resolution": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "policy_id",
+          "policy_version",
+          "section",
+          "rule",
+          "applies_to",
+          "effect_on_resolution"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Every governed policy that applies to this case."
+    },
+    "policy_constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string"
+          },
+          "rule": {
+            "type": "string"
+          },
+          "applies_to": {
+            "type": "string"
+          },
+          "effect_on_resolution": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "policy_id",
+          "policy_version",
+          "section",
+          "rule",
+          "applies_to",
+          "effect_on_resolution"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "policy_conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "adjustment_eligibility": {
+      "type": "object",
+      "properties": {
+        "eligible": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "required_actions_for_eligibility": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "eligible",
+        "reason",
+        "required_actions_for_eligibility"
+      ],
+      "additionalProperties": false
+    },
+    "required_customer_disclosures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "disclosure": {
+            "type": "string"
+          },
+          "policy_reference": {
+            "type": "object",
+            "properties": {
+              "policy_id": {
+                "type": "string"
+              },
+              "policy_version": {
+                "type": "string"
+              },
+              "section": {
+                "type": "string"
+              },
+              "rule": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "policy_id",
+              "policy_version",
+              "section",
+              "rule"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "disclosure",
+          "policy_reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required_human_approval": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "policy_reference": {
+            "type": "object",
+            "properties": {
+              "policy_id": {
+                "type": "string"
+              },
+              "policy_version": {
+                "type": "string"
+              },
+              "section": {
+                "type": "string"
+              },
+              "rule": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "policy_id",
+              "policy_version",
+              "section",
+              "rule"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "action",
+          "policy_reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "missing_policy": {
+      "type": "boolean"
+    },
+    "policy_summary": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_id",
+    "workflow_version",
+    "case_state",
+    "policy_version",
+    "policy_ledger",
+    "policy_constraints",
+    "policy_conflicts",
+    "adjustment_eligibility",
+    "required_customer_disclosures",
+    "required_human_approval",
+    "missing_policy",
+    "policy_summary"
+  ],
+  "additionalProperties": false
+}

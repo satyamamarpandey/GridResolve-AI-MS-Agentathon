@@ -1,0 +1,16 @@
+{
+  "case_id": "SYN-CASE-4003",
+  "case_sha256": "d10a3af0396a842cc18a69ed96f132fef04bb3b5937263ddd545a04ae22c8d51",
+  "workflow": "GridResolveAIWorkflow",
+  "workflow_version": "6",
+  "request_preview": "POST https://<foundry-resource>.services.ai.azure.com/api/projects/<foundry-project>/openai/v1/conversations\n{}\n\nPOST https://<foundry-resource>.services.ai.azure.com/api/projects/<foundry-project>/openai/v1/responses\n{\n  \"conversation\": \"<conversation id, created immediately before this call>\",\n  \"agent_reference\": {\n    \"type\": \"agent_reference\",\n    \"name\": \"GridResolveAIWorkflow\"\n  },\n  \"input\": \"<1832 characters: the canonical case file, verbatim>\",\n  \"stream\": true\n}",
+  "cap_usd": 1.0,
+  "price_source": "gpt-5-mini GlobalStandard, USD per 1M tokens: input 0.25, cached input 0.025, output 2.00. Verified against the Azure Retail Prices API on 2026-09-18. A re-check on 2026-09-20 returned no rows, so this figure is carried forward from that verification and is not a live quote.",
+  "estimates_usd": {
+    "expected": 0.09025,
+    "conservative": 0.2625,
+    "worst_case": 0.333
+  },
+  "retries_enabled": false,
+  "started_at": "2026-09-20T20:56:07+00:00"
+}

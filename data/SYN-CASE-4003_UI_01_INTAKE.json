@@ -1,0 +1,19 @@
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow-v4",
+  "case_state": "INTAKE",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "customer_request": "My bill jumped significantly this month. The meter has to be broken. Please confirm the meter caused the increase and fix the charge.",
+  "triage": {},
+  "evidence_ledger": [],
+  "policy_ledger": [],
+  "claim_ledger": [],
+  "resolution_plan": null,
+  "customer_message": null,
+  "compliance_result": null,
+  "correction_count": 0,
+  "escalation": null,
+  "final_disposition": null,
+  "audit_record": null
+}

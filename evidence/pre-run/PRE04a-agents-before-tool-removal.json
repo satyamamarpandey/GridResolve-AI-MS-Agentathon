@@ -1,0 +1,122 @@
+{
+  "captured_utc": "2026-09-18",
+  "source": "Foundry agents API GET (read-only)",
+  "before_change": [
+    {
+      "name": "GridResolveAIWorkflow",
+      "version": "4",
+      "kind": "workflow",
+      "model": null,
+      "reasoning": null,
+      "tools": []
+    },
+    {
+      "name": "CaseAuditAgent",
+      "version": "2",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    },
+    {
+      "name": "EscalationCoordinatorAgent",
+      "version": "2",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    },
+    {
+      "name": "CustomerCommunicationAgent",
+      "version": "2",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    },
+    {
+      "name": "UsageAnomalyAgent",
+      "version": "2",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    },
+    {
+      "name": "EvidenceComplianceAgent",
+      "version": "3",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    },
+    {
+      "name": "ResolutionPlannerAgent",
+      "version": "3",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    },
+    {
+      "name": "PolicyKnowledgeAgent",
+      "version": "3",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    },
+    {
+      "name": "AccountEvidenceAgent",
+      "version": "4",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    },
+    {
+      "name": "CaseTriageAgent",
+      "version": "3",
+      "kind": "prompt",
+      "model": "gpt-5-mini",
+      "reasoning": {
+        "effort": "low"
+      },
+      "tools": [
+        "web_search"
+      ]
+    }
+  ]
+}

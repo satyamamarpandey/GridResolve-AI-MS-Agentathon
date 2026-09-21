@@ -1,0 +1,129 @@
+{
+  "basis": {
+    "platform_observed": [
+      "route",
+      "participation",
+      "distinct_agents",
+      "release",
+      "unhealthy_outputs",
+      "investigation"
+    ],
+    "model_produced": [
+      "compliance",
+      "case_follow_up.planner_*",
+      "audit.audit_*"
+    ],
+    "note": "Platform-observed fields come from service metadata and delivered text. Model-produced fields are what an agent wrote. Where they disagree the platform fields win."
+  },
+  "route": {
+    "route": "APPROVED_AND_RELEASED",
+    "gate_evaluated": true,
+    "case_follow_up": "HANDED_TO_HUMAN",
+    "follow_up_gate_evaluated": true,
+    "audit_ran": true,
+    "agents_observed": [
+      "CaseTriageAgent",
+      "AccountEvidenceAgent",
+      "UsageAnomalyAgent",
+      "PolicyKnowledgeAgent",
+      "ResolutionPlannerAgent",
+      "CustomerCommunicationAgent",
+      "EvidenceComplianceAgent",
+      "EscalationCoordinatorAgent",
+      "CaseAuditAgent"
+    ],
+    "agents_not_observed": []
+  },
+  "participation": [
+    {
+      "agent": "CaseTriageAgent",
+      "version": "5",
+      "inner_response_id": "resp_0e23435a002841f3006ab073eb81fc819088d080d9f5c6f25e",
+      "output_chars": 2534
+    },
+    {
+      "agent": "AccountEvidenceAgent",
+      "version": "9",
+      "inner_response_id": "resp_0e23435a002841f3006ab073f3ab048190bed42ff3fa9fc14a",
+      "output_chars": 12260
+    },
+    {
+      "agent": "UsageAnomalyAgent",
+      "version": "4",
+      "inner_response_id": "resp_0e23435a002841f3006ab0741318f481908575e084d22e2400",
+      "output_chars": 6973
+    },
+    {
+      "agent": "PolicyKnowledgeAgent",
+      "version": "6",
+      "inner_response_id": "resp_0e23435a002841f3006ab0742530648190b74fca7ddcbf5b3b",
+      "output_chars": 15568
+    },
+    {
+      "agent": "ResolutionPlannerAgent",
+      "version": "6",
+      "inner_response_id": "resp_0e23435a002841f3006ab0743ec918819080fb319fbfa24a37",
+      "output_chars": 10681
+    },
+    {
+      "agent": "CustomerCommunicationAgent",
+      "version": "5",
+      "inner_response_id": "resp_0e23435a002841f3006ab07459582881909ae708a2c3e87e8e",
+      "output_chars": 4094
+    },
+    {
+      "agent": "EvidenceComplianceAgent",
+      "version": "6",
+      "inner_response_id": "resp_0e23435a002841f3006ab07461d8c88190841b89774b4d3785",
+      "output_chars": 1989
+    },
+    {
+      "agent": "EscalationCoordinatorAgent",
+      "version": "5",
+      "inner_response_id": "resp_0e23435a002841f3006ab0746969ec8190b68d1f1fe53dcd95",
+      "output_chars": 12787
+    },
+    {
+      "agent": "CaseAuditAgent",
+      "version": "7",
+      "inner_response_id": "resp_0e23435a002841f3006ab0748084188190a310802c5ed49e9d",
+      "output_chars": 3734
+    }
+  ],
+  "distinct_agents": 9,
+  "unhealthy_outputs": [],
+  "investigation": {
+    "complete": true,
+    "incomplete_stages": [],
+    "stages_not_run": []
+  },
+  "compliance": {
+    "token": "APPROVED",
+    "final_line": "ROUTE_DECISION::GRIDRESOLVE_APPROVED"
+  },
+  "release": {
+    "outcome": "DELIVERED_CUSTOMER_MESSAGE",
+    "released_chars": 2592,
+    "draft_chars": 4094,
+    "released_preview": "You told us your July 2026 electric bill was much higher and asked us to confirm whether the meter is broken and to fix the charge. We reviewed your account rec",
+    "customer_ready": true,
+    "identifiers_in_release": []
+  },
+  "case_follow_up": {
+    "planner_token": "HUMAN_REQUIRED",
+    "planner_states_human_review_reason": true,
+    "planner_resolution_status": "HUMAN_REVIEW_REQUIRED",
+    "observed": "HANDED_TO_HUMAN",
+    "findings": []
+  },
+  "audit": {
+    "audit_parsed": true,
+    "audit_execution_status": "RUNTIME_EXECUTED",
+    "audit_workflow_version": "GridResolveAIWorkflow v10",
+    "audit_agents_listed": 9,
+    "audit_entries": 9,
+    "platform_agents_observed": 9,
+    "accurate": true,
+    "findings": []
+  }
+}

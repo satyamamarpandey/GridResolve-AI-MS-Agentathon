@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GridResolve Architecture</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --ink:#15181d; --muted:#5d6570; --line:#c9cfd8;
+    --inv:#2f6f8f; --dec:#7a4f9c; --gate:#b4581f; --ok:#2e7d52; --esc:#b3352f; --aud:#3d4753;
+    --ghost:#98a1ad;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#14171c; --panel:#1b1f26; --ink:#eceff3; --muted:#9aa4b1; --line:#39414d;
+      --inv:#69b4d6; --dec:#b58ad6; --gate:#e39355; --ok:#5fc08c; --esc:#f08079; --aud:#98a4b3;
+      --ghost:#6c7684;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14171c; --panel:#1b1f26; --ink:#eceff3; --muted:#9aa4b1; --line:#39414d;
+    --inv:#69b4d6; --dec:#b58ad6; --gate:#e39355; --ok:#5fc08c; --esc:#f08079; --aud:#98a4b3;
+    --ghost:#6c7684;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif;padding:24px 16px}
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{font-size:23px;margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 20px;font-size:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:18px}
+  svg{width:100%;height:auto;display:block}
+  .lbl{font:600 12.5px "Segoe UI",sans-serif}
+  .sm{font:11px "Segoe UI",sans-serif;fill:var(--muted)}
+  .edge{stroke:var(--line);stroke-width:1.8;fill:none}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:12.5px;color:var(--muted)}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  code{background:var(--bg);padding:1px 5px;border-radius:4px;font-size:12.5px}
+  .note{font-size:13px;color:var(--muted);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>GridResolve AI</h1>
+  <p class="sub">Nine-agent utility billing resolution. Workflow v10, Microsoft Foundry. Sequential execution, fail-closed release.</p>
+
+  <div class="card">
+  <svg viewBox="0 0 1000 560" role="img" aria-label="GridResolve AI agent flow diagram">
+    <defs>
+      <marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+        <path d="M0,1 L8,4.5 L0,8 z" fill="var(--line)"/>
+      </marker>
+    </defs>
+
+    <!-- input -->
+    <rect x="18" y="22" width="150" height="46" rx="8" fill="none" stroke="var(--line)" stroke-width="1.6"/>
+    <text class="lbl" x="93" y="42" text-anchor="middle" fill="var(--ink)">Customer request</text>
+    <text class="sm" x="93" y="58" text-anchor="middle">synthetic case</text>
+    <path class="edge" d="M93,68 L93,96" marker-end="url(#a)"/>
+
+    <!-- investigation chain -->
+    <g>
+      <rect x="18" y="98" width="150" height="44" rx="8" fill="none" stroke="var(--inv)" stroke-width="1.8"/>
+      <text class="lbl" x="93" y="116" text-anchor="middle" fill="var(--inv)">1 Case Triage</text>
+      <text class="sm" x="93" y="131" text-anchor="middle">scope, required evidence</text>
+
+      <rect x="18" y="156" width="150" height="44" rx="8" fill="none" stroke="var(--inv)" stroke-width="1.8"/>
+      <text class="lbl" x="93" y="174" text-anchor="middle" fill="var(--inv)">2 Account Evidence</text>
+      <text class="sm" x="93" y="189" text-anchor="middle">evidence_ledger</text>
+
+      <rect x="18" y="214" width="150" height="44" rx="8" fill="none" stroke="var(--inv)" stroke-width="1.8"/>
+      <text class="lbl" x="93" y="232" text-anchor="middle" fill="var(--inv)">3 Usage Anomaly</text>
+      <text class="sm" x="93" y="247" text-anchor="middle">supported explanations</text>
+
+      <rect x="18" y="272" width="150" height="44" rx="8" fill="none" stroke="var(--inv)" stroke-width="1.8"/>
+      <text class="lbl" x="93" y="290" text-anchor="middle" fill="var(--inv)">4 Policy Knowledge</text>
+      <text class="sm" x="93" y="305" text-anchor="middle">policy_ledger</text>
+    </g>
+    <path class="edge" d="M93,142 L93,154" marker-end="url(#a)"/>
+    <path class="edge" d="M93,200 L93,212" marker-end="url(#a)"/>
+    <path class="edge" d="M93,258 L93,270" marker-end="url(#a)"/>
+
+    <!-- decide / draft -->
+    <path class="edge" d="M168,294 L232,294 L232,142" marker-end="url(#a)"/>
+    <rect x="232" y="98" width="150" height="44" rx="8" fill="none" stroke="var(--dec)" stroke-width="1.8"/>
+    <text class="lbl" x="307" y="116" text-anchor="middle" fill="var(--dec)">5 Resolution Planner</text>
+    <text class="sm" x="307" y="131" text-anchor="middle">claim_ledger</text>
+
+    <path class="edge" d="M307,142 L307,170" marker-end="url(#a)"/>
+    <rect x="232" y="172" width="150" height="48" rx="8" fill="none" stroke="var(--dec)" stroke-width="1.8" stroke-dasharray="5 3"/>
+    <text class="lbl" x="307" y="192" text-anchor="middle" fill="var(--dec)">6 Customer Comms</text>
+    <text class="sm" x="307" y="208" text-anchor="middle">DRAFT, withheld</text>
+
+    <!-- compliance gate -->
+    <path class="edge" d="M382,196 L446,196" marker-end="url(#a)"/>
+    <rect x="448" y="158" width="176" height="76" rx="8" fill="none" stroke="var(--gate)" stroke-width="2.4"/>
+    <text class="lbl" x="536" y="182" text-anchor="middle" fill="var(--gate)">7 Evidence Compliance</text>
+    <text class="sm" x="536" y="199" text-anchor="middle">independent review</text>
+    <text class="sm" x="536" y="215" text-anchor="middle">verifies every claim ID</text>
+
+    <!-- approved branch -->
+    <path class="edge" d="M624,180 L700,180 L700,120" marker-end="url(#a)"/>
+    <text class="sm" x="712" y="152" fill="var(--ok)">token + readable + complete</text>
+    <rect x="700" y="76" width="176" height="44" rx="8" fill="none" stroke="var(--ok)" stroke-width="1.8"/>
+    <text class="lbl" x="788" y="94" text-anchor="middle" fill="var(--ok)">Release approved message</text>
+    <text class="sm" x="788" y="109" text-anchor="middle">then a separate follow-up gate</text>
+
+    <!-- escalation branch -->
+    <path class="edge" d="M624,212 L700,212 L700,268" marker-end="url(#a)"/>
+    <text class="sm" x="712" y="240" fill="var(--esc)">everything else</text>
+    <rect x="700" y="270" width="176" height="58" rx="8" fill="none" stroke="var(--esc)" stroke-width="2.2"/>
+    <text class="lbl" x="788" y="290" text-anchor="middle" fill="var(--esc)">8 Escalation Coordinator</text>
+    <text class="sm" x="788" y="306" text-anchor="middle">decision card for a named</text>
+    <text class="sm" x="788" y="320" text-anchor="middle">human reviewer</text>
+
+    <!-- audit -->
+    <path class="edge" d="M788,120 L788,140 L640,140 L640,392 L700,392" marker-end="url(#a)"/>
+    <path class="edge" d="M788,328 L788,370" marker-end="url(#a)"/>
+    <rect x="700" y="372" width="176" height="46" rx="8" fill="none" stroke="var(--aud)" stroke-width="1.8"/>
+    <text class="lbl" x="788" y="391" text-anchor="middle" fill="var(--aud)">9 Case Audit</text>
+    <text class="sm" x="788" y="407" text-anchor="middle">terminal record, provenance</text>
+
+    <!-- governance -->
+    <rect x="18" y="352" width="596" height="76" rx="9" fill="none" stroke="var(--line)" stroke-width="1.4"/>
+    <text class="lbl" x="34" y="374" fill="var(--muted)">GOVERNANCE, carried in shared case state</text>
+    <text class="sm" x="34" y="396">Evidence ledger  ·  Policy ledger  ·  Claim ledger  ·  12 governance gates</text>
+    <text class="sm" x="34" y="414">Synthetic data boundary  ·  Two-correction ceiling  ·  Human authority preserved</text>
+
+    <!-- production targets -->
+    <rect x="18" y="446" width="858" height="74" rx="9" fill="none" stroke="var(--ghost)" stroke-width="1.4" stroke-dasharray="6 4"/>
+    <text class="lbl" x="34" y="468" fill="var(--ghost)">PRODUCTION TARGETS, not implemented and not claimed</text>
+    <text class="sm" x="34" y="490" fill="var(--ghost)">Parallel investigation fan-out and join  ·  Automatic replan and rewrite loops  ·  Four-way typed routing</text>
+    <text class="sm" x="34" y="508" fill="var(--ghost)">Application Insights tracing  ·  AI Gateway  ·  Read-only adapters to CIS, MDM and the tariff library</text>
+  </svg>
+
+  <div class="legend">
+    <span><i style="background:var(--inv)"></i>Investigation</span>
+    <span><i style="background:var(--dec)"></i>Decision and drafting</span>
+    <span><i style="background:var(--gate)"></i>Independent compliance</span>
+    <span><i style="background:var(--ok)"></i>Approved release</span>
+    <span><i style="background:var(--esc)"></i>Fail-closed escalation</span>
+    <span><i style="background:var(--aud)"></i>Audit</span>
+    <span><i style="background:var(--ghost)"></i>Not implemented</span>
+  </div>
+  <p class="note">Steps 1 to 7 run with <code>autoSend: false</code>. Only two things reach the user: the approved draft released by <code>SendActivity</code>, or the escalation response. Execution is strictly sequential; the diagram shows no parallelism because none is implemented.</p>
+  </div>
+
+  <div class="card">
+    <table>
+      <tr><th>Control</th><th>Enforced by</th><th>Status</th></tr>
+      <tr><td>Escalation is the default branch</td><td>Workflow condition</td><td>Statically validated</td></tr>
+      <tr><td>Draft withheld until approved</td><td><code>autoSend: false</code> + <code>SendActivity</code></td><td>Statically validated</td></tr>
+      <tr><td>Claims carry evidence and policy IDs</td><td>Agent output contracts</td><td>Configured</td></tr>
+      <tr><td>Never approve an unsupported claim</td><td>Compliance instructions</td><td>Configured</td></tr>
+      <tr><td>Two-correction ceiling</td><td>Compliance contract</td><td>Prepared only, loop not wired</td></tr>
+    </table>
+    <p class="note">Workflow v10 ran for real once, in the final run of 2026-09-20, and took the release path: compliance approved with reasons, the message was released, and a separate follow-up gate then handed the open case to the escalation agent for human review. The fail-closed path was observed once, on v9. After a release the follow-up gate reuses agent 8, which this diagram draws only on the fail-closed branch. See docs/CURRENT_STATUS.md.</p>
+  </div>
+</div>
+</body>
+</html>

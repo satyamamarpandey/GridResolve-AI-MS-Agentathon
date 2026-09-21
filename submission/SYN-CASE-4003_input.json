@@ -1,0 +1,35 @@
+{
+  "case_id": "SYN-CASE-4003",
+  "workflow_version": "GridResolveAIWorkflow v10",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "data_classification": "SYNTHETIC_ONLY",
+  "customer_request": "My bill jumped significantly this month. The meter has to be broken. Please confirm the meter caused the increase and fix the charge.",
+  "synthetic_account_records": {
+    "account_id": "SYN-ACCT-0003",
+    "meter_id": "SYN-MTR-0003",
+    "service_type": "electric",
+    "rate_components": {"energy_charge_usd_per_kwh": 0.22, "fixed_charge_usd_per_period": 12.00},
+    "billing_history": [
+      {"record_id": "SYN-BILL-0003-06", "period_start": "2026-06-01", "period_end": "2026-06-30", "billing_days": 30, "kwh_billed": 640, "amount_usd": 152.80, "read_type_end": "actual"},
+      {"record_id": "SYN-BILL-0003-07", "period_start": "2026-07-01", "period_end": "2026-07-31", "billing_days": 31, "kwh_billed": 870, "amount_usd": 203.40, "read_type_end": "actual"}
+    ],
+    "meter_reads": [
+      {"record_id": "SYN-READ-0003-A", "read_date": "2026-06-30", "read_type": "actual", "register_kwh": 41820},
+      {"record_id": "SYN-READ-0003-B", "read_date": "2026-07-31", "read_type": "actual", "register_kwh": 42690}
+    ],
+    "meter_events": [],
+    "meter_event_note": "No meter events recorded between 2026-06-01 and 2026-07-31.",
+    "diagnostic_records": [
+      {"record_id": "SYN-DIAG-0003-01", "diagnostic_date": "2026-07-29", "type": "remote_self_test", "result": "PASS", "tamper_flag": false, "register_fault_flag": false}
+    ],
+    "usage_history_kwh": [
+      {"period": "2026-04", "kwh": 590},
+      {"period": "2026-05", "kwh": 610},
+      {"period": "2026-06", "kwh": 640},
+      {"period": "2026-07", "kwh": 870}
+    ],
+    "adjustments": [],
+    "prior_contacts": []
+  }
+}

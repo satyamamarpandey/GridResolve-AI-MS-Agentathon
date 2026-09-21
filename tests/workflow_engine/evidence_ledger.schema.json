@@ -1,0 +1,206 @@
+{
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "workflow_version": {
+      "type": "string"
+    },
+    "case_state": {
+      "type": "string"
+    },
+    "dataset_version": {
+      "type": "string"
+    },
+    "evidence_ledger": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "description": "Stable id issued by this agent, cited by every later agent."
+          },
+          "source_type": {
+            "type": "string",
+            "description": "billing_history, meter_read, meter_event, diagnostic_record, rate_component, usage_history, adjustment or prior_contact."
+          },
+          "source_record_id": {
+            "type": "string",
+            "description": "The record_id in the supplied records, or the field name when the record has no id."
+          },
+          "period": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value exactly as supplied, written as text."
+          },
+          "observation": {
+            "type": "string",
+            "description": "What the record shows. An observation, never a conclusion."
+          },
+          "source_timestamp": {
+            "type": "string"
+          },
+          "data_version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "source_type",
+          "source_record_id",
+          "period",
+          "field",
+          "value",
+          "observation",
+          "source_timestamp",
+          "data_version"
+        ],
+        "additionalProperties": false
+      },
+      "description": "One entry per supplied fact that any later statement may rely on."
+    },
+    "billing_comparison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "calculation": {
+            "type": "string"
+          },
+          "formula": {
+            "type": "string"
+          },
+          "result": {
+            "type": "string"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "calculation",
+          "formula",
+          "result",
+          "evidence_ids"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Derived calculations. Each one names its formula and the evidence ids it uses."
+    },
+    "meter_read_status": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_record_id": {
+            "type": "string"
+          },
+          "read_date": {
+            "type": "string"
+          },
+          "read_type": {
+            "type": "string",
+            "description": "actual or estimated, exactly as the record states."
+          },
+          "evidence_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_record_id",
+          "read_date",
+          "read_type",
+          "evidence_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rate_components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "component": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "evidence_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "component",
+          "value",
+          "unit",
+          "evidence_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "observed_changes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missing_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_quality": {
+      "type": "string",
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "LOW",
+        "INSUFFICIENT"
+      ]
+    },
+    "data_freshness": {
+      "type": "string"
+    },
+    "evidence_summary": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_id",
+    "workflow_version",
+    "case_state",
+    "dataset_version",
+    "evidence_ledger",
+    "billing_comparison",
+    "meter_read_status",
+    "rate_components",
+    "observed_changes",
+    "conflicts",
+    "missing_fields",
+    "evidence_quality",
+    "data_freshness",
+    "evidence_summary"
+  ],
+  "additionalProperties": false
+}

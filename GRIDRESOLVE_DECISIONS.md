@@ -1,0 +1,23 @@
+# Decisions
+
+- 2026-09-18: Preserve nine-agent workflow v4. No new agents. Reason: no clear defect, scope discipline.
+- 2026-09-18: AI Gateway not created. Reason: API Management Basic v2 may bill; zero base cost unproven.
+- 2026-09-18: Sequential fail-closed workflow is the only runtime claim allowed. No parallel or loop claims until wired.
+- 2026-09-18: Azure login via browser flow with broker disabled. Reason: tenant security defaults block device code (AADSTS530035).
+- 2026-09-18: Cost estimate uses public Azure Retail Prices API (official) since the pricing page renders prices dynamically.
+- 2026-09-18: Style rule: no em dashes in created content.
+- 2026-09-19: Compliance routing uses a sentinel token, not ParseJSON. Reason: the runtime type of Local.Var1497 is undocumented, the agents have no JSON schema response format so output is free text a model may wrap in fences, and ParseJSON raises on invalid JSON. The sentinel reuses the `in` operator already proven to parse in this workflow while removing the false-positive surface. Parsing the decision field is the preferred upgrade once a run reveals the variable shape.
+- 2026-09-19: Branches inverted so escalation is the default and approval is the earned exception. Fail-closed by construction rather than by a correctly written negation.
+- 2026-09-19: autoSend false on nodes 1 to 7, approved draft released by SendActivity only. Accepted risk: SendActivity with a stored variable is untested. v4 retained for rollback.
+- 2026-09-19: Workflow writes require header `Foundry-Features: WorkflowAgents=V1Preview`. The API returned this instruction in its 403 body.
+- 2026-09-19: Manifest screenshot claims corrected from CAPTURED to NOT_ON_DISK after a filesystem search found none. An overstated manifest is worse than a missing screenshot.
+- 2026-09-19: Identifiers redacted from GRIDRESOLVE_STATE.md because the folder may be zipped for submission.
+- 2026-09-20: The 2026-09-19 sentinel decision above was superseded before any run. On the real Power Fx engine neither the v4 nor the v5 condition compiles against a table of message records. v6 reads `Last(Local.Var1497).Text` and approves only on an exact, unique, final-line token. Reason: verified on Microsoft's engine, 24 of 24 adversarial outputs.
+- 2026-09-20: Release uses a `{...}` template and not an `=expression`. Reason: run 1 delivered the expression to the customer as literal text.
+- 2026-09-20: Message approval and case follow-up are two separate decisions. Reason: a safe message should not be rejected merely because the case still needs a person. The follow-up gate reads the planner's own token and defaults to a human handoff.
+- 2026-09-20: Every agent node passes an explicit literal input message (v10). Reason: the platform's input record showed every agent after the first was invoked with no new user turn, which stalled 3 of 17 invocations in runs 1 and 2. A literal string and not an expression, so there is nothing for the expression engine to reject.
+- 2026-09-20: A third, text-only gate term withholds the message when an investigation output is not a JSON object. No retry loop and no new customer-visible message. Reason: fail closed through the existing escalation, with the audit still running.
+- 2026-09-20: Strict json_schema on the evidence, policy, communication and audit agents. Compliance and planner stay free text, because each must end with a token line after its JSON.
+- 2026-09-20: The platform record, not the audit agent, is the source of truth for who ran, versions, route, delivery and tokens. Reason: the audit misreported parts of runs 1 and 2.
+- 2026-09-20: Acceptance criteria for the final run were written before it ran, and a branch not taken is reported as not observable, never as a pass.
+- 2026-09-20: After the final run the implementation is frozen. No further executions, no Foundry edits. The system is described as a runtime-demonstrated, production-oriented prototype and not as production-ready.

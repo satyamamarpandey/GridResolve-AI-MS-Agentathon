@@ -1,0 +1,41 @@
+# GATE HARNESS. PREPARED, NOT DEPLOYED. Invokes no agent and no model.
+#
+# Purpose: observe, in the hosted Foundry workflow service, which branch the
+# production compliance gate selects for a given compliance text, and whether
+# the v7 release template is evaluated. The text is INJECTED by the operator as
+# the conversation's first message. A result from this harness is evidence about
+# the gate expression and the branch wiring only. It is never a compliance
+# decision, never a model decision, and never an end-to-end result.
+#
+# The condition below is byte-identical to tests/powerfx_gate/gate_v6.txt, which
+# is the condition in GridResolveAIWorkflow v7. Node ids match production.
+# Syntax sources: SetVariable and =System.LastMessage.Text from
+# microsoft/agent-framework workflow-samples/DeepResearch.yaml, SendActivity
+# templates from Microsoft Learn "Build a workflow in Microsoft Foundry".
+kind: workflow
+trigger:
+  kind: OnConversationStart
+  id: trigger_gate_harness
+  actions:
+    - kind: SetVariable
+      id: harness-inject-compliance-text
+      variable: Local.Var1497
+      value: '=Table({Text: System.LastMessage.Text})'
+    - kind: ConditionGroup
+      id: node-1789696874113
+      conditions:
+        - condition: '=With({t: Last(Local.Var1497).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED"))))'
+          id: if-node-approved-release
+          actions:
+            - kind: SendActivity
+              id: harness-approve-marker
+              activity: "GATE_HARNESS_RESULT::APPROVE_BRANCH"
+            - kind: SendActivity
+              id: harness-release-template-echo
+              activity: "{Last(Local.Var1497).Text}"
+        - condition: "true"
+          id: if-node-failclosed-escalate
+          actions:
+            - kind: SendActivity
+              id: harness-escalate-marker
+              activity: "GATE_HARNESS_RESULT::ESCALATE_BRANCH"

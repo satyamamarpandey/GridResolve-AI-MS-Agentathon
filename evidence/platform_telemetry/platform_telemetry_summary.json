@@ -1,0 +1,382 @@
+{
+ "what_this_is": "A redacted, read-only summary of what Azure Monitor and the connected Application Insights resource recorded for the real Foundry runs. Derived. Not runtime evidence, and not a substitute for evidence/runtime/.",
+ "how_to_reproduce": "python scripts/export_platform_telemetry.py, signed in with az login, with the three GRIDRESOLVE_FOUNDRY variables set in the shell.",
+ "exported_at": "2026-09-21T04:35:52Z",
+ "window": "2026-09-17T00:00:00Z/2026-09-22T00:00:00Z",
+ "azure_monitor_metrics": {
+  "InputTokens": {
+   "total": 186614,
+   "hourly": [
+    {
+     "hour": "2026-09-20T20:00:00Z",
+     "total": 46810
+    },
+    {
+     "hour": "2026-09-20T22:00:00Z",
+     "total": 45452
+    },
+    {
+     "hour": "2026-09-21T00:00:00Z",
+     "total": 94352
+    }
+   ]
+  },
+  "OutputTokens": {
+   "total": 42155,
+   "hourly": [
+    {
+     "hour": "2026-09-20T20:00:00Z",
+     "total": 10828
+    },
+    {
+     "hour": "2026-09-20T22:00:00Z",
+     "total": 8894
+    },
+    {
+     "hour": "2026-09-21T00:00:00Z",
+     "total": 22433
+    }
+   ]
+  },
+  "TotalTokens": {
+   "total": 228769,
+   "hourly": [
+    {
+     "hour": "2026-09-20T20:00:00Z",
+     "total": 57638
+    },
+    {
+     "hour": "2026-09-20T22:00:00Z",
+     "total": 54346
+    },
+    {
+     "hour": "2026-09-21T00:00:00Z",
+     "total": 116785
+    }
+   ]
+  },
+  "ModelRequests": {
+   "total": 26,
+   "hourly": [
+    {
+     "hour": "2026-09-20T20:00:00Z",
+     "total": 8
+    },
+    {
+     "hour": "2026-09-20T22:00:00Z",
+     "total": 9
+    },
+    {
+     "hour": "2026-09-21T00:00:00Z",
+     "total": 9
+    }
+   ]
+  },
+  "BlockedCalls": {
+   "total": 6,
+   "hourly": [
+    {
+     "hour": "2026-09-19T05:00:00Z",
+     "total": 3
+    },
+    {
+     "hour": "2026-09-19T08:00:00Z",
+     "total": 2
+    },
+    {
+     "hour": "2026-09-21T04:00:00Z",
+     "total": 1
+    }
+   ]
+  }
+ },
+ "application_insights": {
+  "rows_by_table": {
+   "genAIContent": 52,
+   "requests": 3,
+   "dependencies": 61,
+   "customMetrics": 35
+  },
+  "ingested_megabytes": 2.52,
+  "content_recording": {
+   "spans_with_message_content": 52,
+   "spans": 61
+  }
+ },
+ "runs": [
+  {
+   "run_dir": "evidence/runtime/20260920T205607Z_SYN-CASE-4003_80391bf2",
+   "trace_id": "097166ec77994578eec0ed385d04f98c",
+   "workflow_span": {
+    "name": "execute_workflow GridResolveAIWorkflow",
+    "started": "2026-09-20T20:56:10.2529346Z",
+    "duration_ms": 81349,
+    "success": "True",
+    "result_code": "200"
+   },
+   "model_calls": {
+    "calls": 8,
+    "input_tokens": 46810,
+    "output_tokens": 10828,
+    "cached_tokens": 0,
+    "failed": 0
+   },
+   "agent_spans": [
+    {
+     "name": "invoke_agent CaseTriageAgent:5",
+     "duration_ms": 6261,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent AccountEvidenceAgent:7",
+     "duration_ms": 1312,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent UsageAnomalyAgent:4",
+     "duration_ms": 11696,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent PolicyKnowledgeAgent:5",
+     "duration_ms": 15984,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent ResolutionPlannerAgent:5",
+     "duration_ms": 16177,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent CustomerCommunicationAgent:4",
+     "duration_ms": 8160,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent EvidenceComplianceAgent:5",
+     "duration_ms": 5966,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent CaseAuditAgent:4",
+     "duration_ms": 10055,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    }
+   ]
+  },
+  {
+   "run_dir": "evidence/runtime/20260920T225342Z_SYN-CASE-4003_5e6f1114",
+   "trace_id": "3a37fd3d4d975ffa9c94bedd83a66786",
+   "workflow_span": {
+    "name": "execute_workflow GridResolveAIWorkflow",
+    "started": "2026-09-20T22:53:48.1296083Z",
+    "duration_ms": 66231,
+    "success": "True",
+    "result_code": "200"
+   },
+   "model_calls": {
+    "calls": 9,
+    "input_tokens": 45452,
+    "output_tokens": 8894,
+    "cached_tokens": 0,
+    "failed": 0
+   },
+   "agent_spans": [
+    {
+     "name": "invoke_agent CaseTriageAgent:5",
+     "duration_ms": 6141,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent AccountEvidenceAgent:8",
+     "duration_ms": 1241,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent UsageAnomalyAgent:4",
+     "duration_ms": 10073,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent PolicyKnowledgeAgent:5",
+     "duration_ms": 872,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent ResolutionPlannerAgent:6",
+     "duration_ms": 13024,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent CustomerCommunicationAgent:5",
+     "duration_ms": 7646,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent EvidenceComplianceAgent:5",
+     "duration_ms": 596,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent EscalationCoordinatorAgent:5",
+     "duration_ms": 13109,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent CaseAuditAgent:6",
+     "duration_ms": 7637,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    }
+   ]
+  },
+  {
+   "run_dir": "evidence/runtime/20260921T000142Z_SYN-CASE-4003_c2be2b51",
+   "trace_id": "536f1ba7b4a8fb6732a742f2b8f8bd06",
+   "workflow_span": {
+    "name": "execute_workflow GridResolveAIWorkflow",
+    "started": "2026-09-21T00:01:44.5863974Z",
+    "duration_ms": 175657,
+    "success": "True",
+    "result_code": "200"
+   },
+   "model_calls": {
+    "calls": 9,
+    "input_tokens": 94352,
+    "output_tokens": 22433,
+    "cached_tokens": 0,
+    "failed": 0
+   },
+   "agent_spans": [
+    {
+     "name": "invoke_agent CaseTriageAgent:5",
+     "duration_ms": 7538,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent AccountEvidenceAgent:9",
+     "duration_ms": 30659,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent UsageAnomalyAgent:4",
+     "duration_ms": 17154,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent PolicyKnowledgeAgent:6",
+     "duration_ms": 24921,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent ResolutionPlannerAgent:6",
+     "duration_ms": 25889,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent CustomerCommunicationAgent:5",
+     "duration_ms": 7565,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent EvidenceComplianceAgent:6",
+     "duration_ms": 6383,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent EscalationCoordinatorAgent:5",
+     "duration_ms": 22143,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    },
+    {
+     "name": "invoke_agent CaseAuditAgent:7",
+     "duration_ms": 19840,
+     "success": "True",
+     "prompt_blocked": false,
+     "completion_blocked": false,
+     "jailbreak_detected": false
+    }
+   ]
+  }
+ ],
+ "not_included": [
+  "prompts",
+  "model outputs",
+  "resource, project and subscription identifiers",
+  "the Application Insights app id"
+ ]
+}

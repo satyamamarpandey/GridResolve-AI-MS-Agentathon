@@ -1,0 +1,442 @@
+/* Application layer for the GridResolve AI Control Center.
+   The Industry design system in ds.css is the source of truth for the look:
+   blueprint frames, square corners, hairline borders, Barlow Condensed
+   headings, tags and tables. Nothing here re-styles a component the system
+   already owns. This file only adds the shell that the system does not cover:
+   the sidebar, the page grid, the chat log and the workflow diagram. */
+
+:root {
+  /* aliases so existing markup keeps reading, mapped onto the system */
+  --bg: var(--color-bg);
+  --surface: var(--color-surface);
+  --surface-2: color-mix(in srgb, var(--color-text) 4%, transparent);
+  --surface-3: color-mix(in srgb, var(--color-text) 8%, transparent);
+  --line: var(--color-divider);
+  --line-soft: color-mix(in srgb, var(--color-text) 8%, transparent);
+  --ink: var(--color-text);
+  --ink-2: color-mix(in srgb, var(--color-text) 72%, transparent);
+  --ink-3: color-mix(in srgb, var(--color-text) 55%, transparent);
+  --accent: var(--color-accent);
+  --accent-2: var(--color-accent-2);
+  --ok: #2f6f4f;
+  --warn: #8a5a1e;
+  --bad: #9b3b33;
+  --mono: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+}
+
+html, body, #root { height: 100%; }
+
+/* ---------------------------------------------------------------- shell */
+
+.app { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }
+.app.collapsed { grid-template-columns: 64px 1fr; }
+
+.sidebar {
+  border-right: 1px solid var(--color-divider);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4);
+  border-bottom: 1px solid var(--color-divider);
+  min-height: 96px;
+}
+.brand h1 { font-size: 22px; margin: 0; letter-spacing: -0.015em; }
+.brand span {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: block;
+  margin-top: 2px;
+}
+.app.collapsed .brand div, .app.collapsed .navgroup-label,
+.app.collapsed .navbtn .grow, .app.collapsed .sidefoot div { display: none; }
+.app.collapsed .brand { justify-content: center; padding-inline: 0; }
+.app.collapsed .navbtn { justify-content: center; }
+
+.navscroll { flex: 1; overflow-y: auto; padding: var(--space-3) 0 var(--space-4); }
+.navgroup { margin-bottom: var(--space-4); }
+.navgroup-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 0 var(--space-4) var(--space-2);
+}
+
+.navbtn {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-left: 3px solid transparent;
+  color: var(--ink-2);
+  text-align: left;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.navbtn:hover { background: color-mix(in srgb, var(--color-text) 5%, transparent); color: var(--color-text); }
+.navbtn.on {
+  background: color-mix(in srgb, var(--color-accent) 13%, transparent);
+  border-left-color: var(--color-accent);
+  color: var(--color-text);
+}
+.navbtn .ico { display: flex; color: var(--ink-3); flex: none; }
+.navbtn.on .ico { color: var(--color-accent); }
+.navbtn .grow { min-width: 0; }
+.navbtn strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  font-size: 16px;
+  line-height: 1.2;
+}
+.navbtn em {
+  display: block;
+  font-style: normal;
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 1px;
+}
+
+.sidefoot {
+  padding: var(--space-4);
+  border-top: 1px solid var(--color-divider);
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  position: relative;
+}
+.sidefoot .mono { font-family: var(--mono); color: var(--ink-2); margin-bottom: 5px; font-size: 12px; }
+.sidefoot .collapse { position: absolute; right: var(--space-3); bottom: var(--space-3); }
+
+/* ----------------------------------------------------------------- topbar */
+
+.content { display: flex; flex-direction: column; min-width: 0; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-8);
+  border-bottom: 1px solid var(--color-divider);
+  min-height: 96px;
+  position: sticky;
+  top: 0;
+  background: var(--color-bg);
+  z-index: 10;
+}
+.crumb {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.topbar-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  font-size: 26px;
+  line-height: 1.15;
+  margin-top: 2px;
+}
+.topbar-right { display: flex; align-items: center; gap: var(--space-3); }
+.casechip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em; padding: 7px 12px; }
+.bell { position: relative; }
+.bell .dotmark {
+  position: absolute; top: 6px; right: 7px; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--warn);
+}
+.buildtag { font-size: 13px; color: var(--ink-2); }
+
+@media (max-width: 1100px) { .topbar-right .buildtag { display: none; } }
+
+/* ------------------------------------------------------------- app grid */
+
+.grid { display: grid; gap: var(--space-4); }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .g3, .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; }
+  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+}
+
+.row { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
+.spread { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); }
+.stack { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* ------------------------------------------------------------ statistics */
+
+.stat .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+}
+.stat .value {
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  font-size: 32px;
+  line-height: 1.1;
+  margin: var(--space-2) 0 3px;
+}
+.stat .meta { font-size: 11px; color: var(--ink-3); }
+.stat .value.mono { font-family: var(--mono); font-size: 24px; }
+
+/* --------------------------------------------------------------- content */
+
+.mono { font-family: var(--mono); font-size: 12.5px; }
+.footnote { color: var(--ink-3); font-size: 12px; margin-top: var(--space-4); }
+.bullets { margin: var(--space-2) 0 0; padding-left: 18px; font-size: 14px; line-height: 1.7; color: var(--ink-2); }
+.bullets li { margin-bottom: 3px; }
+
+.kv { display: grid; grid-template-columns: 190px 1fr; gap: 7px var(--space-4); font-size: 14px; }
+.kv dt { color: var(--ink-3); }
+.kv dd { margin: 0; }
+
+code.inline {
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  border: 1px solid var(--color-divider);
+  padding: 1px 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.banner {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid;
+  font-size: 13px;
+  margin-bottom: var(--space-4);
+}
+.banner strong {
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.banner.mode { border-color: var(--color-accent); color: var(--color-accent-800); }
+.banner.mode strong { color: var(--color-accent); }
+.banner.warn { border-color: #c79a4e; color: var(--warn); }
+
+.claim-row { cursor: pointer; }
+.claim-row[aria-selected="true"] {
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
+.bar-track { height: 6px; background: color-mix(in srgb, var(--color-text) 10%, transparent); overflow: hidden; }
+.bar-fill { height: 100%; }
+
+/* ------------------------------------------------------------------ chat */
+
+.chat { display: flex; flex-direction: column; height: 520px; }
+.chat-log { flex: 1; overflow-y: auto; padding: 2px; display: flex; flex-direction: column; gap: var(--space-3); }
+.msg {
+  max-width: 76%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-divider);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.msg.user { align-self: flex-end; background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
+.msg.system { align-self: flex-start; background: var(--color-surface); }
+.msg.notice {
+  align-self: center;
+  border-color: #c79a4e;
+  color: var(--warn);
+  font-size: 12px;
+  max-width: 92%;
+}
+.msg .who {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  margin-bottom: 5px;
+}
+.chat-input { display: flex; gap: var(--space-2); margin-top: var(--space-3); }
+.chat-input input { flex: 1; }
+
+.suggest { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--space-3); }
+
+/* -------------------------------------------------------- workflow graph */
+
+.flow { display: flex; flex-direction: column; gap: 6px; }
+.node {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-divider);
+  background: transparent;
+}
+.node .idx {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  font-size: 12px;
+  border: 1px solid var(--color-divider);
+  color: var(--color-accent);
+}
+.node.control { border-color: #c79a4e; }
+.node.control .idx { border-color: #c79a4e; color: var(--warn); }
+.node .grow { flex: 1; min-width: 0; }
+.node .nm {
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  font-size: 15px;
+}
+.node .rs { font-size: 12px; color: var(--ink-3); }
+.branch {
+  margin-left: var(--space-6);
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--color-divider);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ------------------------------------------------------- status tag tones */
+
+.tag-muted { background: var(--color-neutral-100); color: var(--color-neutral-800); }
+.tag-info { background: var(--color-accent-100); color: var(--color-accent-800); }
+.tag-violet { background: var(--color-accent-2-100); color: var(--color-accent-2-800); }
+.tag-ok { background: #e4efe8; color: #235c44; }
+.tag-warn { background: #f7edda; color: #7a4e16; }
+.tag-bad { background: #f6e3e1; color: #8c352e; }
+.tag { font-family: var(--font-body); white-space: nowrap; }
+
+/* Blueprint corner marks read as registration crosses between adjacent cards. */
+.grid > .card.blueprint { background: transparent; }
+
+/* ═══════════════════════════════════════════════════════════════ density
+   The design system is tuned for marketing-weight pages: a 0.85x spacing
+   scale and 10px card padding. This application is dense, data-heavy and
+   table-driven, so the same tokens read as cramped. These rules keep the
+   system's look, the blueprint frame, square corners, hairline borders and
+   condensed headings, while giving the content room to breathe.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Cards need real padding, and enough gutter that adjacent blueprint corner
+   marks do not collide. The marks sit 6px outside the frame on each side. */
+.card { padding: 17px 19px; gap: 0; }
+.grid { gap: 22px; }
+.stack { gap: 22px; }
+
+.main { padding: 22px 30px 56px; }
+.topbar { min-height: 72px; padding: 14px 30px; }
+.brand { min-height: 72px; padding: 14px 18px; }
+
+/* Headings: the topbar already names the view, so the page heading does not
+   need to shout it a second time. */
+.page-head { margin-bottom: 18px; }
+.page-head h2 { font-size: 26px; margin-bottom: 5px; }
+.page-head p { font-size: 13.5px; line-height: 1.5; }
+.topbar-title { font-size: 22px; }
+
+.card-title { font-size: 16px; }
+.card .sub, .card-body { font-size: 12px; line-height: 1.45; margin: 3px 0 13px; opacity: 1; color: var(--ink-3); }
+.spread { gap: 16px; margin-bottom: 2px; }
+
+/* Tables carry most of the information, so they get the tightest tuning. */
+.table, table { font-size: 12.5px; }
+th { font-size: 9.5px; letter-spacing: 0.09em; padding: 7px 9px; }
+td { padding: 8px 9px; line-height: 1.45; }
+
+.kv { grid-template-columns: 165px 1fr; gap: 6px 14px; font-size: 12.5px; }
+.mono { font-size: 11.5px; }
+.footnote { font-size: 11.5px; margin-top: 13px; line-height: 1.5; }
+.bullets { font-size: 12.5px; line-height: 1.6; }
+
+/* Statistics: large enough to scan, small enough that four fit a row. */
+.stat { padding: 15px 17px; }
+.stat .label { font-size: 9.5px; letter-spacing: 0.11em; }
+.stat .value { font-size: 27px; margin: 7px 0 3px; }
+.stat .value.mono { font-size: 20px; }
+.stat .meta { font-size: 11px; line-height: 1.4; }
+
+.tag { font-size: 10.5px; padding: 3px 8px; }
+
+.banner { padding: 11px 15px; gap: 12px; margin-bottom: 18px; align-items: center; font-size: 12.5px; line-height: 1.45; }
+.banner strong { font-size: 10.5px; }
+
+/* Sidebar: narrower, with the nav rows tightened so all ten fit without
+   scrolling on a 1080p display. */
+.app { grid-template-columns: 264px 1fr; }
+.navscroll { padding: 10px 0 14px; }
+.navgroup { margin-bottom: 14px; }
+.navgroup-label { font-size: 9.5px; padding: 0 18px 5px; }
+.navbtn { padding: 8px 18px; gap: 11px; }
+.navbtn strong { font-size: 14px; }
+.navbtn em { font-size: 10.5px; }
+.brand h1 { font-size: 19px; }
+.sidefoot { padding: 13px 18px; font-size: 10.5px; }
+.sidefoot .mono { font-size: 11px; }
+
+/* Workflow graph and chat follow the same tightening. */
+.node { padding: 8px 11px; gap: 11px; }
+.node .nm { font-size: 13.5px; }
+.node .rs { font-size: 11px; }
+.node .idx { width: 21px; height: 21px; font-size: 11px; }
+.flow { gap: 5px; }
+.msg { padding: 10px 12px; font-size: 12.5px; }
+.msg .who { font-size: 9.5px; }
+.chat { height: 460px; }
+
+.input, .btn { font-size: 13px; }
+.seg { font-size: 11.5px; padding: 4px 10px; }
+
+/* Blueprint marks must not be clipped by the scroll container. */
+.main { overflow-x: clip; }
+.grid > .card.blueprint, .stack > .card.blueprint { overflow: visible; }
+
+@media (max-width: 1500px) {
+  .grid { gap: 18px; }
+  .main { padding: 20px 24px 48px; }
+  .stat .value { font-size: 24px; }
+}
+
+/* ------------------------------------------------------------ fit guards */
+
+/* Grid and flex children default to min-width:auto, which lets a long
+   identifier or a wide table push the whole column past its track. */
+.grid > *, .stack > *, .content, .main { min-width: 0; }
+.card, .node .grow, .msg { min-width: 0; }
+
+/* Identifiers such as SIMULATED_UI_FIXTURE_NOT_EXECUTED have no spaces, so
+   they need an explicit break opportunity rather than overflowing the cell. */
+td, .kv dd, .card-body, .footnote { overflow-wrap: anywhere; }
+.kv dd.mono, td.mono { overflow-wrap: anywhere; }
+
+/* Tables are the widest element on most views. Let them scroll inside their
+   own card instead of widening the page. */
+.card > table { display: table; width: 100%; }
+.tablewrap { overflow-x: auto; }
+
+/* The app shell itself must never scroll sideways. */
+body { overflow-x: hidden; }

@@ -1,0 +1,77 @@
+{
+ "what_this_is": "Local parity check of the final real run against Microsoft Agent Framework's declarative engine. Scripted agents, no model, no Azure call. Not Foundry execution evidence.",
+ "engine_package": "Microsoft.Agents.AI.Workflows.Declarative",
+ "definition": "tests/workflow_engine/workflows/GridResolveAIWorkflow_v10.yaml",
+ "replayed_from": "evidence/runtime/20260921T000142Z_SYN-CASE-4003_c2be2b51",
+ "passed": 11,
+ "total": 11,
+ "checks": [
+  {
+   "check": "the local engine ran the v10 definition without a failed action",
+   "passed": true,
+   "detail": "[]"
+  },
+  {
+   "check": "all nine scripted replies equal the text the platform stored for that agent",
+   "passed": true,
+   "detail": "9 of 9"
+  },
+  {
+   "check": "same nine agents, same order",
+   "passed": true,
+   "detail": "9 local, 9 hosted"
+  },
+  {
+   "check": "every action the hosted service reported also ran locally",
+   "passed": true,
+   "detail": "set()"
+  },
+  {
+   "check": "those actions ran in the same order",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "both took the branch through node-release-approved-message",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "both took the branch through node-followup-handoff",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "the local engine took no branch the hosted run skipped",
+   "passed": true,
+   "detail": "[]"
+  },
+  {
+   "check": "the local engine released exactly one customer message",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "that message is character for character what the hosted service released",
+   "passed": true,
+   "detail": "2592 characters"
+  },
+  {
+   "check": "the evidence folder was not touched",
+   "passed": true,
+   "detail": ""
+  }
+ ],
+ "local_sent_messages": 1,
+ "local_invoked": [
+  "CaseTriageAgent",
+  "AccountEvidenceAgent",
+  "UsageAnomalyAgent",
+  "PolicyKnowledgeAgent",
+  "ResolutionPlannerAgent",
+  "CustomerCommunicationAgent",
+  "EvidenceComplianceAgent",
+  "EscalationCoordinatorAgent",
+  "CaseAuditAgent"
+ ]
+}

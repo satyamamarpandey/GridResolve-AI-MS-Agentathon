@@ -1,0 +1,98 @@
+kind: workflow
+trigger:
+  kind: OnConversationStart
+  id: trigger_wf
+  actions:
+    - kind: InvokeAzureAgent
+      id: node-1789696603365
+      agent:
+        name: CaseTriageAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+    - kind: InvokeAzureAgent
+      id: node-1789696645054
+      agent:
+        name: AccountEvidenceAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+    - kind: InvokeAzureAgent
+      id: node-1789696697430
+      agent:
+        name: UsageAnomalyAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+    - kind: InvokeAzureAgent
+      id: node-1789696718717
+      agent:
+        name: PolicyKnowledgeAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+    - kind: InvokeAzureAgent
+      id: node-1789696778418
+      agent:
+        name: ResolutionPlannerAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+    - kind: InvokeAzureAgent
+      id: node-1789696813306
+      agent:
+        name: CustomerCommunicationAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+    - kind: InvokeAzureAgent
+      id: node-1789696841174
+      agent:
+        name: EvidenceComplianceAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+        messages: Local.Var1497
+    - kind: ConditionGroup
+      conditions:
+        - condition: =Not("APPROVE" in Local.Var1497)
+          actions:
+            - kind: InvokeAzureAgent
+              id: node-1789697115060
+              agent:
+                name: EscalationCoordinatorAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: ""
+              output:
+                autoSend: true
+          id: if-node-1789696874113-ftv63qoh
+        - condition: "true"
+          actions: []
+          id: if-node-1789696874113-4vkxawjl
+      id: node-1789696874113
+    - kind: InvokeAzureAgent
+      id: node-1789697069548
+      agent:
+        name: CaseAuditAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: ""
+      output:
+        autoSend: true
+id: ""
+name: GridResolveAIWorkflow

@@ -1,0 +1,6 @@
+{
+  "captured_utc": "2026-09-18",
+  "source": "Azure Cost Management query, ActualCost MonthToDate",
+  "result": "rows: [] (no cost reported)",
+  "note": "billing may lag"
+}

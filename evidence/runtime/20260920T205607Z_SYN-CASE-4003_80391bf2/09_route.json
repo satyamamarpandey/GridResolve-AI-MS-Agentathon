@@ -1,0 +1,26 @@
+{
+  "route": "APPROVED_AND_RELEASED",
+  "gate_evaluated": false,
+  "audit_ran": true,
+  "agents_observed": [
+    "CaseTriageAgent",
+    "CaseTriageAgent",
+    "AccountEvidenceAgent",
+    "AccountEvidenceAgent",
+    "UsageAnomalyAgent",
+    "UsageAnomalyAgent",
+    "PolicyKnowledgeAgent",
+    "PolicyKnowledgeAgent",
+    "ResolutionPlannerAgent",
+    "ResolutionPlannerAgent",
+    "CustomerCommunicationAgent",
+    "CustomerCommunicationAgent",
+    "EvidenceComplianceAgent",
+    "EvidenceComplianceAgent",
+    "CaseAuditAgent",
+    "CaseAuditAgent"
+  ],
+  "agents_not_observed": [
+    "EscalationCoordinatorAgent"
+  ]
+}

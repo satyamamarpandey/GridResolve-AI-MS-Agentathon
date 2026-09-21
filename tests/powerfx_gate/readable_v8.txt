@@ -1,0 +1,1 @@
+!IsBlank(Local.VarCustomerMessage.customer_summary) && !IsBlank(Local.VarCustomerMessage.what_we_reviewed) && !IsBlank(Local.VarCustomerMessage.what_we_found) && !IsBlank(Local.VarCustomerMessage.why_bill_changed) && !IsBlank(Local.VarCustomerMessage.what_happens_next) && !IsBlank(Local.VarCustomerMessage.customer_action_needed)
