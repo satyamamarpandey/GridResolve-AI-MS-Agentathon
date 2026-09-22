@@ -43,7 +43,7 @@ Local, no model: 83 routing, 151 synthetic data, 156 application, 357 runner, 91
 Provisional from returned tokens at list price: $0.0334 + $0.0292 + $0.0685, about $0.13. Billed amount not yet visible: Cost Management and consumption usage returned zero rows after the final run. That is not a confirmed $0.00. Billing lags. Zero embeddings, evaluations or new resources.
 
 ## Video
-`submission/video/GridResolve_Final_Video.mp4` is the final narrated video, finished 2026-09-21: 172.1 seconds, my own recorded narration, authentic redacted Foundry captures. The older silent draft is not part of the published repository. The narration recording itself stays out of the repository.
+`submission/video/GridResolve_Final_Video.mp4` is the final narrated video, final cut 2026-09-22: 172.0 seconds, my own recorded narration, authentic redacted Foundry captures. The older silent draft is not part of the published repository. The narration recording itself stays out of the repository.
 
 ## Browser automation
 NOT AVAILABLE for the Foundry portal, which needs interactive sign-in. Portal screenshots require manual capture by the owner.

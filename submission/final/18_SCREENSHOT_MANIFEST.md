@@ -86,7 +86,7 @@ local refusal cannot be mistaken for the Foundry result.
 
 ## Video usage
 
-The final video is built: `submission/video/GridResolve_Final_Video.mp4`, 172.1
+The final video is built: `submission/video/GridResolve_Final_Video.mp4`, 172.0
 seconds. It uses four captures, `screenshots used: 4 of 4`, and no placeholder.
 Every other picture is a slide rendered from the evidence files at build time.
 

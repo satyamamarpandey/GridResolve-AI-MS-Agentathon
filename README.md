@@ -8,8 +8,9 @@ Submitted to the Microsoft Agent-a-thon, Level 3 Architect.
 | Item | Where |
 |---|---|
 | **Read this first** | [`submission/final/JUDGE_NARRATIVE.md`](submission/final/JUDGE_NARRATIVE.md), plain language, no prior knowledge assumed |
-| Submission deck, eight slides | [`submission/final/GridResolve_AI_Submission_Deck.pptx`](submission/final/GridResolve_AI_Submission_Deck.pptx) |
-| Demo video | [`submission/video/GridResolve_Final_Video.mp4`](submission/video/GridResolve_Final_Video.mp4) is the final narrated video: 172.1 seconds, 1920x1080, about 8 MB, my own recorded narration at its own speed, authentic Foundry captures with the project name covered, the Control Center, and slides built from the final run's evidence. `python submission/video/build_video.py --final` builds an earlier scripted cut of the same narration and is kept for reference. Transcript: [`submission/video/FINAL_VIDEO_SCRIPT.md`](submission/video/FINAL_VIDEO_SCRIPT.md) |
+| **Final submission PDF** | [`submission/final/GridResolve_AI_Agentathon_PDF.pdf`](submission/final/GridResolve_AI_Agentathon_PDF.pdf), eleven pages, letter size. This is the document I submit |
+| **Final video** | [`submission/video/GridResolve_Final_Video.mp4`](submission/video/GridResolve_Final_Video.mp4), 172.0 seconds, 1920x1080, about 7 MB, my own recorded narration at its own speed, authentic Foundry captures and a live Foundry screen recording with the project name covered, the Control Center, and slides built from the final run's evidence. This is the video I submit. Transcript: [`submission/video/FINAL_VIDEO_SCRIPT.md`](submission/video/FINAL_VIDEO_SCRIPT.md) |
+| Supporting deck, ten slides | [`submission/final/GridResolve_AI_Submission_Deck.pptx`](submission/final/GridResolve_AI_Submission_Deck.pptx), optional supporting material |
 | Case walkthrough | [`docs/JUDGE_WALKTHROUGH_SYN-CASE-4003.md`](docs/JUDGE_WALKTHROUGH_SYN-CASE-4003.md), seven stages end to end |
 | Runtime evidence | [`evidence/runtime/`](evidence/runtime/), three unmodified run folders. Result: [`docs/FINAL_RUN_RESULT_2026-09-20.md`](docs/FINAL_RUN_RESULT_2026-09-20.md) |
 | Screenshots | [`submission/final/18_SCREENSHOT_MANIFEST.md`](submission/final/18_SCREENSHOT_MANIFEST.md) |
@@ -27,7 +28,7 @@ the still-open investigation to a human reviewer, and a terminal audit records
 what happened. The agent that writes the answer is never the agent that clears it
 for release, and no agent can authorize money.
 
-> **Status, 2026-09-20.** A runtime-demonstrated, production-oriented prototype.
+> **Status, 2026-09-22.** A runtime-demonstrated multi-agent prototype with a tested production integration path.
 > Three genuine executions on Microsoft Foundry, all of one synthetic case. The
 > final run, on workflow **v10**, passed **14 of 14** acceptance criteria that
 > were written down before it ran: nine of nine agents did their work, a 22-entry
