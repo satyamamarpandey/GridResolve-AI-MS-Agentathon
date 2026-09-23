@@ -1,0 +1,101 @@
+{
+  "case_id": "SYN-CASE-4002",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "data_classification": "SYNTHETIC_ONLY",
+  "customer_request": "My July bill charges me for 880 kWh, far more than I have ever used in a single month. My June bill was only 500 kWh. I believe I have been overcharged by about 80 dollars in July and I want that amount refunded to my account.",
+  "synthetic_account_records": {
+    "account_id": "SYN-ACCT-0002",
+    "meter_id": "SYN-MTR-0002",
+    "service_type": "electric",
+    "rate_components": {
+      "energy_charge_usd_per_kwh": 0.22,
+      "fixed_charge_usd_per_period": 12.0
+    },
+    "billing_history": [
+      {
+        "record_id": "SYN-BILL-0002-06",
+        "period_start": "2026-06-01",
+        "period_end": "2026-06-30",
+        "billing_days": 30,
+        "kwh_billed": 500,
+        "amount_usd": 122.0,
+        "read_type_end": "estimated"
+      },
+      {
+        "record_id": "SYN-BILL-0002-07",
+        "period_start": "2026-07-01",
+        "period_end": "2026-07-31",
+        "billing_days": 31,
+        "kwh_billed": 880,
+        "amount_usd": 205.6,
+        "read_type_end": "actual"
+      }
+    ],
+    "meter_reads": [
+      {
+        "record_id": "SYN-READ-0002-A",
+        "read_date": "2026-05-31",
+        "read_type": "actual",
+        "register_kwh": 40000
+      },
+      {
+        "record_id": "SYN-READ-0002-B",
+        "read_date": "2026-06-30",
+        "read_type": "estimated",
+        "register_kwh": 40500
+      },
+      {
+        "record_id": "SYN-READ-0002-C",
+        "read_date": "2026-07-31",
+        "read_type": "actual",
+        "register_kwh": 41380
+      }
+    ],
+    "meter_events": [],
+    "meter_event_note": "No meter events recorded between 2026-05-01 and 2026-07-31. The June end read was estimated because the remote read was not collected on 2026-06-30.",
+    "diagnostic_records": [
+      {
+        "record_id": "SYN-DIAG-0002-01",
+        "diagnostic_date": "2026-07-30",
+        "type": "remote_self_test",
+        "result": "PASS",
+        "tamper_flag": false,
+        "register_fault_flag": false
+      }
+    ],
+    "usage_history_kwh": [
+      {
+        "period": "2025-06",
+        "kwh": 640
+      },
+      {
+        "period": "2025-07",
+        "kwh": 720
+      },
+      {
+        "period": "2025-08",
+        "kwh": 700
+      },
+      {
+        "period": "2026-04",
+        "kwh": 600
+      },
+      {
+        "period": "2026-05",
+        "kwh": 620
+      },
+      {
+        "period": "2026-06",
+        "kwh": 500
+      },
+      {
+        "period": "2026-07",
+        "kwh": 880
+      }
+    ],
+    "adjustments": [],
+    "prior_contacts": []
+  }
+}

@@ -152,7 +152,28 @@ one.
 The v10 suite (91), the runner suite (357), the evaluation package (198) and
 the Agent Framework parity check (11 of 11) still pass after these changes.
 
-## NOT HOSTED, stated plainly
+## Hosted status, updated 2026-09-23
+
+The section below this one was written before v11 was published and is kept
+as the record of that time. Since then:
+
+- GridResolveAIWorkflow v11 and EvidenceComplianceAgent v7 were published on
+  2026-09-23 and read back byte for byte (`evidence/pre-run/PRE07-*` and
+  `PRE08-*`). The live workflow is v11.
+- Five hosted runs executed on v11: SYN-CASE-4007, 4001, 4003, 4011 and
+  4002. Every one approved at attempt 0 and released. No REJECT_REWRITE, no
+  REJECT_REPLAN, no ESCALATE and no fail-closed branch was observed on v11.
+  SYN-CASE-4011 and SYN-CASE-4002 were designed to provoke the two correction
+  routes and did not; the results are in `docs/RUN_RESULT_SYN-CASE-4011_2026-09-23.md`
+  and `docs/RUN_RESULT_SYN-CASE-4002_2026-09-23.md`.
+- The correction routes therefore remain proven on the local engine only.
+  The two known limits and the runner's refusals below still hold, except
+  that the runner now executes against v11 when `GRIDRESOLVE_WORKFLOW_VERSION`
+  is 11.
+
+`docs/UPDATED_BRANCH_COVERAGE.md` has the per-branch table.
+
+## NOT HOSTED, as written before publication on 2026-09-23
 
 - v11 is not published to Foundry. The live workflow is v10.
 - EvidenceComplianceAgent v6, the live version, emits only the APPROVED and

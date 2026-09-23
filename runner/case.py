@@ -26,6 +26,13 @@ CASES: Final = {
     # conflicting-records escalation candidate. See docs/SCENARIO_*_ACCEPTANCE_PLAN.md.
     "SYN-CASE-4001": os.path.join("submission", "SYN-CASE-4001_input.json"),
     "SYN-CASE-4007": os.path.join("submission", "SYN-CASE-4007_input.json"),
+    # Added 2026-09-23 for the correction-route runs. 4011 targets
+    # REJECT_REWRITE (supported plan, customer pushes for wording the plan does
+    # not support), 4002 targets REJECT_REPLAN (estimated-to-actual true-up
+    # with a refund demand). Neither has been sent. See
+    # docs/SCENARIO_REWRITE_ACCEPTANCE_PLAN.md and SCENARIO_REPLAN_ACCEPTANCE_PLAN.md.
+    "SYN-CASE-4011": os.path.join("submission", "SYN-CASE-4011_input.json"),
+    "SYN-CASE-4002": os.path.join("submission", "SYN-CASE-4002_input.json"),
 }
 
 # The preflight requires the case to declare the workflow version it targets.

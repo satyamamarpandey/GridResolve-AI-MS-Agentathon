@@ -42,6 +42,26 @@ GROUND_TRUTHS = {"2.0": (PACK_PATH, RESULTS_PATH, ()),
                  "2.1": (PACK_V21_PATH, RESULTS_V21_PATH,
                          dc.CLAIM_VERDICT_CHECKS)}
 
+# Dataset D (v2.0) is frozen to the three runs of 2026-09-20 and 2026-09-21
+# that the submission describes. Runs made after the external review are
+# judged under v2.1 only, so the historical file never changes when a new
+# folder appears under evidence/runtime.
+HISTORICAL_RUNS = (
+    "20260920T205607Z_SYN-CASE-4003_80391bf2",
+    "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+    "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+)
+RUN_FILTERS = {"2.0": HISTORICAL_RUNS, "2.1": None}
+
+
+def select_runs(evidence_root: str, names: tuple[str, ...] | None):
+    """Every run folder, or only the named ones, in name order."""
+    runs = load_all(evidence_root)
+    if names is None:
+        return runs
+    wanted = set(names)
+    return tuple(r for r in runs if r.run_id in wanted)
+
 
 def reference_for(case_id: str, pack_path: str = PACK_PATH) -> dc.Reference:
     with open(pack_path, encoding="utf-8") as handle:
@@ -55,12 +75,13 @@ def reference_for(case_id: str, pack_path: str = PACK_PATH) -> dc.Reference:
 
 
 def compute(evidence_root: str = EVIDENCE, pack_path: str = PACK_PATH,
-            extra_checks: tuple[dc.Check, ...] = ()) -> dict[str, Any]:
+            extra_checks: tuple[dc.Check, ...] = (),
+            run_names: tuple[str, ...] | None = HISTORICAL_RUNS) -> dict[str, Any]:
     catalog_ids = provenance.catalog_ids_from(CATALOG_PATH)
     with open(pack_path, encoding="utf-8") as handle:
         dataset_version = json.load(handle).get("dataset_version")
     runs = []
-    for run in load_all(evidence_root):
+    for run in select_runs(evidence_root, run_names):
         reference = reference_for(str(run.case.get("case_id")), pack_path)
         results = dc.run_all(run, reference) + dc.run_with(run, reference,
                                                            extra_checks)
@@ -144,8 +165,10 @@ def main(argv: tuple[str, ...] = tuple(sys.argv[1:])) -> int:
     if "--escalation" in argv:
         sys.stdout.write(escalation_matrix(compute_escalation()) + "\n")
         return 0
-    pack_path, results_path, extra = GROUND_TRUTHS[ground_truth_of(argv)]
-    results = compute(pack_path=pack_path, extra_checks=extra)
+    ground_truth = ground_truth_of(argv)
+    pack_path, results_path, extra = GROUND_TRUTHS[ground_truth]
+    results = compute(pack_path=pack_path, extra_checks=extra,
+                      run_names=RUN_FILTERS[ground_truth])
     os.makedirs(os.path.dirname(results_path), exist_ok=True)
     with open(results_path, "w", encoding="utf-8", newline="\n") as handle:
         json.dump(results, handle, indent=2, ensure_ascii=True)

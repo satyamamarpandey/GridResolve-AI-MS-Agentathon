@@ -476,9 +476,10 @@ check("handoff without a reviewer breaks the human review link",
 
 # ------------------------------------------------------------ real runs
 
-RUN_DIRS = sorted(d for d in os.listdir(EVIDENCE)
-                  if os.path.isdir(os.path.join(EVIDENCE, d)))
-check("three genuine runs on disk", len(RUN_DIRS) == 3, str(RUN_DIRS))
+RUN_DIRS = list(run_checks.HISTORICAL_RUNS)
+check("the three genuine submission runs are on disk and pinned for dataset D",
+      all(os.path.isdir(os.path.join(EVIDENCE, d)) for d in RUN_DIRS) and len(RUN_DIRS) == 3,
+      str(RUN_DIRS))
 real = [run_record.load_run(os.path.join(EVIDENCE, d)) for d in RUN_DIRS]
 check("real runs report versions 6, 9, 10",
       [r.workflow_version for r in real] == ["6", "9", "10"])

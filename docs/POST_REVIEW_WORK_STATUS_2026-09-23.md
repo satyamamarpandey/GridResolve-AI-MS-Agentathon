@@ -1,5 +1,11 @@
 # Post-review work status, 2026-09-23
 
+**Superseded later the same day.** The hosted execution proposed in section 5
+was approved and carried out on 2026-09-23 (five runs, not three). The record
+of what happened is `docs/POST_REVIEW_VALIDATION_REPORT.md`; the current facts
+page is `docs/CURRENT_STATUS.md`. This page is kept as written, as the state
+before that approval.
+
 This page reports the implementation gaps the external review exposed, what
 was completed at zero Azure cost on 2026-09-23, and the exact hosted
 execution that is proposed and NOT yet approved. Nothing below is hosted

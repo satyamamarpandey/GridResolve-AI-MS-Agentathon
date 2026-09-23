@@ -130,7 +130,11 @@ check("the check is in ESCALATION_CHECKS",
 
 # ------------------------------------------------- genuine evidence, read only
 results = {r.run: r.verdict for r in compute_escalation()}
-check("three genuine runs were examined", len(results) == 3, str(results))
+check("the three historical runs were examined",
+      {RUN_1, RUN_2, RUN_3} <= set(results), str(results))
+check("every run of 2026-09-23 released, so the check is not applicable to it",
+      all(v == "NOT_APPLICABLE" for r, v in results.items()
+          if r.startswith("20260923T")), str(results))
 check("run 2 (v9, escalated with no reasons) fails the new check",
       results.get(RUN_2) == "FAIL")
 check("run 1 and run 3 (released) are not applicable",

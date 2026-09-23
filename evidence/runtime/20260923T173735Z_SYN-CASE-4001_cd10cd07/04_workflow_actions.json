@@ -1,0 +1,142 @@
+[
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-1789696603365",
+    "kind": "InvokeAzureAgent",
+    "status": "in_progress",
+    "previous_action_id": "trigger_wf"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-1789696603365",
+    "kind": "InvokeAzureAgent",
+    "status": "completed",
+    "previous_action_id": "trigger_wf"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-1789696645054",
+    "kind": "InvokeAzureAgent",
+    "status": "in_progress",
+    "previous_action_id": "node-1789696603365_Post"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-1789696645054",
+    "kind": "InvokeAzureAgent",
+    "status": "completed",
+    "previous_action_id": "node-1789696603365_Post"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-1789696697430",
+    "kind": "InvokeAzureAgent",
+    "status": "in_progress",
+    "previous_action_id": "node-1789696645054_Post"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-1789696697430",
+    "kind": "InvokeAzureAgent",
+    "status": "completed",
+    "previous_action_id": "node-1789696645054_Post"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-1789696718717",
+    "kind": "InvokeAzureAgent",
+    "status": "in_progress",
+    "previous_action_id": "node-1789696697430_Post"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-1789696718717",
+    "kind": "InvokeAzureAgent",
+    "status": "completed",
+    "previous_action_id": "node-1789696697430_Post"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-1789696778418",
+    "kind": "InvokeAzureAgent",
+    "status": "in_progress",
+    "previous_action_id": "node-1789696718717_Post"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-1789696778418",
+    "kind": "InvokeAzureAgent",
+    "status": "completed",
+    "previous_action_id": "node-1789696718717_Post"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-1789696813306",
+    "kind": "InvokeAzureAgent",
+    "status": "in_progress",
+    "previous_action_id": "node-1789696778418_Post"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-1789696813306",
+    "kind": "InvokeAzureAgent",
+    "status": "completed",
+    "previous_action_id": "node-1789696778418_Post"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-1789696841174",
+    "kind": "InvokeAzureAgent",
+    "status": "in_progress",
+    "previous_action_id": "node-1789696813306_Post"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-1789696841174",
+    "kind": "InvokeAzureAgent",
+    "status": "completed",
+    "previous_action_id": "node-1789696813306_Post"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-release-approved-message",
+    "kind": "SendActivity",
+    "status": "in_progress",
+    "previous_action_id": "if-node-approved-releaseActions"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-release-approved-message",
+    "kind": "SendActivity",
+    "status": "completed",
+    "previous_action_id": "if-node-approved-releaseActions"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-record-no-followup",
+    "kind": "SetVariable",
+    "status": "in_progress",
+    "previous_action_id": "if-node-no-human-followupActions"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-record-no-followup",
+    "kind": "SetVariable",
+    "status": "completed",
+    "previous_action_id": "if-node-no-human-followupActions"
+  },
+  {
+    "event": "response.output_item.added",
+    "action_id": "node-1789697069548",
+    "kind": "InvokeAzureAgent",
+    "status": "in_progress",
+    "previous_action_id": "node-1789696874113_Post"
+  },
+  {
+    "event": "response.output_item.done",
+    "action_id": "node-1789697069548",
+    "kind": "InvokeAzureAgent",
+    "status": "completed",
+    "previous_action_id": "node-1789696874113_Post"
+  }
+]

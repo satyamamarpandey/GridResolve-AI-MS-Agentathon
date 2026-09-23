@@ -1,0 +1,127 @@
+{
+  "basis": {
+    "platform_observed": [
+      "route",
+      "participation",
+      "distinct_agents",
+      "release",
+      "unhealthy_outputs",
+      "investigation"
+    ],
+    "model_produced": [
+      "compliance",
+      "case_follow_up.planner_*",
+      "audit.audit_*"
+    ],
+    "note": "Platform-observed fields come from service metadata and delivered text. Model-produced fields are what an agent wrote. Where they disagree the platform fields win."
+  },
+  "route": {
+    "route": "APPROVED_AND_RELEASED",
+    "gate_evaluated": true,
+    "case_follow_up": "NONE_REQUIRED",
+    "follow_up_gate_evaluated": true,
+    "audit_ran": true,
+    "agents_observed": [
+      "CaseTriageAgent",
+      "AccountEvidenceAgent",
+      "UsageAnomalyAgent",
+      "PolicyKnowledgeAgent",
+      "ResolutionPlannerAgent",
+      "CustomerCommunicationAgent",
+      "EvidenceComplianceAgent",
+      "CaseAuditAgent"
+    ],
+    "agents_not_observed": [
+      "EscalationCoordinatorAgent"
+    ],
+    "correction_attempts": 0,
+    "rejections_observed": [],
+    "correction_bound": 2
+  },
+  "participation": [
+    {
+      "agent": "CaseTriageAgent",
+      "version": "5",
+      "inner_response_id": "resp_06041dbd077c1f23006ab40e62670c8190b2b672a9aa71c920",
+      "output_chars": 2859
+    },
+    {
+      "agent": "AccountEvidenceAgent",
+      "version": "9",
+      "inner_response_id": "resp_06041dbd077c1f23006ab40e6c387c8190a6a58ef10a5df940",
+      "output_chars": 11973
+    },
+    {
+      "agent": "UsageAnomalyAgent",
+      "version": "4",
+      "inner_response_id": "resp_06041dbd077c1f23006ab40e9197288190ab174f8747c02439",
+      "output_chars": 9734
+    },
+    {
+      "agent": "PolicyKnowledgeAgent",
+      "version": "6",
+      "inner_response_id": "resp_06041dbd077c1f23006ab40eabe62c8190864a6ccbb47349e6",
+      "output_chars": 14573
+    },
+    {
+      "agent": "ResolutionPlannerAgent",
+      "version": "6",
+      "inner_response_id": "resp_06041dbd077c1f23006ab40ec54b70819087c7daaeb951c6e3",
+      "output_chars": 9958
+    },
+    {
+      "agent": "CustomerCommunicationAgent",
+      "version": "5",
+      "inner_response_id": "resp_06041dbd077c1f23006ab40ee084b481908098aa5ff1126021",
+      "output_chars": 3208
+    },
+    {
+      "agent": "EvidenceComplianceAgent",
+      "version": "7",
+      "inner_response_id": "resp_06041dbd077c1f23006ab40eea059881908f42eb2898f70574",
+      "output_chars": 1463
+    },
+    {
+      "agent": "CaseAuditAgent",
+      "version": "7",
+      "inner_response_id": "resp_06041dbd077c1f23006ab40ef330dc8190930c2bfdbeb34bf8",
+      "output_chars": 3868
+    }
+  ],
+  "distinct_agents": 8,
+  "unhealthy_outputs": [],
+  "investigation": {
+    "complete": true,
+    "incomplete_stages": [],
+    "stages_not_run": []
+  },
+  "compliance": {
+    "token": "APPROVED",
+    "final_line": "ROUTE_DECISION::GRIDRESOLVE_APPROVED"
+  },
+  "release": {
+    "outcome": "DELIVERED_CUSTOMER_MESSAGE",
+    "released_chars": 2092,
+    "draft_chars": 3208,
+    "released_preview": "We reviewed your June and July 2026 bills and the associated meter readings. The July bill is higher because the meter showed higher measured usage in July than",
+    "customer_ready": true,
+    "identifiers_in_release": []
+  },
+  "case_follow_up": {
+    "planner_token": "NONE_REQUIRED",
+    "planner_states_human_review_reason": false,
+    "planner_resolution_status": "RESOLVED",
+    "observed": "NONE_REQUIRED",
+    "findings": []
+  },
+  "audit": {
+    "audit_parsed": true,
+    "audit_execution_status": "RUNTIME_EXECUTED",
+    "audit_workflow_version": "GridResolveAIWorkflow v11",
+    "audit_agents_listed": 9,
+    "audit_entries": 9,
+    "platform_agents_observed": 8,
+    "accurate": true,
+    "findings": []
+  }
+}

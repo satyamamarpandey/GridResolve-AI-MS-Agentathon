@@ -1,8 +1,9 @@
 """
 The two synthetic scenario cases prepared on 2026-09-23 for post-review hosted
-validation: SYN-CASE-4001 (no-follow-up candidate) and SYN-CASE-4007
-(conflicting-records escalation candidate). No model call, no Azure call, no
-cost. Nothing here is Foundry execution evidence; neither case has been sent.
+validation: SYN-CASE-4001 (no-follow-up candidate), SYN-CASE-4007
+(conflicting-records escalation candidate), SYN-CASE-4011 (REJECT_REWRITE
+candidate) and SYN-CASE-4002 (REJECT_REPLAN candidate). No model call, no
+Azure call, no cost. Nothing here is Foundry execution evidence.
 
 What is checked: each case loads through runner.case (the synthetic-only
 validator, the field allowlist and the leak-marker scan), its money arithmetic
@@ -73,7 +74,7 @@ def common(case_id, expected_delta_matches):
     check("no leak marker in the payload", case_mod.leak_markers(loaded.raw_text) == ())
     check("every identifier starts with SYN-", all(i.startswith("SYN-") for i in syn_ids(rec)))
     check("amount = kWh x energy charge + fixed charge on every bill", money_consistent(rec))
-    check("two meter reads, both dated", len(rec["meter_reads"]) == 2
+    check("at least two meter reads, all dated", len(rec["meter_reads"]) >= 2
           and all(r["read_date"] for r in rec["meter_reads"]))
     delta = register_delta(rec)
     billed = rec["billing_history"][-1]["kwh_billed"]
@@ -100,8 +101,9 @@ def main():
     check("SYN-CASE-4003_input.json sha256 is the final-run payload",
           hashlib.sha256(case_mod.canonical_text(raw).encode("utf-8")).hexdigest()
           == CANONICAL_4003_SHA256)
-    check("the three cases are registered, 4003 among them",
-          set(case_mod.available_cases()) == {"SYN-CASE-4001", "SYN-CASE-4003", "SYN-CASE-4007"},
+    check("the five cases are registered, 4003 among them",
+          set(case_mod.available_cases()) == {"SYN-CASE-4001", "SYN-CASE-4002", "SYN-CASE-4003",
+                                              "SYN-CASE-4007", "SYN-CASE-4011"},
           str(case_mod.available_cases()))
 
     doc = common("SYN-CASE-4001", expected_delta_matches=True)
@@ -141,6 +143,54 @@ def main():
               rec["billing_history"][-1]["kwh_billed"] == 910 and register_delta(rec) == 650)
         check("the customer request states no expected outcome",
               "credit" not in doc["customer_request"].casefold())
+
+    doc = common("SYN-CASE-4011", expected_delta_matches=True)
+    if doc:
+        rec = doc["synthetic_account_records"]
+        text = doc["customer_request"].casefold()
+        check("the records fully support the plan: actual reads, diagnostic PASS, no events",
+              all(r["read_type"] == "actual" for r in rec["meter_reads"])
+              and len(rec["diagnostic_records"]) == 1
+              and rec["diagnostic_records"][0]["result"] == "PASS"
+              and rec["diagnostic_records"][0]["register_fault_flag"] is False
+              and rec["meter_events"] == [] and rec["adjustments"] == [])
+        check("the customer pushes for wording the plan cannot support: faulty meter and a credit",
+              "found faulty" in text and "goodwill credit" in text)
+        check("the push is addressed to nobody by name and carries no route token",
+              "agent" not in text and "route_decision" not in text)
+        history = {h["period"]: h["kwh"] for h in rec["usage_history_kwh"]}
+        check("usage history shows the same seasonal rise the year before",
+              history["2025-07"] > history["2025-06"] * 1.3
+              and history["2026-07"] > history["2026-06"] * 1.3)
+        check("bills are 500 kWh at $126.00 and 760 kWh at $185.80",
+              [(b["kwh_billed"], b["amount_usd"]) for b in rec["billing_history"]]
+              == [(500, 126.00), (760, 185.80)])
+
+    doc = common("SYN-CASE-4002", expected_delta_matches=False)
+    if doc:
+        rec = doc["synthetic_account_records"]
+        text = doc["customer_request"].casefold()
+        reads = rec["meter_reads"]
+        check("three reads: actual, estimated, actual",
+              [r["read_type"] for r in reads] == ["actual", "estimated", "actual"])
+        check("the June bill carries an estimated end read and July an actual one",
+              [b["read_type_end"] for b in rec["billing_history"]] == ["estimated", "actual"])
+        check("actual-to-actual register movement equals the two bills together (1380 kWh)",
+              reads[-1]["register_kwh"] - reads[0]["register_kwh"]
+              == sum(b["kwh_billed"] for b in rec["billing_history"]) == 1380)
+        check("the estimated read undershot: 500 estimated against 690 per month of actual movement",
+              reads[1]["register_kwh"] - reads[0]["register_kwh"] == 500
+              and (reads[-1]["register_kwh"] - reads[0]["register_kwh"]) // 2 == 690)
+        check("diagnostic passed, no events, no adjustments on file",
+              rec["diagnostic_records"][0]["result"] == "PASS"
+              and rec["meter_events"] == [] and rec["adjustments"] == [])
+        check("the customer demands a refund and asserts an overcharge",
+              "refund" in text and "overcharged" in text)
+        check("the demand names no policy, no agent and no route token",
+              "pol-" not in text and "agent" not in text and "route_decision" not in text)
+        check("bills are 500 kWh at $122.00 and 880 kWh at $205.60",
+              [(b["kwh_billed"], b["amount_usd"]) for b in rec["billing_history"]]
+              == [(500, 122.00), (880, 205.60)])
 
     print("\nRESULT: %d passed, %d failed" % (len(checks), len(fails)))
     for name, detail in fails:

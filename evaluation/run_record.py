@@ -131,7 +131,18 @@ def load_run(run_dir: str) -> RunRecord:
         items=items, analysis=runner_analysis.analyze_run_dir(run_dir))
 
 
+REQUIRED_FILES = ("07_conversation_items.json", "04_workflow_actions.json")
+
+
+def is_complete(run_dir: str) -> bool:
+    """A folder the runner finished writing. A run still streaming, or one
+    that failed before the conversation was read back (99_error.txt), has no
+    record to judge and is skipped rather than guessed at."""
+    return all(os.path.isfile(os.path.join(run_dir, n)) for n in REQUIRED_FILES)
+
+
 def load_all(evidence_root: str) -> tuple[RunRecord, ...]:
     names = sorted(n for n in os.listdir(evidence_root)
-                   if os.path.isdir(os.path.join(evidence_root, n)))
+                   if os.path.isdir(os.path.join(evidence_root, n))
+                   and is_complete(os.path.join(evidence_root, n)))
     return tuple(load_run(os.path.join(evidence_root, n)) for n in names)

@@ -12,18 +12,23 @@ Submitted to the Microsoft Agent-a-thon, Level 3 Architect.
 | **Final video** | [`submission/video/GridResolve_Final_Video.mp4`](submission/video/GridResolve_Final_Video.mp4), 172.0 seconds, 1920x1080, about 7 MB, my own recorded narration at its own speed, authentic Foundry captures and a live Foundry screen recording with the project name covered, the Control Center, and slides built from the final run's evidence. This is the video I submit. Transcript: [`submission/video/FINAL_VIDEO_SCRIPT.md`](submission/video/FINAL_VIDEO_SCRIPT.md) |
 | Supporting deck, ten slides | [`submission/final/GridResolve_AI_Deck.pptx`](submission/final/GridResolve_AI_Deck.pptx), optional supporting material |
 | Case walkthrough | [`docs/JUDGE_WALKTHROUGH_SYN-CASE-4003.md`](docs/JUDGE_WALKTHROUGH_SYN-CASE-4003.md), seven stages end to end |
-| Runtime evidence | [`evidence/runtime/`](evidence/runtime/), three unmodified run folders. Result: [`docs/FINAL_RUN_RESULT_2026-09-20.md`](docs/FINAL_RUN_RESULT_2026-09-20.md) |
+| Runtime evidence | [`evidence/runtime/`](evidence/runtime/), the three original run folders, unmodified, plus five v11 folders from 2026-09-23. Original result: [`docs/FINAL_RUN_RESULT_2026-09-20.md`](docs/FINAL_RUN_RESULT_2026-09-20.md) |
 | Screenshots | [`submission/final/18_SCREENSHOT_MANIFEST.md`](submission/final/18_SCREENSHOT_MANIFEST.md) |
 | Validation report | [`docs/FINAL_VALIDATION_REPORT.md`](docs/FINAL_VALIDATION_REPORT.md) |
-| Coverage matrix and metrics | [`docs/COVERAGE_MATRIX.md`](docs/COVERAGE_MATRIX.md), 46 cases mapped to seven failure dimensions, branch coverage and rates at n = 3 |
-| Annotated trace | [`docs/ANNOTATED_TRACE_SYN-CASE-4003.md`](docs/ANNOTATED_TRACE_SYN-CASE-4003.md), every agent's prompt and output from the passing run |
-| Escalation reason codes | [`docs/ESCALATION_REASON_CODES.md`](docs/ESCALATION_REASON_CODES.md), structured codes with citations, enforced offline, not yet in a hosted run |
+| Coverage matrix and metrics | [`docs/COVERAGE_MATRIX.md`](docs/COVERAGE_MATRIX.md), 54 rows mapped to seven failure dimensions, hosted results per row, branch coverage and rates at n = 8 |
+| Annotated trace | [`docs/ANNOTATED_TRACE_SYN-CASE-4003.md`](docs/ANNOTATED_TRACE_SYN-CASE-4003.md), every agent's prompt and output from the passing v10 run, retained unchanged |
+| Escalation reason codes | [`docs/ESCALATION_REASON_CODES.md`](docs/ESCALATION_REASON_CODES.md), structured codes with citations; compliance v7 is live, every hosted v7 decision so far was APPROVE with an empty code list, so a hosted rejection with codes is still unobserved |
 | Hosted control center | https://pandeysatyam.com/GridResolve-AI-MS-Agentathon/ (GitHub Pages, static, synthetic data only) |
+| **Post-review validation report, 2026-09-23** | [`docs/POST_REVIEW_VALIDATION_REPORT.md`](docs/POST_REVIEW_VALIDATION_REPORT.md), the authoritative account of the five hosted v11 runs, what they showed, what they did not, and every reviewer finding's resolution. New PDF revision: [`submission/final/GridResolve_AI_PDF_v2_2026-09-23.pdf`](submission/final/GridResolve_AI_PDF_v2_2026-09-23.pdf). The original submitted PDF and video above are unchanged |
+| Hosted run results, 2026-09-23 | [`docs/RUN_RESULT_SYN-CASE-4007_2026-09-23.md`](docs/RUN_RESULT_SYN-CASE-4007_2026-09-23.md), [`docs/RUN_RESULT_SYN-CASE-4001_2026-09-23.md`](docs/RUN_RESULT_SYN-CASE-4001_2026-09-23.md), [`docs/RUN_RESULT_SYN-CASE-4003_v11_2026-09-23.md`](docs/RUN_RESULT_SYN-CASE-4003_v11_2026-09-23.md), [`docs/RUN_RESULT_SYN-CASE-4011_2026-09-23.md`](docs/RUN_RESULT_SYN-CASE-4011_2026-09-23.md), [`docs/RUN_RESULT_SYN-CASE-4002_2026-09-23.md`](docs/RUN_RESULT_SYN-CASE-4002_2026-09-23.md); evidence in [`evidence/runtime/`](evidence/runtime/), eight folders, hashes in [`evidence/runtime/EVIDENCE_HASHES_2026-09-23.md`](evidence/runtime/EVIDENCE_HASHES_2026-09-23.md) |
+| Branch coverage and metrics after v11 | [`docs/UPDATED_BRANCH_COVERAGE.md`](docs/UPDATED_BRANCH_COVERAGE.md), [`docs/UPDATED_EVALUATION_METRICS.md`](docs/UPDATED_EVALUATION_METRICS.md), [`docs/SUPERVISOR_FEEDBACK_RESULTS.md`](docs/SUPERVISOR_FEEDBACK_RESULTS.md) |
+| Second annotated trace | [`docs/ANNOTATED_TRACE_SYN-CASE-4001.md`](docs/ANNOTATED_TRACE_SYN-CASE-4001.md), the no-follow-up branch on v11, agent by agent |
 | Post-review work status | [`docs/POST_REVIEW_WORK_STATUS_2026-09-23.md`](docs/POST_REVIEW_WORK_STATUS_2026-09-23.md), gaps, zero-cost completions, cost bound and the proposed, not yet approved, hosted batch |
-| Preflight for hosted v11 validation | [`docs/PREFLIGHT_V11_2026-09-23.md`](docs/PREFLIGHT_V11_2026-09-23.md), cost reconciliation, live capture, safety checks, the exact approval request. Not approved, not executed |
-| Workflow v11 correction routes | [`docs/WORKFLOW_V11_CORRECTION_ROUTES.md`](docs/WORKFLOW_V11_CORRECTION_ROUTES.md), bounded rewrite and replan, local proof only |
+| Preflight for hosted v11 validation | [`docs/PREFLIGHT_V11_2026-09-23.md`](docs/PREFLIGHT_V11_2026-09-23.md), cost reconciliation, live capture, safety checks, the exact approval request. Approved and executed later the same day, see the validation report |
+| Workflow v11 correction routes | [`docs/WORKFLOW_V11_CORRECTION_ROUTES.md`](docs/WORKFLOW_V11_CORRECTION_ROUTES.md), bounded rewrite and replan; v11 is live and ran five times, neither correction route was entered, so they stay locally proven |
 | Root-cause adjudication | [`docs/ROOT_CAUSE_ADJUDICATION.md`](docs/ROOT_CAUSE_ADJUDICATION.md), ground truth v2.1, v2.0 results frozen |
-| Supervisor feedback loop | [`docs/SUPERVISOR_FEEDBACK_LOOP.md`](docs/SUPERVISOR_FEEDBACK_LOOP.md), no actual human decision recorded yet |
+| Supervisor feedback loop | [`docs/SUPERVISOR_FEEDBACK_LOOP.md`](docs/SUPERVISOR_FEEDBACK_LOOP.md) and [`docs/SUPERVISOR_FEEDBACK_RESULTS.md`](docs/SUPERVISOR_FEEDBACK_RESULTS.md): implemented and tested, zero actual human decisions, both metrics NotMeasured |
+| Reviewer response | [`docs/RESPONSE_TO_REVIEWER_2026-09-23.md`](docs/RESPONSE_TO_REVIEWER_2026-09-23.md), point by point, what was implemented, tested, hosted, documented and left open |
 
 **In one paragraph.** A customer's bill rose from $152.80 to $203.40 and they are
 certain the meter is broken. Nine specialist agents investigate as one governed
@@ -37,15 +42,20 @@ the still-open investigation to a human reviewer, and a terminal audit records
 what happened. The agent that writes the answer is never the agent that clears it
 for release, and no agent can authorize money.
 
-> **Status, 2026-09-22.** A runtime-demonstrated multi-agent prototype with a tested production integration path.
-> Three genuine executions on Microsoft Foundry, all of one synthetic case. The
-> final run, on workflow **v10**, passed **14 of 14** acceptance criteria that
-> were written down before it ran: nine of nine agents did their work, a 22-entry
-> evidence ledger, nine policies mapped, compliance approved with reasons, a
-> readable message released, the open case handed to a human, and an audit with
-> zero findings. It is not production-ready, no utility system is integrated, and
-> all data is synthetic. One page with every current fact:
-> [`docs/CURRENT_STATUS.md`](docs/CURRENT_STATUS.md).
+> **Status, 2026-09-23.** A runtime-demonstrated multi-agent prototype with a tested production integration path.
+> Eight genuine executions on Microsoft Foundry across five synthetic cases. The
+> submitted final run, on workflow **v10**, passed **14 of 14** acceptance criteria
+> written before it ran. After the external review, workflow **v11** with bounded
+> correction routes and compliance agent **v7** with mandatory reason codes were
+> published and run five times: the no-follow-up branch was observed for the
+> first time (12 of 12), the reference case passed again (14 of 14), and the
+> three runs designed to provoke an escalation, a rewrite and a replan were all
+> approved at the first attempt, so those routes remain proven on the local
+> engine only. Every release asserted no fault and promised no credit. It is not
+> production-ready, no utility system is integrated, no supervisor has reviewed
+> a case, and all data is synthetic. One page with every current fact:
+> [`docs/CURRENT_STATUS.md`](docs/CURRENT_STATUS.md); the full account:
+> [`docs/POST_REVIEW_VALIDATION_REPORT.md`](docs/POST_REVIEW_VALIDATION_REPORT.md).
 
 **What makes it credible.** The failures are in the repository too. Reading the
 deployed configuration found two defects before any money was spent: a release
@@ -81,19 +91,20 @@ This matters more than the feature list, so it is stated first.
 
 | Label | What it covers |
 |---|---|
-| CONFIGURED | Nine agents and workflow v10, deployed to Foundry and readable |
+| CONFIGURED | Nine agents and workflow v11 (compliance agent v7), deployed to Foundry and readable; v10 and v6 retained as earlier versions |
 | STATICALLY_VALIDATED | Routing semantics, arithmetic, provenance, data isolation |
 | OFFLINE_DEMONSTRATION | The Control Center application and its customer conversation |
-| PREPARED_ONLY | 30 evaluation cases, 16 adversarial probes, disabled live adapter |
-| PRODUCTION_TARGET | Parallel investigation, correction loops, tracing pipeline |
-| **RUNTIME_OBSERVED, THREE RUNS** | Three executions of SYN-CASE-4003. **v6:** eight agents, compliance approved, the customer was sent an unevaluated expression. **v9:** nine agents, compliance escalated without giving a reason, nothing was sent, a complete review package was produced. Across those two runs 3 of 17 agent invocations stopped without doing their work. **v10, final:** nine of nine agents did their work, compliance approved with reasons, a readable message was released, the open case was handed to a human, the audit had zero findings. 14 of 14 pre-registered criteria passed |
-| **NOT YET OBSERVED** | The fail-closed route on v10 (seen once, on v9). The follow-up branch where no human is needed. Any second run of v10. Any case other than SYN-CASE-4003. The 30 evaluation cases and 16 adversarial probes |
+| PREPARED_ONLY | 15 of 20 synthetic cases, all 18 adversarial probes, disabled live adapter |
+| PRODUCTION_TARGET | Parallel investigation, tracing pipeline, real integrations |
+| **RUNTIME_OBSERVED, EIGHT RUNS** | **2026-09-23, workflow v11, five runs on five cases:** SYN-CASE-4001 released and closed with no human work item, the first hosted no-follow-up branch, 12 of 12. SYN-CASE-4003 released and handed to a human, 14 of 14, same route as v10. SYN-CASE-4007, 4011 and 4002 were designed to provoke an escalation, a rewrite and a replan; each was approved at the first attempt because the draft or plan gave the compliance agent nothing to reject, so those targets were missed and the messages released were safe. Zero corrections, zero audit findings. **Before that, three executions of SYN-CASE-4003.** **v6:** eight agents, compliance approved, the customer was sent an unevaluated expression. **v9:** nine agents, compliance escalated without giving a reason, nothing was sent, a complete review package was produced. Across those two runs 3 of 17 agent invocations stopped without doing their work. **v10, final:** nine of nine agents did their work, compliance approved with reasons, a readable message was released, the open case was handed to a human, the audit had zero findings. 14 of 14 pre-registered criteria passed |
+| **NOT YET OBSERVED** | The fail-closed route on v10 or v11 (seen once, on v9, without reasons). A hosted rejection with reason codes. REJECT_REWRITE and REJECT_REPLAN in the hosted service; both are proven on the local engine. 15 of the 20 prepared cases and all 18 adversarial probes. Any actual supervisor decision |
 
-**Azure spend on this build: three workflow executions, about $0.13.** That is
-186,614 input and 42,155 output tokens at list price ($0.0334, $0.0292 and
-$0.0685), a provisional figure. The billed amount is **not yet visible** in Azure
-Cost Management, which is not the same as a confirmed $0.00. Zero embeddings,
-zero evaluation runs, zero billable resources created.
+**Azure spend on this build: eight workflow executions, about $0.46 by token
+estimate.** The three submitted runs, $0.1311 estimated, have since been
+**billed at $0.1310** by Azure Cost Management, so the estimate method holds.
+The five runs of 2026-09-23 are estimated at $0.3280 (465,202 input and
+107,178 output tokens) and were not yet visible in billing on 2026-09-23. Zero
+embeddings, zero evaluation runs, zero billable resources created.
 
 Every number in the documents and the application was produced by deterministic
 code or read from deployed configuration. Model output exists in one place only,
@@ -242,6 +253,9 @@ tests/                 routing, data, runner, Power Fx gate, workflow engine, li
 | Document | Covers |
 |---|---|
 | `docs/CURRENT_STATUS.md` | The canonical facts page. Every other document defers to it |
+| `docs/POST_REVIEW_VALIDATION_REPORT.md` | The consolidated post-review account: what ran on 2026-09-23, what it showed, what it did not, every reviewer finding's resolution |
+| `docs/UPDATED_EVALUATION_METRICS.md` | Every metric with its denominator over the eight hosted runs, the v2.1 check matrix and the checker's own failure messages |
+| `docs/UPDATED_BRANCH_COVERAGE.md` | Which branch each hosted run took, from the platform action record, against the local engine proof |
 | `docs/FOUNDRY_CAPABILITY_INVENTORY.md` | Every Foundry capability, whether I use it, what it costs by Microsoft's documentation, and why the rest is off |
 | `docs/SECURITY_AND_GOVERNANCE_EVIDENCE.md` | The guardrail and security settings as actually configured, and a control matrix with enforcement status |
 | `docs/OPERATIONS_MONITORING_AND_COST.md` | Three cost figures kept apart, platform telemetry read back, and why HTTP success is not correctness |

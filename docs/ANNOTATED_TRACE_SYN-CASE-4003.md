@@ -8,6 +8,13 @@ and the seven-stage story, see `docs/JUDGE_WALKTHROUGH_SYN-CASE-4003.md`. For
 the fourteen acceptance criteria this run met, see
 `docs/FINAL_RUN_RESULT_2026-09-20.md`.
 
+This is the historical v10 trace and is retained unchanged. A second annotated
+trace, of the 2026-09-23 run of SYN-CASE-4001 on workflow v11, is in
+`docs/ANNOTATED_TRACE_SYN-CASE-4001.md`. That run is the first hosted
+observation of the no-follow-up branch and the first hosted run of a case
+other than this one. The two documents are meant to be read side by side: the
+same nine-step shape, one case that needs a person and one that does not.
+
 The data is synthetic (`SYN-*` identifiers, `data_classification:
 SYNTHETIC_ONLY`). The request preview in `00_preflight.json` carries
 `<foundry-resource>` and `<foundry-project>` placeholders; no endpoint,

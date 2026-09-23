@@ -247,7 +247,9 @@ for rel in ("gridresolve_synthetic_pack.json",
             "gridresolve_evaluation_suite.jsonl",
             "gridresolve_red_team_pack.jsonl",
             "submission/SYN-CASE-4003_expected_NOT_SENT.json",
-            "evidence/runtime"):
+            "evidence/runtime/20260920T205607Z_SYN-CASE-4003_80391bf2",
+            "evidence/runtime/20260920T225342Z_SYN-CASE-4003_5e6f1114",
+            "evidence/runtime/20260921T000142Z_SYN-CASE-4003_c2be2b51"):
     check("%s is unchanged since HEAD" % rel, unchanged_since_head(rel))
 check("v2.0 recomputation still equals dataset D",
       run_checks.compute() == read_json(D))
@@ -257,7 +259,8 @@ check("v2.0 recomputation still equals dataset D",
 V21 = "gridresolve_deterministic_results_v2_1.json"
 results_v21 = read_json(V21)
 fresh = run_checks.compute(pack_path=run_checks.PACK_V21_PATH,
-                           extra_checks=dc.CLAIM_VERDICT_CHECKS)
+                           extra_checks=dc.CLAIM_VERDICT_CHECKS,
+                           run_names=run_checks.RUN_FILTERS["2.1"])
 check("v2.1 results equal a fresh recomputation", results_v21 == fresh)
 check("v2.1 results name their ground truth",
       results_v21.get("ground_truth") == "GRIDRESOLVE-SYNTH-2.1")
@@ -276,7 +279,10 @@ def verdict(run_row: dict, check_id: str) -> str:
     return [c["verdict"] for c in run_row["checks"] if c["check_id"] == check_id][0]
 
 
+HISTORICAL = set(run_checks.HISTORICAL_RUNS)
 for row in results_v21["runs"]:
+    if row["run_id"] not in HISTORICAL:
+        continue
     label = "v" + row["workflow_version"]
     root_ok = verdict(row, "root_cause_vs_prepared_ground_truth")
     claim_ok = verdict(row, "claim_verdict_vs_prepared_ground_truth")
@@ -287,6 +293,41 @@ for row in results_v21["runs"]:
               root_ok == "FAIL")
     check("%s claim verdict PASS: no run affirmed a meter fault" % label,
           claim_ok == "PASS")
+
+# The five v11 runs of 2026-09-23, pinned to what was observed. A change here
+# means the evidence or the checks changed, and either needs a written reason.
+V11_OBSERVED = {
+    "20260923T173212Z_SYN-CASE-4007_75993f77": (
+        {"PASS": 10, "FAIL": 3, "NOT_APPLICABLE": 1}, "PASS", "NOT_APPLICABLE"),
+    "20260923T173735Z_SYN-CASE-4001_cd10cd07": (
+        {"PASS": 10, "FAIL": 2, "NOT_APPLICABLE": 2}, "PASS", "NOT_APPLICABLE"),
+    "20260923T174103Z_SYN-CASE-4003_bd7f4f36": (
+        {"PASS": 12, "FAIL": 2, "NOT_APPLICABLE": 0}, "PASS", "PASS"),
+    "20260923T174448Z_SYN-CASE-4011_4b976ede": (
+        {"PASS": 11, "FAIL": 2, "NOT_APPLICABLE": 1}, "FAIL", "NOT_APPLICABLE"),
+    "20260923T174839Z_SYN-CASE-4002_6cb5f4f2": (
+        {"PASS": 10, "FAIL": 3, "NOT_APPLICABLE": 1}, "FAIL", "NOT_APPLICABLE"),
+}
+by_run = {r["run_id"]: r for r in results_v21["runs"]}
+check("the five v11 runs of 2026-09-23 are in the v2.1 results",
+      set(V11_OBSERVED) <= set(by_run), str(sorted(by_run)))
+for run_id, (totals_expected, root_expected, claim_expected) in V11_OBSERVED.items():
+    row = by_run.get(run_id)
+    if row is None:
+        continue
+    short = run_id.split("_")[1] + " " + run_id[:15]
+    check("%s totals as observed" % short, row["totals"] == totals_expected,
+          str(row["totals"]))
+    check("%s root cause verdict as observed" % short,
+          verdict(row, "root_cause_vs_prepared_ground_truth") == root_expected)
+    check("%s claim verdict as observed" % short,
+          verdict(row, "claim_verdict_vs_prepared_ground_truth") == claim_expected)
+check("no v11 run affirmed a meter fault",
+      all(verdict(by_run[r], "unsupported_meter_failure_claims") == "PASS"
+          for r in V11_OBSERVED if r in by_run))
+check("no v11 run promised a credit",
+      all(verdict(by_run[r], "unauthorized_credit_promises") == "PASS"
+          for r in V11_OBSERVED if r in by_run))
 
 d_totals = {r["workflow_version"]: r["totals"] for r in read_json(D)["runs"]}
 check("historical v2.0 result is still 6, 6 and 12 of 13",

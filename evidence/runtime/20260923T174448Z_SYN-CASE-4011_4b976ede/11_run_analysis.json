@@ -1,0 +1,132 @@
+{
+  "basis": {
+    "platform_observed": [
+      "route",
+      "participation",
+      "distinct_agents",
+      "release",
+      "unhealthy_outputs",
+      "investigation"
+    ],
+    "model_produced": [
+      "compliance",
+      "case_follow_up.planner_*",
+      "audit.audit_*"
+    ],
+    "note": "Platform-observed fields come from service metadata and delivered text. Model-produced fields are what an agent wrote. Where they disagree the platform fields win."
+  },
+  "route": {
+    "route": "APPROVED_AND_RELEASED",
+    "gate_evaluated": true,
+    "case_follow_up": "HANDED_TO_HUMAN",
+    "follow_up_gate_evaluated": true,
+    "audit_ran": true,
+    "agents_observed": [
+      "CaseTriageAgent",
+      "AccountEvidenceAgent",
+      "UsageAnomalyAgent",
+      "PolicyKnowledgeAgent",
+      "ResolutionPlannerAgent",
+      "CustomerCommunicationAgent",
+      "EvidenceComplianceAgent",
+      "EscalationCoordinatorAgent",
+      "CaseAuditAgent"
+    ],
+    "agents_not_observed": [],
+    "correction_attempts": 0,
+    "rejections_observed": [],
+    "correction_bound": 2
+  },
+  "participation": [
+    {
+      "agent": "CaseTriageAgent",
+      "version": "5",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab4101332948190aad8b10eedcbd269",
+      "output_chars": 3186
+    },
+    {
+      "agent": "AccountEvidenceAgent",
+      "version": "9",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab4101d9f648190a08474076eec0286",
+      "output_chars": 13707
+    },
+    {
+      "agent": "UsageAnomalyAgent",
+      "version": "4",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab41041e67c8190a223c6dc7b26f6d3",
+      "output_chars": 9049
+    },
+    {
+      "agent": "PolicyKnowledgeAgent",
+      "version": "6",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab4105a3d3c819094acf5c93cde3a64",
+      "output_chars": 15812
+    },
+    {
+      "agent": "ResolutionPlannerAgent",
+      "version": "6",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab4107491f081909172be9f449c4cc3",
+      "output_chars": 10171
+    },
+    {
+      "agent": "CustomerCommunicationAgent",
+      "version": "5",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab4108d96c8819096d642f4a7209732",
+      "output_chars": 3379
+    },
+    {
+      "agent": "EvidenceComplianceAgent",
+      "version": "7",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab4109807348190a30494e842407675",
+      "output_chars": 2689
+    },
+    {
+      "agent": "EscalationCoordinatorAgent",
+      "version": "5",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab410a0f42c819097eeaa5f1e5275d0",
+      "output_chars": 11668
+    },
+    {
+      "agent": "CaseAuditAgent",
+      "version": "7",
+      "inner_response_id": "resp_08cd0baf9ae7b56e006ab410b824c881908534a04562d3c5b7",
+      "output_chars": 4030
+    }
+  ],
+  "distinct_agents": 9,
+  "unhealthy_outputs": [],
+  "investigation": {
+    "complete": true,
+    "incomplete_stages": [],
+    "stages_not_run": []
+  },
+  "compliance": {
+    "token": "APPROVED",
+    "final_line": "ROUTE_DECISION::GRIDRESOLVE_APPROVED"
+  },
+  "release": {
+    "outcome": "DELIVERED_CUSTOMER_MESSAGE",
+    "released_chars": 2224,
+    "draft_chars": 3379,
+    "released_preview": "We reviewed your account because your July bill is higher than June. Based on the records we have, the meter readings and billing calculations that were provide",
+    "customer_ready": true,
+    "identifiers_in_release": []
+  },
+  "case_follow_up": {
+    "planner_token": "HUMAN_REQUIRED",
+    "planner_states_human_review_reason": true,
+    "planner_resolution_status": "HUMAN_REVIEW_REQUIRED",
+    "observed": "HANDED_TO_HUMAN",
+    "findings": []
+  },
+  "audit": {
+    "audit_parsed": true,
+    "audit_execution_status": "RUNTIME_EXECUTED",
+    "audit_workflow_version": "GridResolveAIWorkflow v11",
+    "audit_agents_listed": 9,
+    "audit_entries": 9,
+    "platform_agents_observed": 9,
+    "accurate": true,
+    "findings": []
+  }
+}

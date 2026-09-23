@@ -1,0 +1,1543 @@
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "case_state": "INTAKE",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "intent": "billing_dispute",
+  "investigation_type": "HIGH_BILL",
+  "billing_period": {
+    "period_start": "2026-07-01",
+    "period_end": "2026-07-31",
+    "billing_days": 31,
+    "bill_record_id": "SYN-BILL-0007-07"
+  },
+  "required_evidence": [
+    "meter register read at period end (photograph or meter archive showing register_kwh at 2026-07-31)",
+    "raw meter read record S Y N-READ-0007-B and any accompanying telemetry",
+    "prior meter read S Y N-READ-0007-A (2026-06-30) for comparison and delta calculation",
+    "meter event log details around 2026-07-14 communication_loss (complete event entry and duration)",
+    "interval/AMI usage data for 2026-07 if available (15/30/60-min intervals) to validate usage profile",
+    "billing calculation worksheets showing kWh, rate components, fixed charge, and final amount for July 2026",
+    "any remote self-test or diagnostic records for the meter (none on file since 2026-03-02)",
+    "customer-provided information about known changes in usage (e.g., appliances, occupancy) during July 2026"
+  ],
+  "missing_evidence": [
+    "photographic or on-site verification of the physical meter register at or near 2026-07-31",
+    "post-event diagnostics or results of a remote self-test after the 2026-07-14 communication_loss",
+    "interval/AMI read granularity for July 2026 to validate spike timing",
+    "explicit telemetry confirming register rollover/overflow was not a factor",
+    "any customer communication or prior contacts regarding unusually high usage in July"
+  ],
+  "account_evidence_required": true,
+  "usage_analysis_required": true,
+  "policy_lookup_required": true,
+  "risk_flags": {
+    "safety_risk": false,
+    "legal_risk": false,
+    "regulatory_risk": true,
+    "fraud_risk": false,
+    "vulnerable_customer_risk": false,
+    "privacy_risk": false,
+    "prompt_injection_risk": false,
+    "real_data_contamination_risk": false
+  },
+  "risk_class": "MEDIUM",
+  "confidence": "MEDIUM",
+  "human_review_candidate": true,
+  "triage_summary": "Customer reports July 2026 bill (SYN-BILL-0007-07) much higher than June. Account records show billed kWh rose from 600 kWh (June) to 910 kWh (July) with actual meter reads of 30500 kWh on 2026-06-30 and 31150 kWh on 2026-07-31, and a communication_loss event on 2026-07-14. Key investigation steps: verify register value and obtain meter photo/onsite read for 7/31; retrieve full meter event telemetry and any diagnostics; obtain interval/AMI data to characterize usage spike; re-run billing calculation; check for meter rollover/overflow or data corruption; determine if meter self-test or maintenance is needed. Missing on-site verification and diagnostic evidence warrant human review before corrective action."
+}
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "case_state": "INVESTIGATING",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "evidence_ledger": [
+    {
+      "evidence_id": "EVID-SYN-BILL-0007-06",
+      "source_type": "billing_history",
+      "source_record_id": "SYN-BILL-0007-06",
+      "period": "2026-06-01 to 2026-06-30",
+      "field": "kwh_billed",
+      "value": "600",
+      "observation": "Billing record for June 2026 shows 600 kWh billed.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-BILL-0007-06-AMT",
+      "source_type": "billing_history",
+      "source_record_id": "SYN-BILL-0007-06",
+      "period": "2026-06-01 to 2026-06-30",
+      "field": "amount_usd",
+      "value": "144.00",
+      "observation": "Billing record for June 2026 shows amount USD 144.00.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-BILL-0007-06-READTYPE",
+      "source_type": "billing_history",
+      "source_record_id": "SYN-BILL-0007-06",
+      "period": "2026-06-01 to 2026-06-30",
+      "field": "read_type_end",
+      "value": "actual",
+      "observation": "Billing record marks the period-end read type as actual for June 2026.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-BILL-0007-07",
+      "source_type": "billing_history",
+      "source_record_id": "SYN-BILL-0007-07",
+      "period": "2026-07-01 to 2026-07-31",
+      "field": "kwh_billed",
+      "value": "910",
+      "observation": "Billing record for July 2026 shows 910 kWh billed.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-BILL-0007-07-AMT",
+      "source_type": "billing_history",
+      "source_record_id": "SYN-BILL-0007-07",
+      "period": "2026-07-01 to 2026-07-31",
+      "field": "amount_usd",
+      "value": "212.2",
+      "observation": "Billing record for July 2026 shows amount USD 212.2.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-BILL-0007-07-READTYPE",
+      "source_type": "billing_history",
+      "source_record_id": "SYN-BILL-0007-07",
+      "period": "2026-07-01 to 2026-07-31",
+      "field": "read_type_end",
+      "value": "actual",
+      "observation": "Billing record marks the period-end read type as actual for July 2026.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-READ-0007-A",
+      "source_type": "meter_read",
+      "source_record_id": "SYN-READ-0007-A",
+      "period": "2026-06-30",
+      "field": "register_kwh",
+      "value": "30500",
+      "observation": "Meter read on 2026-06-30 shows register kWh = 30500 and read_type = actual.",
+      "source_timestamp": "2026-06-30",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-READ-0007-A-READTYPE",
+      "source_type": "meter_read",
+      "source_record_id": "SYN-READ-0007-A",
+      "period": "2026-06-30",
+      "field": "read_type",
+      "value": "actual",
+      "observation": "Meter read record explicitly lists read_type as actual for 2026-06-30.",
+      "source_timestamp": "2026-06-30",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-READ-0007-B",
+      "source_type": "meter_read",
+      "source_record_id": "SYN-READ-0007-B",
+      "period": "2026-07-31",
+      "field": "register_kwh",
+      "value": "31150",
+      "observation": "Meter read on 2026-07-31 shows register kWh = 31150 and read_type = actual.",
+      "source_timestamp": "2026-07-31",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-READ-0007-B-READTYPE",
+      "source_type": "meter_read",
+      "source_record_id": "SYN-READ-0007-B",
+      "period": "2026-07-31",
+      "field": "read_type",
+      "value": "actual",
+      "observation": "Meter read record explicitly lists read_type as actual for 2026-07-31.",
+      "source_timestamp": "2026-07-31",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-EVT-0007-01",
+      "source_type": "meter_event",
+      "source_record_id": "SYN-EVT-0007-01",
+      "period": "2026-07-14",
+      "field": "type",
+      "value": "communication_loss",
+      "observation": "Meter event log records a communication_loss on 2026-07-14 with remote read link unavailable for 36 hours. The event log does not state whether the register value was affected.",
+      "source_timestamp": "2026-07-14",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-METER-EVENT-NOTE",
+      "source_type": "meter_event",
+      "source_record_id": "meter_event_note",
+      "period": "2026-06-01 to 2026-07-31",
+      "field": "note",
+      "value": "One meter event recorded between 2026-06-01 and 2026-07-31, see meter_events. No remote self-test has been run on this meter since 2026-03-02.",
+      "observation": "Supporting note stating one meter event occurred in the billing window and last remote self-test date.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-RATECOMP-ENERGY",
+      "source_type": "rate_component",
+      "source_record_id": "rate_components.energy_charge_usd_per_kwh",
+      "period": "2026-07",
+      "field": "energy_charge_usd_per_kwh",
+      "value": "0.22",
+      "observation": "Declared energy charge is USD 0.22 per kWh.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-RATECOMP-FIXED",
+      "source_type": "rate_component",
+      "source_record_id": "rate_components.fixed_charge_usd_per_period",
+      "period": "2026-07",
+      "field": "fixed_charge_usd_per_period",
+      "value": "12.00",
+      "observation": "Declared fixed charge is USD 12.00 per billing period.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-USAGE-2026-04",
+      "source_type": "usage_history",
+      "source_record_id": "usage_history_kwh.2026-04",
+      "period": "2026-04",
+      "field": "kwh",
+      "value": "560",
+      "observation": "Usage history record for 2026-04 shows 560 kWh.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-USAGE-2026-05",
+      "source_type": "usage_history",
+      "source_record_id": "usage_history_kwh.2026-05",
+      "period": "2026-05",
+      "field": "kwh",
+      "value": "580",
+      "observation": "Usage history record for 2026-05 shows 580 kWh.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-USAGE-2026-06",
+      "source_type": "usage_history",
+      "source_record_id": "usage_history_kwh.2026-06",
+      "period": "2026-06",
+      "field": "kwh",
+      "value": "600",
+      "observation": "Usage history record for 2026-06 shows 600 kWh.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-USAGE-2026-07",
+      "source_type": "usage_history",
+      "source_record_id": "usage_history_kwh.2026-07",
+      "period": "2026-07",
+      "field": "kwh",
+      "value": "910",
+      "observation": "Usage history record for 2026-07 shows 910 kWh.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-ADJUSTMENTS",
+      "source_type": "adjustment",
+      "source_record_id": "adjustments",
+      "period": "2026-06 to 2026-07",
+      "field": "adjustments_list",
+      "value": "[]",
+      "observation": "No adjustments are recorded in the supplied adjustments array.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    },
+    {
+      "evidence_id": "EVID-SYN-PRIOR_CONTACTS",
+      "source_type": "prior_contact",
+      "source_record_id": "prior_contacts",
+      "period": "prior",
+      "field": "prior_contacts_list",
+      "value": "[]",
+      "observation": "No prior contacts are recorded in the supplied prior_contacts array.",
+      "source_timestamp": "",
+      "data_version": "GRIDRESOLVE-SYNTH-2.0"
+    }
+  ],
+  "billing_comparison": [
+    {
+      "calculation": "delta_kwh_Jul_vs_Jun",
+      "formula": "kwh_billed_Jul - kwh_billed_Jun = 910 - 600",
+      "result": "310",
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-06",
+        "EVID-SYN-BILL-0007-07"
+      ]
+    },
+    {
+      "calculation": "derived_energy_charge_Jul",
+      "formula": "energy_charge_usd_per_kwh * kwh_billed_Jul = 0.22 * 910",
+      "result": "200.2",
+      "evidence_ids": [
+        "EVID-SYN-RATECOMP-ENERGY",
+        "EVID-SYN-BILL-0007-07"
+      ]
+    },
+    {
+      "calculation": "expected_total_Jul_from_components",
+      "formula": "derived_energy_charge_Jul + fixed_charge = 200.2 + 12.00",
+      "result": "212.2",
+      "evidence_ids": [
+        "EVID-SYN-RATECOMP-ENERGY",
+        "EVID-SYN-RATECOMP-FIXED",
+        "EVID-SYN-BILL-0007-07"
+      ]
+    },
+    {
+      "calculation": "delta_register_reads",
+      "formula": "register_kwh_2026-07-31 - register_kwh_2026-06-30 = 31150 - 30500",
+      "result": "650",
+      "evidence_ids": [
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B"
+      ]
+    },
+    {
+      "calculation": "consistency_check_billed_vs_register_delta",
+      "formula": "kwh_billed_Jul (910) compared to register delta (650) => difference = 910 - 650",
+      "result": "260",
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B"
+      ]
+    }
+  ],
+  "meter_read_status": [
+    {
+      "source_record_id": "SYN-READ-0007-A",
+      "read_date": "2026-06-30",
+      "read_type": "actual",
+      "evidence_id": "EVID-SYN-READ-0007-A-READTYPE"
+    },
+    {
+      "source_record_id": "SYN-READ-0007-B",
+      "read_date": "2026-07-31",
+      "read_type": "actual",
+      "evidence_id": "EVID-SYN-READ-0007-B-READTYPE"
+    },
+    {
+      "source_record_id": "SYN-BILL-0007-07",
+      "read_date": "2026-07-31",
+      "read_type": "actual",
+      "evidence_id": "EVID-SYN-BILL-0007-07-READTYPE"
+    }
+  ],
+  "rate_components": [
+    {
+      "component": "energy_charge",
+      "value": "0.22",
+      "unit": "USD/kWh",
+      "evidence_id": "EVID-SYN-RATECOMP-ENERGY"
+    },
+    {
+      "component": "fixed_charge",
+      "value": "12.00",
+      "unit": "USD/period",
+      "evidence_id": "EVID-SYN-RATECOMP-FIXED"
+    }
+  ],
+  "observed_changes": [
+    "Usage increased from 600 kWh in June 2026 to 910 kWh in July 2026 (delta 310 kWh) as shown in billing and usage history records.",
+    "Register delta between 2026-06-30 and 2026-07-31 is 650 kWh per meter reads (31150 - 30500).",
+    "A communication_loss meter event occurred on 2026-07-14 (36 hours) during the billing window; no diagnostics or self-test results supplied after that event."
+  ],
+  "conflicts": [
+    "Billed kWh for July 2026 (910 kWh) does not match the register delta between 2026-06-30 and 2026-07-31 (650 kWh) as recorded by meter reads. Both facts are present in the supplied records and conflict numerically. HUMAN_REVIEW_REQUIRED"
+  ],
+  "missing_fields": [
+    "Photographic or on-site verification of the physical meter register at or near 2026-07-31 (no meter sighting provided).",
+    "Interval/AMI interval data for July 2026 (15/30/60-min) to validate usage profile and timing of consumption increase.",
+    "Meter telemetry or full event log details surrounding the 2026-07-14 communication_loss beyond the single summary record.",
+    "Any diagnostic_records or remote self-test results after 2026-07-14 (none supplied; last self-test noted 2026-03-02).",
+    "Explanation or worksheet showing how billed kWh (910) was derived from register reads or other inputs."
+  ],
+  "evidence_quality": "MEDIUM",
+  "data_freshness": "Most recent supplied read 2026-07-31; records current through 2026-07-31",
+  "evidence_summary": "Supplied synthetic records include June and July billing records (600 kWh and 910 kWh billed), two actual register reads (30500 on 2026-06-30 and 31150 on 2026-07-31), a communication_loss event on 2026-07-14, declared rate components (USD 0.22/kWh energy, USD 12 fixed), and monthly usage history confirming the billed values. Calculations show a billed increase of 310 kWh from June to July, expected July energy charge USD 200.2 plus fixed USD 12 equals the billed USD 212.2. However, the meter register delta indicates only 650 kWh difference across the read pair, which does not match the billed 910 kWh for July; this numeric conflict and absence of interval data or post-event diagnostics require human review."
+}
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "case_state": "INVESTIGATING",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "usage_pattern": {
+    "description": "Monthly-billed usage shows a notable increase from June 2026 to July 2026 by billed records; meter register read-pair indicates a smaller actual register delta across the same window.",
+    "long_term_trend": "Available monthly history (Apr-Jun) shows modest month-to-month increases (560 -> 580 -> 600 kWh). July billed value (910 kWh) is an outlier relative to the prior 3 months' pattern.",
+    "seasonality": "Insufficient data to ascribe seasonal effects beyond the provided monthly history. (Supporting evidence: EVID-SYN-USAGE-2026-04, EVID-SYN-USAGE-2026-05, EVID-SYN-USAGE-2026-06, EVID-SYN-USAGE-2026-07)"
+  },
+  "comparison_periods": [
+    {
+      "period_label": "June 2026 (billing record)",
+      "period_start": "2026-06-01",
+      "period_end": "2026-06-30",
+      "billing_days": 30,
+      "kwh_billed": 600,
+      "kwh_per_day": 20,
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-06",
+        "EVID-SYN-USAGE-2026-06"
+      ]
+    },
+    {
+      "period_label": "July 2026 (billing record)",
+      "period_start": "2026-07-01",
+      "period_end": "2026-07-31",
+      "billing_days": 31,
+      "kwh_billed": 910,
+      "kwh_per_day": 29.354838709677, 
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-USAGE-2026-07"
+      ]
+    },
+    {
+      "period_label": "Register-derived consumption (2026-06-30 to 2026-07-31)",
+      "period_start": "2026-06-30",
+      "period_end": "2026-07-31",
+      "billing_days": 31,
+      "kwh_from_register_delta": 650,
+      "kwh_per_day": 20.967741935484,
+      "evidence_ids": [
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B",
+        "EVID-SYN-BILL-0007-07"
+      ],
+      "note": "Register delta computed from the two actual register reads supplied."
+    }
+  ],
+  "anomalies": [
+    {
+      "anomaly_id": "A1",
+      "period": "2026-07 (billed)",
+      "observation": "Large month-to-month billed increase: billed kWh rose from 600 kWh in June to 910 kWh in July (delta 310 kWh; ~51.7% increase in total kWh; ~46.8% increase in kWh/day).",
+      "magnitude_description": "Delta = 310 kWh higher than prior month; daily rate increased from 20 to ~29.35 kWh/day.",
+      "supporting_evidence_ids": [
+        "EVID-SYN-BILL-0007-06",
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-USAGE-2026-06",
+        "EVID-SYN-USAGE-2026-07"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "anomaly_id": "A2",
+      "period": "2026-07 (billed vs register)",
+      "observation": "Billed consumption for July (910 kWh) does not match the metered register delta between 2026-06-30 and 2026-07-31 (register delta = 650 kWh). Billed is 260 kWh higher than the register-derived consumption.",
+      "magnitude_description": "Discrepancy = 260 kWh (billed > register delta); billed energy charge and total bill align with 910 kWh (EVID-SYN-BILL-0007-07, EVID-SYN-RATECOMP-ENERGY, EVID-SYN-RATECOMP-FIXED).",
+      "supporting_evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B",
+        "EVID-SYN-RATECOMP-ENERGY",
+        "EVID-SYN-RATECOMP-FIXED"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "anomaly_id": "A3",
+      "period": "2026-07-14 (during billing window)",
+      "observation": "Meter event recorded: communication_loss for 36 hours on 2026-07-14. Event note does not state whether register values were affected or if any telemetry gaps occurred beyond the summary.",
+      "magnitude_description": "Single multi-day communication outage logged; no post-event diagnostics provided in records supplied.",
+      "supporting_evidence_ids": [
+        "EVID-SYN-EVT-0007-01",
+        "EVID-SYN-METER-EVENT-NOTE"
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "supported_explanations": [
+    {
+      "explanation_id": "S1",
+      "explanation": "There is a numeric discrepancy between billed kWh for July 2026 and the register delta measured by the two actual meter reads spanning the same window.",
+      "supporting_evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B",
+        "EVID-SYN-USAGE-2026-07"
+      ]
+    },
+    {
+      "explanation_id": "S2",
+      "explanation": "Billing calculation applied the declared energy rate (USD 0.22/kWh) and fixed charge (USD 12.00) to produce the billed amount that matches 910 kWh.",
+      "supporting_evidence_ids": [
+        "EVID-SYN-RATECOMP-ENERGY",
+        "EVID-SYN-RATECOMP-FIXED",
+        "EVID-SYN-BILL-0007-07"
+      ]
+    },
+    {
+      "explanation_id": "S3",
+      "explanation": "A communication_loss event occurred during the billing window (2026-07-14) and no diagnostics or subsequent self-test records are present in the supplied evidence.",
+      "supporting_evidence_ids": [
+        "EVID-SYN-EVT-0007-01",
+        "EVID-SYN-METER-EVENT-NOTE",
+        "EVID-SYN-ADJUSTMENTS"
+      ]
+    }
+  ],
+  "unsupported_hypotheses": [
+    {
+      "hypothesis_id": "U1",
+      "hypothesis": "The meter register reading on 2026-07-31 (31150) is incorrect due to meter malfunction.",
+      "reason_not_supported": "No diagnostic_records, self-test results, on-site photographic verification, or other telemetry are supplied that indicate meter malfunction or an invalid register read. The evidence only provides the register value itself (EVID-SYN-READ-0007-B) and a communication_loss summary (EVID-SYN-EVT-0007-01) without stating the register was altered.",
+      "referenced_evidence_ids": [
+        "EVID-SYN-READ-0007-B",
+        "EVID-SYN-EVT-0007-01",
+        "EVID-SYN-METER-EVENT-NOTE"
+      ]
+    },
+    {
+      "hypothesis_id": "U2",
+      "hypothesis": "The billed July kWh (910) represents correct metered consumption and the register delta (650 kWh) is wrong due to missed reads or register rollover.",
+      "reason_not_supported": "No evidence of register rollover/overflow, missing intermediate reads, or read-type indicating estimate-to-actual transitions is present. Both period-end reads are marked actual (EVID-SYN-READ-0007-A-READTYPE, EVID-SYN-READ-0007-B-READTYPE) and there are no diagnostic records or interval data demonstrating missed reads.",
+      "referenced_evidence_ids": [
+        "EVID-SYN-READ-0007-A-READTYPE",
+        "EVID-SYN-READ-0007-B-READTYPE",
+        "EVID-SYN-ADJUSTMENTS"
+      ]
+    },
+    {
+      "hypothesis_id": "U3",
+      "hypothesis": "A customer behavior change (appliances, occupancy) fully explains the increase in billed consumption.",
+      "reason_not_supported": "No customer-provided information about usage changes is in the evidence ledger. The supplied records do not contain occupancy, appliance, or behavioral data to link to the billed increase.",
+      "referenced_evidence_ids": [
+        "EVID-SYN-PRIOR_CONTACTS",
+        "EVID-SYN-ADJUSTMENTS"
+      ]
+    },
+    {
+      "hypothesis_id": "U4",
+      "hypothesis": "The billing system applied an incorrect multiplier or manual adjustment producing 910 kWh.",
+      "reason_not_supported": "Billing records show the billed amount mathematically matches energy charge and fixed charge applied to 910 kWh (EVID-SYN-RATECOMP-ENERGY, EVID-SYN-RATECOMP-FIXED, EVID-SYN-BILL-0007-07), but no billing worksheet or derivation is provided to show how 910 kWh was determined from register inputs. Lack of billing worksheet means this hypothesis is plausible but not supported.",
+      "referenced_evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-RATECOMP-ENERGY"
+      ]
+    }
+  ],
+  "confidence": "MEDIUM",
+  "required_additional_evidence": [
+    {
+      "item": "On-site photographic or archival evidence of the meter register around 2026-07-31 (to validate register_kwh = 31150).",
+      "reason": "To corroborate the 2026-07-31 register read and rule out reading/transcription error.",
+      "linked_evidence_ids": [
+        "EVID-SYN-READ-0007-B"
+      ]
+    },
+    {
+      "item": "Full meter event telemetry/log surrounding 2026-07-14 communication_loss (raw logs, start/end timestamps, any missed remote polls).",
+      "reason": "To determine whether telemetry gaps could have produced billing inputs inconsistent with register reads.",
+      "linked_evidence_ids": [
+        "EVID-SYN-EVT-0007-01",
+        "EVID-SYN-METER-EVENT-NOTE"
+      ]
+    },
+    {
+      "item": "Interval/AMI data for July 2026 (15/30/60-minute intervals) or any available hourly usage snapshots.",
+      "reason": "To locate when the consumption increase occurred and reconcile billed kWh with register delta.",
+      "linked_evidence_ids": [
+        "EVID-SYN-USAGE-2026-07",
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B"
+      ]
+    },
+    {
+      "item": "Billing calculation worksheet or meter-to-bill derivation showing how 910 kWh was obtained (inputs, read sources, any estimated reads).",
+      "reason": "To verify billing system inputs and whether any estimates, corrections, or manual entries produced the billed kWh.",
+      "linked_evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-RATECOMP-ENERGY"
+      ]
+    },
+    {
+      "item": "Post-event diagnostics or remote self-test results run after 2026-07-14 (or on-site meter diagnostic if available).",
+      "reason": "To identify any meter errors, internal alarms, or register integrity issues following the communication loss.",
+      "linked_evidence_ids": [
+        "EVID-SYN-METER-EVENT-NOTE",
+        "EVID-SYN-EVT-0007-01"
+      ]
+    },
+    {
+      "item": "Customer statement about occupancy, use of high-energy devices, or known meter access incidents during July 2026.",
+      "reason": "To evaluate behavioral explanations for increased consumption if interval data is unavailable.",
+      "linked_evidence_ids": [
+        "EVID-SYN-PRIOR_CONTACTS"
+      ]
+    }
+  ],
+  "usage_summary": {
+    "key_findings": [
+      "Billed consumption rose from 600 kWh (June) to 910 kWh (July) per billing records (EVID-SYN-BILL-0007-06, EVID-SYN-BILL-0007-07).",
+      "Meter register reads marked 'actual' show register values of 30500 kWh on 2026-06-30 and 31150 kWh on 2026-07-31, yielding a register delta of 650 kWh across the same window (EVID-SYN-READ-0007-A, EVID-SYN-READ-0007-B).",
+      "There is a 260 kWh discrepancy where billed July usage exceeds the register-derived consumption (EVID-SYN-BILL-0007-07 vs EVID-SYN-READ-0007-A/B).",
+      "A communication_loss event occurred for 36 hours on 2026-07-14 during the billing period; no follow-up diagnostics are in the supplied evidence (EVID-SYN-EVT-0007-01, EVID-SYN-METER-EVENT-NOTE)."
+    ],
+    "numeric_summary": {
+      "June_2026_billed_kwh": 600,
+      "July_2026_billed_kwh": 910,
+      "billed_delta_kwh": 310,
+      "register_delta_kwh_2026-06-30_to_2026-07-31": 650,
+      "billed_minus_register_delta_kwh": 260,
+      "June_kwh_per_day": 20,
+      "July_billed_kwh_per_day": 29.354838709677,
+      "register_kwh_per_day_for_Jul_window": 20.967741935484
+    },
+    "next_recommendation_summary": "Obtain the additional evidence listed above to reconcile the 260 kWh discrepancy before adjusting bills or concluding meter malfunction. Current evidence supports the existence of the discrepancy and the communication_loss event but does not indicate the root cause."
+  }
+}
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "case_state": "INVESTIGATING",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "policy_ledger": [
+    {
+      "policy_id": "POL-HB-001",
+      "policy_version": "2.0",
+      "section": "High Bill Investigation",
+      "rule": "Require billing-period comparison, read type, usage delta, charge components, and documented uncertainty. High usage alone does not prove meter fault.",
+      "applies_to": "Cases alleging unexpectedly high bill or usage discrepancies",
+      "effect_on_resolution": "Defines required evidence and analysis steps; prohibits concluding meter fault solely from high usage; requires documented uncertainty be recorded."
+    },
+    {
+      "policy_id": "POL-BILL-002",
+      "policy_version": "2.0",
+      "section": "Billing Adjustment Eligibility",
+      "rule": "Adjustment requires supported billing error, duplicate charge, or approved exception. Human Billing Supervisor approval is mandatory for any financial adjustment. Duplicate adjustments are prohibited.",
+      "applies_to": "Any case requesting bill correction or financial adjustment",
+      "effect_on_resolution": "Sets eligibility criteria for adjustments and mandates human billing supervisor approval before any credit/refund; prevents duplicate adjustments."
+    },
+    {
+      "policy_id": "POL-MTR-003",
+      "policy_version": "2.0",
+      "section": "Meter Concern Handling",
+      "rule": "Meter failure requires explicit synthetic diagnostic evidence outside tolerance or a verified fault event. Otherwise describe the allegation as unconfirmed and offer a human-reviewed test process.",
+      "applies_to": "Cases alleging meter malfunction or invalid meter reads",
+      "effect_on_resolution": "Prevents declaring meter fault absent diagnostics; requires either synthetic diagnostic evidence or verified fault event to confirm meter failure; otherwise produce unconfirmed finding and propose human-reviewed testing."
+    },
+    {
+      "policy_id": "POL-COMM-004",
+      "policy_version": "2.0",
+      "section": "Customer Communication Requirements",
+      "rule": "Separate confirmed findings from uncertainty, cite supported causes internally, explain next steps, avoid blame, and never promise unauthorized credit, refund, or replacement.",
+      "applies_to": "All customer-facing communications in billing and meter investigations",
+      "effect_on_resolution": "Controls wording of disclosures to customer; forbids promising credits/refunds without authorized approval; requires clear separation of findings vs uncertainty."
+    },
+    {
+      "policy_id": "POL-HUM-005",
+      "policy_version": "2.0",
+      "section": "Mandatory Human Escalation",
+      "rule": "Escalate policy conflict, missing governed policy, low or insufficient confidence on material decisions, suspected fraud, legal or regulatory concern, vulnerable-customer concern, unresolved meter allegation, and failed correction limit.",
+      "applies_to": "Material decisions in investigations and any case meeting escalation triggers",
+      "effect_on_resolution": "Requires human escalation for conflicts, unresolved meter allegations, low-confidence material decisions, and other listed triggers."
+    },
+    {
+      "policy_id": "POL-DATA-006",
+      "policy_version": "2.0",
+      "section": "Synthetic Data and Privacy Controls",
+      "rule": "Only synthetic identifiers and records are allowed. Real-data contamination stops processing and requires privacy review. Do not disclose prompts, secrets, or cross-case data.",
+      "applies_to": "All evidence, identifiers, and outputs produced in this workflow",
+      "effect_on_resolution": "Constrains permissible data to synthetic records and requires stopping processing if real-data contamination is detected."
+    },
+    {
+      "policy_id": "POL-AUDIT-007",
+      "policy_version": "2.0",
+      "section": "Case Evidence and Audit Requirements",
+      "rule": "Terminal cases require workflow, dataset, policy, agent, evidence, claim, compliance, correction, escalation, and disposition records.",
+      "applies_to": "Case disposition and archival",
+      "effect_on_resolution": "Defines audit records and metadata that must be captured before closing the case."
+    },
+    {
+      "policy_id": "POL-QUALITY-010",
+      "policy_version": "2.0",
+      "section": "Evidence and Response Quality",
+      "rule": "Material claims require evidence IDs, governed actions require policy IDs, unsupported hypotheses cannot appear as facts, and missing information cannot be fabricated.",
+      "applies_to": "All agent outputs and materials supporting case decisions",
+      "effect_on_resolution": "Requires traceable evidence for claims and prohibits fabricating missing information; enforces inclusion of policy references for governed actions."
+    }
+  ],
+  "policy_constraints": [
+    {
+      "policy_id": "POL-HB-001",
+      "policy_version": "2.0",
+      "section": "High Bill Investigation",
+      "rule": "Any statement that the meter is at fault must be accompanied by diagnostic evidence outside tolerance or a verified fault event; otherwise the allegation must be recorded as unconfirmed and uncertainty documented.",
+      "applies_to": "Claims of meter fault or reading error in this case",
+      "effect_on_resolution": "Prevents declaring meter fault based solely on high billed usage; requires diagnostics or verified fault event to support meter-fault finding."
+    },
+    {
+      "policy_id": "POL-MTR-003",
+      "policy_version": "2.0",
+      "section": "Meter Concern Handling",
+      "rule": "Meter failure requires explicit synthetic diagnostic evidence outside tolerance or a verified fault event; absent that, offer human-reviewed test process and mark allegation unconfirmed.",
+      "applies_to": "Investigation of SYN-MTR-0007 in this case",
+      "effect_on_resolution": "Mandates collection of diagnostics or escalation for on-site testing before confirming meter failure."
+    },
+    {
+      "policy_id": "POL-BILL-002",
+      "policy_version": "2.0",
+      "section": "Billing Adjustment Eligibility",
+      "rule": "Adjustments allowed only for supported billing error, duplicate charge, or approved exception; any financial adjustment requires Human Billing Supervisor approval and duplicate adjustments are prohibited.",
+      "applies_to": "Requested correction of July 2026 bill (SYN-BILL-0007-07)",
+      "effect_on_resolution": "Requires establishing a supported billing error before any adjustment and mandates supervisor approval for any credit/refund."
+    },
+    {
+      "policy_id": "POL-COMM-004",
+      "policy_version": "2.0",
+      "section": "Customer Communication Requirements",
+      "rule": "Communications must separate confirmed findings from uncertainty, cite internal supported causes, explain next steps, avoid blame, and not promise unauthorized credits/refunds.",
+      "applies_to": "All external communications to SYN-ACCT-0007",
+      "effect_on_resolution": "Controls content of customer-facing messages and prohibits promising adjustments without authorization."
+    },
+    {
+      "policy_id": "POL-HUM-005",
+      "policy_version": "2.0",
+      "section": "Mandatory Human Escalation",
+      "rule": "Escalate unresolved meter allegation, policy conflicts, and low-confidence material decisions to human reviewers.",
+      "applies_to": "This case due to numeric conflict between billed kWh and register delta and lack of diagnostics",
+      "effect_on_resolution": "Requires human review before concluding meter fault or performing a financial adjustment."
+    },
+    {
+      "policy_id": "POL-AUDIT-007",
+      "policy_version": "2.0",
+      "section": "Case Evidence and Audit Requirements",
+      "rule": "Maintain workflow, dataset, policy, agent, evidence, claim, compliance, correction, escalation, and disposition records for the case before closing.",
+      "applies_to": "Case closure and disposition",
+      "effect_on_resolution": "Requires comprehensive audit trail be recorded for any terminal action."
+    },
+    {
+      "policy_id": "POL-QUALITY-010",
+      "policy_version": "2.0",
+      "section": "Evidence and Response Quality",
+      "rule": "Material claims must reference evidence IDs and governed actions must cite policy IDs; do not fabricate missing information.",
+      "applies_to": "All investigation outputs in this case",
+      "effect_on_resolution": "Requires traceability of claims and prohibits fabricating diagnostics or evidence to justify adjustments."
+    },
+    {
+      "policy_id": "POL-DATA-006",
+      "policy_version": "2.0",
+      "section": "Synthetic Data and Privacy Controls",
+      "rule": "Only synthetic identifiers and records are allowed in processing outputs; real-data contamination requires privacy review and halt.",
+      "applies_to": "Evidence and outputs for SYN-CASE-4007",
+      "effect_on_resolution": "Confines processing to synthetic records and mandates halt if real data is detected."
+    }
+  ],
+  "policy_conflicts": [],
+  "adjustment_eligibility": {
+    "eligible": false,
+    "reason": "No supported billing error or duplicate charge has been demonstrated. There is a numeric discrepancy between billed kWh (910) and register delta (650) but required supporting diagnostics, interval data, or billing worksheets to prove a billing error are missing.",
+    "required_actions_for_eligibility": [
+      "Obtain billing calculation worksheet or meter-to-bill derivation showing how 910 kWh was computed (POL-HB-001, POL-QUALITY-010).",
+      "Acquire interval/AMI data for July 2026 or equivalent telemetry to reconcile billed consumption with register and usage profile (POL-HB-001).",
+      "Obtain on-site photographic verification of the meter register at or near 2026-07-31 or verified telemetry corroborating the register read (POL-MTR-003, POL-QUALITY-010).",
+      "Collect post-event diagnostics or run remote self-test / on-site diagnostic following the 2026-07-14 communication_loss to demonstrate any meter fault (POL-MTR-003).",
+      "After evidence confirms a supported billing error or approved exception, obtain Human Billing Supervisor approval for any financial adjustment (POL-BILL-002)."
+    ]
+  },
+  "required_customer_disclosures": [
+    {
+      "disclosure": "Inform the customer that an investigation is underway, separate confirmed findings from uncertainties, and explain next investigative steps (e.g., obtaining meter photo, interval data, diagnostics). Do not promise a credit or bill change until the investigation and required approvals are complete.",
+      "policy_reference": {
+        "policy_id": "POL-COMM-004",
+        "policy_version": "2.0",
+        "section": "Customer Communication Requirements",
+        "rule": "Separate confirmed findings from uncertainty, cite supported causes internally, explain next steps, avoid blame, and never promise unauthorized credit, refund, or replacement."
+      }
+    },
+    {
+      "disclosure": "Notify the customer that meter-fault conclusions will only be made if diagnostic evidence or a verified fault event is obtained; otherwise the allegation remains unconfirmed and further testing may be proposed.",
+      "policy_reference": {
+        "policy_id": "POL-MTR-003",
+        "policy_version": "2.0",
+        "section": "Meter Concern Handling",
+        "rule": "Meter failure requires explicit synthetic diagnostic evidence outside tolerance or a verified fault event. Otherwise describe the allegation as unconfirmed and offer a human-reviewed test process."
+      }
+    },
+    {
+      "disclosure": "Advise the customer that any approved financial adjustments require Human Billing Supervisor approval and will be communicated after completion of the audit trail and approval process.",
+      "policy_reference": {
+        "policy_id": "POL-BILL-002",
+        "policy_version": "2.0",
+        "section": "Billing Adjustment Eligibility",
+        "rule": "Adjustment requires supported billing error, duplicate charge, or approved exception. Human Billing Supervisor approval is mandatory for any financial adjustment."
+      }
+    }
+  ],
+  "required_human_approval": [
+    {
+      "action": "Approve any financial adjustment, credit, or refund related to SYN-BILL-0007-07",
+      "policy_reference": {
+        "policy_id": "POL-BILL-002",
+        "policy_version": "2.0",
+        "section": "Billing Adjustment Eligibility",
+        "rule": "Human Billing Supervisor approval is mandatory for any financial adjustment."
+      }
+    },
+    {
+      "action": "Review and decide on unresolved meter allegation given numeric conflict between billed kWh and register delta and absence of diagnostics",
+      "policy_reference": {
+        "policy_id": "POL-HUM-005",
+        "policy_version": "2.0",
+        "section": "Mandatory Human Escalation",
+        "rule": "Escalate unresolved meter allegation, policy conflicts, and low-confidence material decisions to human reviewers."
+      }
+    },
+    {
+      "action": "Authorize any on-site meter test or field inspection and approve disposition following diagnostics",
+      "policy_reference": {
+        "policy_id": "POL-MTR-003",
+        "policy_version": "2.0",
+        "section": "Meter Concern Handling",
+        "rule": "Offer a human-reviewed test process when diagnostics are absent and escalate for on-site testing where appropriate."
+      }
+    }
+  ],
+  "missing_policy": false,
+  "policy_summary": "Applicable policies require strict evidence-based handling: POL-HB-001 mandates billing-period comparisons and documents uncertainty; POL-MTR-003 prevents declaring meter fault absent diagnostics and requires human-reviewed testing; POL-BILL-002 allows adjustments only for supported billing errors and mandates Human Billing Supervisor approval; POL-COMM-004 prescribes customer communications that separate confirmed findings from uncertainty and forbids promising unauthorized credits; POL-HUM-005 requires escalation for unresolved meter allegations and low-confidence material decisions; POL-QUALITY-010 and POL-AUDIT-007 require traceable evidence IDs and audit records; POL-DATA-006 restricts processing to synthetic data. Given the numeric discrepancy between billed kWh (910) and register delta (650) and lack of diagnostics, adjustments are not eligible now; additional data collection and a human Billing Supervisor decision are required before any bill correction. HUMAN_REVIEW_REQUIRED for unresolved meter allegation and any financial adjustment." 
+}
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "case_state": "PLANNING",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "resolution_status": "HUMAN_REVIEW_REQUIRED",
+  "root_cause_classification": "NO_SUPPORTED_ROOT_CAUSE",
+  "supported_findings": [
+    {
+      "claim_id": "CLM-001",
+      "claim_text": "Billed consumption for July 2026 is 910 kWh and the billed amount USD 212.20 mathematically matches 910 kWh at USD 0.22/kWh plus USD 12 fixed charge.",
+      "claim_type": "billing_fact",
+      "source_agent": "AccountEvidenceAgent, UsageAnomalyAgent",
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-RATECOMP-ENERGY",
+        "EVID-SYN-RATECOMP-FIXED",
+        "EVID-SYN-BILL-0007-07-AMT"
+      ],
+      "policy_ids": [
+        "POL-HB-001",
+        "POL-QUALITY-010"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-002",
+      "claim_text": "Actual register meter reads provided are 30500 kWh on 2026-06-30 and 31150 kWh on 2026-07-31, yielding a register delta of 650 kWh across the billing window.",
+      "claim_type": "meter_read_fact",
+      "source_agent": "AccountEvidenceAgent",
+      "evidence_ids": [
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B"
+      ],
+      "policy_ids": [
+        "POL-QUALITY-010"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-003",
+      "claim_text": "There is a numeric discrepancy: billed July consumption (910 kWh) exceeds the register-derived consumption (650 kWh) by 260 kWh.",
+      "claim_type": "analysis_fact",
+      "source_agent": "UsageAnomalyAgent",
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B",
+        "EVID-SYN-USAGE-2026-07"
+      ],
+      "policy_ids": [
+        "POL-HB-001",
+        "POL-QUALITY-010"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-004",
+      "claim_text": "A communication_loss event (36 hours) occurred on 2026-07-14 during the billing window; no post-event diagnostics or interval data are supplied to explain the discrepancy.",
+      "claim_type": "meter_event_fact",
+      "source_agent": "AccountEvidenceAgent, UsageAnomalyAgent",
+      "evidence_ids": [
+        "EVID-SYN-EVT-0007-01",
+        "EVID-SYN-METER-EVENT-NOTE"
+      ],
+      "policy_ids": [
+        "POL-MTR-003",
+        "POL-HB-001"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-005",
+      "claim_text": "No diagnostic records, interval/AMI data, meter-sighting photo, nor billing worksheet are present in the supplied evidence to substantiate a billing error or meter fault.",
+      "claim_type": "evidence_gap",
+      "source_agent": "AccountEvidenceAgent, PolicyKnowledgeAgent",
+      "evidence_ids": [
+        "EVID-SYN-ADJUSTMENTS",
+        "EVID-SYN-PRIOR_CONTACTS"
+      ],
+      "policy_ids": [
+        "POL-QUALITY-010",
+        "POL-MTR-003",
+        "POL-HB-001"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-006",
+      "claim_text": "Because required diagnostics and reconciliation evidence are missing, an adjustment is not currently eligible and any financial adjustment requires Human Billing Supervisor approval.",
+      "claim_type": "policy_consequence",
+      "source_agent": "PolicyKnowledgeAgent",
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B",
+        "EVID-SYN-EVT-0007-01"
+      ],
+      "policy_ids": [
+        "POL-BILL-002",
+        "POL-HUM-005",
+        "POL-MTR-003"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    }
+  ],
+  "uncertainties": [
+    "No available interval/AMI usage data for July 2026 to show when the billed consumption occurred or to reconcile the 260 kWh mismatch.",
+    "No photographic or on-site verification of the 2026-07-31 register read to rule out read transcription or sighting error.",
+    "No post-event diagnostics or remote self-test results after the 2026-07-14 communication_loss to indicate meter malfunction or data corruption.",
+    "Billing worksheet or meter-to-bill derivation showing how 910 kWh was generated is absent; the origin of the billed kWh remains unverified."
+  ],
+  "recommended_actions": [
+    {
+      "action_id": "ACT-001",
+      "action_text": "Obtain the billing calculation worksheet / meter-to-bill derivation for SYN-BILL-0007-07 to identify the source of the 910 kWh (inputs, any estimates, manual entries, or applied factors).",
+      "required_by": "investigation_team",
+      "evidence_basis": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-RATECOMP-ENERGY"
+      ],
+      "policy_basis": [
+        "POL-HB-001",
+        "POL-QUALITY-010"
+      ],
+      "need_human_approval": false
+    },
+    {
+      "action_id": "ACT-002",
+      "action_text": "Retrieve interval/AMI data for July 2026 (preferred 15/30/60-min) or hourly summaries to locate timing and magnitude of usage and reconcile billed kWh with register delta.",
+      "required_by": "metering/telemetry_team",
+      "evidence_basis": [
+        "EVID-SYN-USAGE-2026-07",
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B"
+      ],
+      "policy_basis": [
+        "POL-HB-001"
+      ],
+      "need_human_approval": false
+    },
+    {
+      "action_id": "ACT-003",
+      "action_text": "Request or perform meter-sighting photographic verification of the register near 2026-07-31 (or retrieve archival photo) to validate the register value of 31150.",
+      "required_by": "field_ops / meter_services",
+      "evidence_basis": [
+        "EVID-SYN-READ-0007-B"
+      ],
+      "policy_basis": [
+        "POL-MTR-003",
+        "POL-QUALITY-010"
+      ],
+      "need_human_approval": true,
+      "human_approver": "Field Ops Supervisor"
+    },
+    {
+      "action_id": "ACT-004",
+      "action_text": "Obtain full meter event telemetry/logs for the 2026-07-14 communication_loss (start/end timestamps, missed polls, any abnormal meter diagnostics) and run a remote self-test where available.",
+      "required_by": "metering/telemetry_team",
+      "evidence_basis": [
+        "EVID-SYN-EVT-0007-01",
+        "EVID-SYN-METER-EVENT-NOTE"
+      ],
+      "policy_basis": [
+        "POL-MTR-003"
+      ],
+      "need_human_approval": false
+    },
+    {
+      "action_id": "ACT-005",
+      "action_text": "If diagnostics indicate possible meter error or data corruption, escalate to Human Billing Supervisor for approval of field test, remedial action, and any financial adjustment per POL-BILL-002.",
+      "required_by": "billing_supervisor",
+      "evidence_basis": [
+        "results from ACT-003 and ACT-004",
+        "billing worksheet from ACT-001",
+        "interval data from ACT-002"
+      ],
+      "policy_basis": [
+        "POL-BILL-002",
+        "POL-HUM-005"
+      ],
+      "need_human_approval": true,
+      "human_approver": "Human Billing Supervisor"
+    },
+    {
+      "action_id": "ACT-006",
+      "action_text": "Contact the customer with a status-update that separates confirmed facts from uncertainties, lists next investigative steps (ACT-001 through ACT-004), and explicitly states that no credit or bill change will be promised until investigation and required approvals are complete.",
+      "required_by": "customer_service",
+      "evidence_basis": [
+        "CLM-001",
+        "CLM-002",
+        "CLM-003",
+        "CLM-004"
+      ],
+      "policy_basis": [
+        "POL-COMM-004"
+      ],
+      "need_human_approval": false
+    }
+  ],
+  "customer_adjustment": {
+    "proposed_adjustment_usd": null,
+    "adjustment_reason": null,
+    "requires_approval": true,
+    "policy_required": [
+      "POL-BILL-002"
+    ],
+    "notes": "No supported billing error has been demonstrated in supplied evidence; financial adjustment must await additional evidence and Human Billing Supervisor approval."
+  },
+  "claim_ledger": [
+    {
+      "claim_id": "CLM-001",
+      "claim_text": "Billed July consumption and billed amount are internally consistent with applied rates.",
+      "claim_type": "billing_fact",
+      "source_agent": "AccountEvidenceAgent",
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-RATECOMP-ENERGY",
+        "EVID-SYN-RATECOMP-FIXED",
+        "EVID-SYN-BILL-0007-07-AMT"
+      ],
+      "policy_ids": [
+        "POL-HB-001",
+        "POL-QUALITY-010"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-002",
+      "claim_text": "Meter register reads on 2026-06-30 and 2026-07-31 are recorded as 'actual' and yield a 650 kWh register delta.",
+      "claim_type": "meter_read_fact",
+      "source_agent": "AccountEvidenceAgent",
+      "evidence_ids": [
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B",
+        "EVID-SYN-READ-0007-A-READTYPE",
+        "EVID-SYN-READ-0007-B-READTYPE"
+      ],
+      "policy_ids": [
+        "POL-QUALITY-010"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-003",
+      "claim_text": "There is a 260 kWh discrepancy between billed kWh and register delta for July 2026.",
+      "claim_type": "analysis_fact",
+      "source_agent": "UsageAnomalyAgent",
+      "evidence_ids": [
+        "EVID-SYN-BILL-0007-07",
+        "EVID-SYN-READ-0007-A",
+        "EVID-SYN-READ-0007-B"
+      ],
+      "policy_ids": [
+        "POL-HB-001"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-004",
+      "claim_text": "A communication_loss meter event occurred 2026-07-14 (36 hours); absence of further telemetry means impact is unknown.",
+      "claim_type": "meter_event_fact",
+      "source_agent": "AccountEvidenceAgent",
+      "evidence_ids": [
+        "EVID-SYN-EVT-0007-01",
+        "EVID-SYN-METER-EVENT-NOTE"
+      ],
+      "policy_ids": [
+        "POL-MTR-003"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    },
+    {
+      "claim_id": "CLM-005",
+      "claim_text": "No diagnostics, interval data, meter-sighting photo, nor billing worksheet are present to support declaring a billing error or meter fault.",
+      "claim_type": "evidence_gap",
+      "source_agent": "PolicyKnowledgeAgent",
+      "evidence_ids": [
+        "EVID-SYN-ADJUSTMENTS",
+        "EVID-SYN-PRIOR_CONTACTS"
+      ],
+      "policy_ids": [
+        "POL-QUALITY-010",
+        "POL-MTR-003",
+        "POL-HB-001"
+      ],
+      "confidence": "HIGH",
+      "status": "SUPPORTED"
+    }
+  ],
+  "evidence_ids": [
+    "EVID-SYN-BILL-0007-06",
+    "EVID-SYN-BILL-0007-06-AMT",
+    "EVID-SYN-BILL-0007-06-READTYPE",
+    "EVID-SYN-BILL-0007-07",
+    "EVID-SYN-BILL-0007-07-AMT",
+    "EVID-SYN-BILL-0007-07-READTYPE",
+    "EVID-SYN-READ-0007-A",
+    "EVID-SYN-READ-0007-A-READTYPE",
+    "EVID-SYN-READ-0007-B",
+    "EVID-SYN-READ-0007-B-READTYPE",
+    "EVID-SYN-EVT-0007-01",
+    "EVID-SYN-METER-EVENT-NOTE",
+    "EVID-SYN-RATECOMP-ENERGY",
+    "EVID-SYN-RATECOMP-FIXED",
+    "EVID-SYN-USAGE-2026-04",
+    "EVID-SYN-USAGE-2026-05",
+    "EVID-SYN-USAGE-2026-06",
+    "EVID-SYN-USAGE-2026-07",
+    "EVID-SYN-ADJUSTMENTS",
+    "EVID-SYN-PRIOR_CONTACTS"
+  ],
+  "policy_ids": [
+    "POL-HB-001",
+    "POL-BILL-002",
+    "POL-MTR-003",
+    "POL-COMM-004",
+    "POL-HUM-005",
+    "POL-QUALITY-010",
+    "POL-AUDIT-007",
+    "POL-DATA-006"
+  ],
+  "confidence": "MEDIUM",
+  "reasoning_summary": "Supplied records show billed July usage (910 kWh) and register reads that produce a 650 kWh delta, creating a 260 kWh unexplained discrepancy. A communication_loss event occurred mid-period but no diagnostics, interval data, meter-sighting photo, or billing worksheet are present to reconcile the difference. Policy prohibits declaring meter fault or applying adjustments without diagnostic evidence and requires human-supervisor approval for financial adjustments. Proceed with data retrieval (billing worksheet, interval data, telemetry logs), meter-sighting/photo, and remote/self-test; escalate to human reviewers and Billing Supervisor if diagnostics or reconciliation demonstrate an error.",
+  "human_review_reason": "Numeric conflict between billed kWh and register delta and absence of diagnostics, billing worksheet, and interval data. Policy (POL-MTR-003, POL-BILL-002, POL-HUM-005) requires human review before any meter-fault conclusion, field test authorization, or financial adjustment.",
+  "correction_count": 0
+}
+CASE_FOLLOWUP::HUMAN_REQUIRED
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "case_state": "DRAFTING",
+  "customer_summary": "You asked us to check your July 2026 bill because it is much higher than June. We reviewed your account records and found that the July bill reflects 910 kWh and the billed amount matches the posted rates for 910 kWh plus the fixed charge. We also found two actual meter register reads: 30,500 kWh on 2026-06-30 and 31,150 kWh on 2026-07-31. These reads imply 650 kWh used in the period, which does not match the billed 910 kWh — a 260 kWh discrepancy. A communication loss event for about 36 hours was recorded on 2026-07-14 during the billing window. At this time, we do not have the diagnostics, interval usage data, meter-sighting photo, or the billing worksheet needed to determine the root cause. Because of these gaps, we cannot confirm a meter fault or make any billing adjustment without further investigation and a human review.",
+  "what_we_reviewed": "We reviewed the July 2026 billing record showing 910 kWh and the billed amount, the energy and fixed charge rate components used to calculate that amount, the two actual period-end register reads (30,500 kWh on 2026-06-30 and 31,150 kWh on 2026-07-31), the monthly usage history for April–July 2026, and the meter event log entry noting a communication loss on 2026-07-14. We also checked the supplied adjustments and prior-contact records and found none.",
+  "what_we_found": "Confirmed: the July bill is for 910 kWh and the amount billed equals 910 kWh at USD 0.22/kWh plus the USD 12 fixed charge. Confirmed: the meter register reads on 2026-06-30 and 2026-07-31 are recorded as actual and produce a register delta of 650 kWh. Confirmed: there is a numeric discrepancy where billed kWh (910) exceeds the register-derived kWh (650) by 260 kWh. Confirmed: a 36-hour communication loss is logged on 2026-07-14. Not confirmed: any meter malfunction or billing-system error, because no diagnostics, interval/AMI data, meter-sighting photo, or billing worksheet were provided to substantiate either a meter fault or a billing calculation error.",
+  "why_bill_changed": "The bill amount matches the posted rates applied to 910 kWh, which is why your total for July appears higher than June. However, the two actual meter register reads supplied indicate only 650 kWh of register change for the July window, so the origin of the additional 260 kWh in the bill is not shown in the records we have. The communication loss event during July is material to the investigation but, by itself and without diagnostics or interval data, does not prove the meter or billing system is at fault.",
+  "what_happens_next": "We will collect additional records to reconcile the difference: the billing calculation worksheet or meter-to-bill derivation used for the July bill; interval or AMI usage data for July to show when usage occurred; full meter event telemetry and any remote self-test or diagnostics around the 2026-07-14 communication loss; and a meter-sighting photo or archival image to validate the 2026-07-31 register reading. After those records are reviewed, a qualified human reviewer (including the Billing Supervisor where any financial correction is possible) will decide if an adjustment is warranted. We will not promise any credit or bill change until the investigation is complete and required approvals are obtained.",
+  "customer_action_needed": "Please let us know if you can provide any of the following: a photo of the meter register taken around July 31, 2026; any information about temporary changes in occupancy or high-energy equipment used in July; or copies of any bills or communications you received that show a different meter read. If you prefer, tell us a good time for a field visit request so we can arrange a meter-sighting. If you provide new information, we will include it in the investigation.",
+  "internal_claim_ids": [
+    "CLM-001",
+    "CLM-002",
+    "CLM-003",
+    "CLM-004",
+    "CLM-005"
+  ],
+  "internal_evidence_ids": [
+    "EVID-SYN-BILL-0007-07",
+    "EVID-SYN-BILL-0007-07-AMT",
+    "EVID-SYN-RATECOMP-ENERGY",
+    "EVID-SYN-RATECOMP-FIXED",
+    "EVID-SYN-READ-0007-A",
+    "EVID-SYN-READ-0007-B",
+    "EVID-SYN-USAGE-2026-04",
+    "EVID-SYN-USAGE-2026-05",
+    "EVID-SYN-USAGE-2026-06",
+    "EVID-SYN-USAGE-2026-07",
+    "EVID-SYN-EVT-0007-01",
+    "EVID-SYN-METER-EVENT-NOTE",
+    "EVID-SYN-ADJUSTMENTS",
+    "EVID-SYN-PRIOR_CONTACTS"
+  ],
+  "internal_policy_ids": [
+    "POL-HB-001",
+    "POL-BILL-002",
+    "POL-MTR-003",
+    "POL-COMM-004",
+    "POL-HUM-005",
+    "POL-QUALITY-010"
+  ],
+  "communication_risk_flags": {
+    "safety": false,
+    "legal": false,
+    "regulatory": true,
+    "fraud": false,
+    "vulnerable_customer": false,
+    "privacy": false,
+    "prompt_injection": false,
+    "real_data_contamination": false,
+    "human_review_required": true
+  },
+  "required_disclosures_included": true
+}
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "case_state": "COMPLIANCE_REVIEW",
+  "decision": "APPROVE",
+  "failure_category": null,
+  "failed_checks": [],
+  "unsupported_claim_ids": [],
+  "unsupported_claims": [],
+  "missing_evidence": [],
+  "missing_policy": [],
+  "correction_target": null,
+  "correction_instructions": null,
+  "human_review_required": true,
+  "compliance_summary": "The customer message accurately reflects supported evidence and policy constraints: billed July consumption 910 kWh and billed amount (EVID-SYN-BILL-0007-07, EVID-SYN-BILL-0007-07-AMT, EVID-SYN-RATECOMP-ENERGY, EVID-SYN-RATECOMP-FIXED) is stated (CLM-001); meter register reads 30500 (2026-06-30) and 31150 (2026-07-31) are stated and yield a 650 kWh register delta (EVID-SYN-READ-0007-A, EVID-SYN-READ-0007-B, CLM-002); the 260 kWh discrepancy between billed and register-derived consumption is called out (CLM-003, supported by EVID-SYN-BILL-0007-07 and EVID-SYN-READ-0007-A/B); the communication_loss event on 2026-07-14 is reported (EVID-SYN-EVT-0007-01, EVID-SYN-METER-EVENT-NOTE, CLM-004); missing diagnostics, interval data, meter photo, and billing worksheet are correctly identified as evidence gaps (CLM-005, EVID-SYN-ADJUSTMENTS, EVID-SYN-PRIOR_CONTACTS). The message refrains from asserting meter fault (POL-MTR-003) or promising refunds/credits (POL-BILL-002, POL-COMM-004) and discloses uncertainty and next steps as required. All cited evidence IDs and policy IDs exist in the ledgers provided and map to supported claims. Because policy requires human review before any financial adjustment or meter-fault conclusion (POL-BILL-002, POL-MTR-003, POL-HUM-005), human_review_required is set true; this is a procedural requirement and not a blocker to releasing the message to the customer. No checks failed.",
+  "correction_count": 0,
+  "next_case_state": "APPROVED",
+  "reason_codes": []
+}
+ROUTE_DECISION::GRIDRESOLVE_APPROVED
+You asked us to check your July 2026 bill because it is much higher than June. We reviewed your account records and found that the July bill reflects 910 kWh and the billed amount matches the posted rates for 910 kWh plus the fixed charge. We also found two actual meter register reads: 30,500 kWh on 2026-06-30 and 31,150 kWh on 2026-07-31. These reads imply 650 kWh used in the period, which does not match the billed 910 kWh — a 260 kWh discrepancy. A communication loss event for about 36 hours was recorded on 2026-07-14 during the billing window. At this time, we do not have the diagnostics, interval usage data, meter-sighting photo, or the billing worksheet needed to determine the root cause. Because of these gaps, we cannot confirm a meter fault or make any billing adjustment without further investigation and a human review.
+
+What we reviewed
+We reviewed the July 2026 billing record showing 910 kWh and the billed amount, the energy and fixed charge rate components used to calculate that amount, the two actual period-end register reads (30,500 kWh on 2026-06-30 and 31,150 kWh on 2026-07-31), the monthly usage history for April–July 2026, and the meter event log entry noting a communication loss on 2026-07-14. We also checked the supplied adjustments and prior-contact records and found none.
+
+What we found
+Confirmed: the July bill is for 910 kWh and the amount billed equals 910 kWh at USD 0.22/kWh plus the USD 12 fixed charge. Confirmed: the meter register reads on 2026-06-30 and 2026-07-31 are recorded as actual and produce a register delta of 650 kWh. Confirmed: there is a numeric discrepancy where billed kWh (910) exceeds the register-derived kWh (650) by 260 kWh. Confirmed: a 36-hour communication loss is logged on 2026-07-14. Not confirmed: any meter malfunction or billing-system error, because no diagnostics, interval/AMI data, meter-sighting photo, or billing worksheet were provided to substantiate either a meter fault or a billing calculation error.
+
+Why your bill changed
+The bill amount matches the posted rates applied to 910 kWh, which is why your total for July appears higher than June. However, the two actual meter register reads supplied indicate only 650 kWh of register change for the July window, so the origin of the additional 260 kWh in the bill is not shown in the records we have. The communication loss event during July is material to the investigation but, by itself and without diagnostics or interval data, does not prove the meter or billing system is at fault.
+
+What happens next
+We will collect additional records to reconcile the difference: the billing calculation worksheet or meter-to-bill derivation used for the July bill; interval or AMI usage data for July to show when usage occurred; full meter event telemetry and any remote self-test or diagnostics around the 2026-07-14 communication loss; and a meter-sighting photo or archival image to validate the 2026-07-31 register reading. After those records are reviewed, a qualified human reviewer (including the Billing Supervisor where any financial correction is possible) will decide if an adjustment is warranted. We will not promise any credit or bill change until the investigation is complete and required approvals are obtained.
+
+What we need from you
+Please let us know if you can provide any of the following: a photo of the meter register taken around July 31, 2026; any information about temporary changes in occupancy or high-energy equipment used in July; or copies of any bills or communications you received that show a different meter read. If you prefer, tell us a good time for a field visit request so we can arrange a meter-sighting. If you provide new information, we will include it in the investigation.
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "case_state": "HUMAN_REVIEW",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "escalation_reason": [
+    "Numeric conflict between billed kWh (910) and meter register delta (650) for July 2026",
+    "Missing diagnostics, interval/AMI data, meter-sighting photo, and billing worksheet needed to reconcile the discrepancy",
+    "Policy requirement (POL-MTR-003, POL-BILL-002, POL-HUM-005) mandates human review before any financial adjustment or declaring meter fault"
+  ],
+  "risk_class": "MEDIUM",
+  "risk_flags": {
+    "safety_risk": false,
+    "legal_risk": false,
+    "regulatory_risk": true,
+    "fraud_risk": false,
+    "vulnerable_customer_risk": false,
+    "privacy_risk": false,
+    "prompt_injection_risk": false,
+    "real_data_contamination_risk": false
+  },
+  "evidence_summary": {
+    "evidence_ledger": [
+      "EVID-SYN-BILL-0007-06 (June 2026 billing: 600 kWh, actual read)",
+      "EVID-SYN-BILL-0007-07 (July 2026 billing: 910 kWh, actual read)",
+      "EVID-SYN-BILL-0007-07-AMT (July billed USD 212.20 matches 910 kWh @ USD 0.22/kWh + USD 12 fixed)",
+      "EVID-SYN-READ-0007-A (Meter read 2026-06-30: 30500 kWh, actual)",
+      "EVID-SYN-READ-0007-B (Meter read 2026-07-31: 31150 kWh, actual)",
+      "EVID-SYN-EVT-0007-01 (Meter event 2026-07-14: communication_loss, 36 hours)",
+      "EVID-SYN-METER-EVENT-NOTE (No remote self-test since 2026-03-02)",
+      "EVID-SYN-USAGE-2026-04..2026-07 (Monthly usage history: Apr 560, May 580, Jun 600, Jul 910)",
+      "EVID-SYN-RATECOMP-ENERGY (USD 0.22/kWh) and EVID-SYN-RATECOMP-FIXED (USD 12.00)",
+      "EVID-SYN-ADJUSTMENTS (none recorded), EVID-SYN-PRIOR_CONTACTS (none recorded)"
+    ],
+    "key_findings": [
+      "Billed July consumption: 910 kWh; billed amount USD 212.20 consistent with posted rates (EVID-SYN-BILL-0007-07, EVID-SYN-RATECOMP-ENERGY/FIXED).",
+      "Register delta from actual reads = 31150 - 30500 = 650 kWh (EVID-SYN-READ-0007-A/B).",
+      "Discrepancy: billed kWh (910) minus register delta (650) = 260 kWh unexplained.",
+      "Communication loss event recorded mid-period (2026-07-14) but no telemetry/diagnostics provided to show impact."
+    ],
+    "evidence_quality": "MEDIUM (synthetic records present; critical telemetry, interval data, diagnostics, and billing worksheet missing)"
+  },
+  "policy_summary": {
+    "applicable_policies": [
+      "POL-HB-001 (High Bill Investigation) - require evidence, prohibit concluding meter fault solely from high bill",
+      "POL-BILL-002 (Billing Adjustment Eligibility) - adjustments require supported error and Human Billing Supervisor approval",
+      "POL-MTR-003 (Meter Concern Handling) - meter failure requires diagnostic evidence or verified fault event",
+      "POL-COMM-004 (Customer Communication Requirements) - separate findings from uncertainty; no promises of credit",
+      "POL-HUM-005 (Mandatory Human Escalation) - escalate unresolved meter allegation and low-confidence decisions",
+      "POL-QUALITY-010 (Evidence and Response Quality) - traceable evidence IDs required",
+      "POL-AUDIT-007 (Case Evidence and Audit Requirements) - audit trail required before disposition",
+      "POL-DATA-006 (Synthetic Data Controls) - synthetic-only processing"
+    ],
+    "policy_constraints": [
+      "Do not declare meter fault without diagnostics or verified fault event (POL-MTR-003, POL-HB-001).",
+      "Do not apply financial adjustment without established billing error and Human Billing Supervisor approval (POL-BILL-002).",
+      "Disclose uncertainty and next steps; avoid promising credits/refunds (POL-COMM-004).",
+      "Escalate to humans for unresolved meter allegation (POL-HUM-005)."
+    ]
+  },
+  "unresolved_questions": [
+    "What is the billing system derivation (billing worksheet or meter-to-bill calculation) that produced 910 kWh for July 2026? (missing billing worksheet)",
+    "Do interval/AMI logs for July 2026 exist and, if so, what usage profile do they show (timing and magnitude) to reconcile billed kWh with register delta? (missing interval data)",
+    "Did the 2026-07-14 communication_loss cause missed remote polls, partial telemetry, or any anomalies in read collection that would explain an adjusted or estimated consumption input? (missing full telemetry/event log)",
+    "Is there an on-site or archival photograph validating the 2026-07-31 register value of 31150, or was any manual transcription used? (missing meter-sighting photo)",
+    "Are there any internal system flags, manual entries, or prior adjustments in billing workflow not present in supplied adjustments array? (missing billing workflow notes)",
+    "If diagnostics are run now (remote self-test or field test), what specific tests should be authorized and who will approve field access?"
+  ],
+  "recommended_reviewer": "Billing Supervisor (primary); Meter Operations Specialist (secondary for diagnostics/field test); Compliance Reviewer (if any privacy or policy conflict arises)",
+  "recommended_review_actions": [
+    {
+      "step": 1,
+      "actor": "Billing Team / Billing Analyst",
+      "action": "Produce and attach the billing calculation worksheet / meter-to-bill derivation for SYN-BILL-0007-07 showing inputs used (register reads, estimates, or manual entries) and note any system flags or overrides.",
+      "priority": "HIGH",
+      "policy_basis": ["POL-HB-001","POL-QUALITY-010"]
+    },
+    {
+      "step": 2,
+      "actor": "Metering/Telemetry Team",
+      "action": "Retrieve full meter event telemetry/logs around 2026-07-14 (start/end timestamps, missed polls) and interval/AMI data for July 2026 (preferred 15/30/60-min granularity); run remote self-test if supported.",
+      "priority": "HIGH",
+      "policy_basis": ["POL-MTR-003","POL-HB-001"]
+    },
+    {
+      "step": 3,
+      "actor": "Field Ops / Meter Services (requires supervisor authorization)",
+      "action": "If telemetry or remote diagnostics are inconclusive, authorize on-site meter-sighting and on-site diagnostic tests; capture photographic evidence of register and run field diagnostic suite.",
+      "priority": "MEDIUM",
+      "require_human_approval": true,
+      "human_approver": "Field Ops Supervisor",
+      "policy_basis": ["POL-MTR-003","POL-HUM-005"]
+    },
+    {
+      "step": 4,
+      "actor": "Billing Supervisor (Human)",
+      "action": "After review of billing worksheet, telemetry, diagnostics, and field results, decide on billing adjustment eligibility and authorize any approved financial correction per POL-BILL-002.",
+      "priority": "HIGH",
+      "require_human_approval": true,
+      "policy_basis": ["POL-BILL-002","POL-HUM-005"]
+    },
+    {
+      "step": 5,
+      "actor": "Customer Service",
+      "action": "Send interim customer update (approved message already released). If new evidence changes findings, prepare a revised communication per POL-COMM-004.",
+      "priority": "MEDIUM",
+      "policy_basis": ["POL-COMM-004"]
+    },
+    {
+      "step": 6,
+      "actor": "Case Audit / Compliance",
+      "action": "Record full audit trail (workflow, dataset, policy, evidence, claims, compliance decision, corrections, escalation actions) and set final_disposition = PENDING_HUMAN_REVIEW until Billing Supervisor decision.",
+      "priority": "HIGH",
+      "policy_basis": ["POL-AUDIT-007"]
+    }
+  ],
+  "customer_safe_interim_message": "We received your concern and have started an investigation. Initial review shows a 260 kWh discrepancy between the July bill and available meter register reads, and a communication-loss event occurred mid-period. We will gather additional records (billing worksheet, interval/AMI data, event telemetry, and meter-sighting photo) and a human reviewer will determine whether any billing correction is needed. We cannot promise a credit or bill change until the investigation and required approvals are complete. If you can provide a photo of the meter from around July 31, 2026 or details about any temporary high-energy usage, please share it and we will include it in the review.",
+  "decision_card": {
+    "decision_needed": "Human Billing Supervisor authorization and technical review to determine whether billing for SYN-BILL-0007-07 should be adjusted, and whether field diagnostics/onsite testing should be authorized.",
+    "known_facts": [
+      "July 2026 bill shows 910 kWh and amount USD 212.20 consistent with rates (EVID-SYN-BILL-0007-07, EVID-SYN-RATECOMP-ENERGY/FIXED).",
+      "Meter register reads: 30500 kWh on 2026-06-30 and 31150 kWh on 2026-07-31 (EVID-SYN-READ-0007-A/B).",
+      "Register delta across period = 650 kWh; billed consumption = 910 kWh; unexplained difference = 260 kWh (analysis from UsageAnomalyAgent).",
+      "Communication_loss event of ~36 hours on 2026-07-14 recorded but no full telemetry/diagnostics supplied (EVID-SYN-EVT-0007-01).",
+      "No diagnostics, interval/AMI data, meter photo, or billing worksheet provided in current evidence set."
+    ],
+    "unknowns": [
+      "How the billing system derived 910 kWh (billing worksheet unknown).",
+      "Whether interval/AMI data would show consumption spikes consistent with 910 kWh (interval data unknown).",
+      "Whether the communication_loss caused telemetry gaps or estimates that led to a higher billed value (telemetry details unknown).",
+      "Whether on-site meter register photo or field diagnostics would corroborate or contradict the register read (photos/field test results unknown).",
+      "Whether any manual billing entries or system overrides were applied (billing workflow notes unknown)."
+    ],
+    "applicable_policies": [
+      "POL-HB-001",
+      "POL-BILL-002",
+      "POL-MTR-003",
+      "POL-COMM-004",
+      "POL-HUM-005",
+      "POL-QUALITY-010",
+      "POL-AUDIT-007",
+      "POL-DATA-006"
+    ],
+    "risk": {
+      "operational": "Medium — field visit or telemetry retrieval required; potential customer dissatisfaction if delayed.",
+      "financial": "Low-to-Medium — potential credit up to magnitude of discrepancy if confirmed, but no action should be taken without supervisor approval.",
+      "regulatory": "Medium — unresolved billing discrepancies and meter-event handling may trigger regulatory reporting/oversight if mishandled.",
+      "reputational": "Low-to-Medium — customer-facing communication required to maintain trust."
+    },
+    "recommended_next_step": [
+      "Immediate: Billing Analyst to produce billing calculation worksheet for SYN-BILL-0007-07 (ACT-001).",
+      "Immediate: Metering/Telemetry team to retrieve full telemetry and interval/AMI data for July 2026 and run remote self-test if possible (ACT-002, ACT-004).",
+      "Within 48-72 hours (if telemetry insufficient): Request Field Ops Supervisor authorization to schedule on-site meter-sighting and diagnostics (ACT-003).",
+      "After evidence collection: Convene Billing Supervisor and Meter Operations Specialist to review findings and approve any required billing adjustment per POL-BILL-002 (ACT-005).",
+      "Audit: Case Audit team to capture all evidence, actions, reviewer decisions, and set final_disposition = PENDING_HUMAN_REVIEW until Billing Supervisor decision is recorded."
+    ]
+  },
+  "ledgers_and_history": {
+    "evidence_ledger_ref": "See evidence_summary.evidence_ledger (EVID-SYN-... entries)",
+    "claim_ledger_ref": [
+      "CLM-001","CLM-002","CLM-003","CLM-004","CLM-005","CLM-006"
+    ],
+    "policy_ledger_ref": [
+      "POL-HB-001","POL-BILL-002","POL-MTR-003","POL-COMM-004","POL-HUM-005","POL-QUALITY-010","POL-AUDIT-007","POL-DATA-006"
+    ],
+    "correction_history": [],
+    "compliance_result": {
+      "evidence_compliance_decision": "APPROVE",
+      "notes": "Customer message approved for release; human review still required for material decisions per policies."
+    }
+  },
+  "recommended_reviewer_contact": {
+    "primary_role": "Human Billing Supervisor",
+    "secondary_role": "Meter Operations Specialist",
+    "escalation_to_compliance_if_needed": "Compliance Reviewer"
+  },
+  "final_routing": {
+    "next_agent": "CaseAuditAgent",
+    "final_disposition": "PENDING_HUMAN_REVIEW"
+  }
+}
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "participating_agents": [
+    {
+      "agent_name": "CaseTriageAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    },
+    {
+      "agent_name": "AccountEvidenceAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    },
+    {
+      "agent_name": "UsageAnomalyAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    },
+    {
+      "agent_name": "PolicyKnowledgeAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    },
+    {
+      "agent_name": "ResolutionPlannerAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    },
+    {
+      "agent_name": "CustomerCommunicationAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    },
+    {
+      "agent_name": "EvidenceComplianceAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    },
+    {
+      "agent_name": "EscalationCoordinatorAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    },
+    {
+      "agent_name": "CaseAuditAgent",
+      "agent_version": "NOT_OBSERVED",
+      "output_status": "RECEIVED"
+    }
+  ],
+  "triage_result": "billing_dispute / HIGH_BILL",
+  "evidence_ids": [
+    "EVID-SYN-BILL-0007-06",
+    "EVID-SYN-BILL-0007-06-AMT",
+    "EVID-SYN-BILL-0007-06-READTYPE",
+    "EVID-SYN-BILL-0007-07",
+    "EVID-SYN-BILL-0007-07-AMT",
+    "EVID-SYN-BILL-0007-07-READTYPE",
+    "EVID-SYN-READ-0007-A",
+    "EVID-SYN-READ-0007-A-READTYPE",
+    "EVID-SYN-READ-0007-B",
+    "EVID-SYN-READ-0007-B-READTYPE",
+    "EVID-SYN-EVT-0007-01",
+    "EVID-SYN-METER-EVENT-NOTE",
+    "EVID-SYN-RATECOMP-ENERGY",
+    "EVID-SYN-RATECOMP-FIXED",
+    "EVID-SYN-USAGE-2026-04",
+    "EVID-SYN-USAGE-2026-05",
+    "EVID-SYN-USAGE-2026-06",
+    "EVID-SYN-USAGE-2026-07",
+    "EVID-SYN-ADJUSTMENTS",
+    "EVID-SYN-PRIOR_CONTACTS"
+  ],
+  "claim_ids": [
+    "CLM-001",
+    "CLM-002",
+    "CLM-003",
+    "CLM-004",
+    "CLM-005",
+    "CLM-006"
+  ],
+  "policy_ids": [
+    "POL-HB-001",
+    "POL-BILL-002",
+    "POL-MTR-003",
+    "POL-COMM-004",
+    "POL-HUM-005",
+    "POL-QUALITY-010",
+    "POL-AUDIT-007",
+    "POL-DATA-006"
+  ],
+  "resolution_status": "HUMAN_REVIEW_REQUIRED",
+  "compliance_route_token": "APPROVED",
+  "message_compliance_decision": "APPROVE",
+  "compliance_reasons": "The EvidenceComplianceAgent approved the customer message. Compliance summary: The customer message accurately reflected supported evidence and policy constraints (billed consumption and amount matching rates; meter register reads and computed register delta; 260 kWh discrepancy; communication_loss event; identified evidence gaps). The message refrained from asserting meter fault or promising refunds/credits and disclosed uncertainty and next steps. No failed checks were recorded.",
+  "correction_count": 0,
+  "correction_history": [],
+  "case_human_review_status": "HUMAN_REVIEW_REQUIRED",
+  "human_review_status": "HUMAN_REVIEW_REQUIRED",
+  "escalation": {
+    "escalation_package_present": true,
+    "recommended_reviewer": "Human Billing Supervisor",
+    "escalation_reason": "Numeric conflict between billed kWh (910) and meter register delta (650); missing diagnostics, interval/AMI data, meter-sighting photo, and billing worksheet required to reconcile discrepancy; policy requires human review before billing adjustment or declaring meter fault."
+  },
+  "final_disposition": "PENDING_HUMAN_REVIEW",
+  "audit_completeness": "COMPLETE",
+  "missing_audit_information": [],
+  "audit_notes": "All required upstream agent outputs were present as JSON and marked RECEIVED. EvidenceComplianceAgent decision record (step 7) indicates decision=APPROVE, failed_checks=[], reason_codes=[]. That decision's final ROUTE_DECISION token line was ROUTE_DECISION::GRIDRESOLVE_APPROVED and is recorded as compliance_route_token=APPROVED. No CORRECTION_ATTEMPT messages were present in the conversation. All agent versions are NOT_OBSERVED as platform metadata is not available. Record basis: MODEL_PRODUCED_FROM_CONVERSATION.",
+  "execution_status": "RUNTIME_EXECUTED",
+  "record_basis": "MODEL_PRODUCED_FROM_CONVERSATION"
+}
