@@ -18,3 +18,10 @@ tests/workflow_engine/workflows/*.yaml               text eol=lf
 # Runtime evidence is preserved exactly as the service returned it. Never
 # converted, never normalised, never diffed as text.
 evidence/runtime/**                                  -text
+
+# Binary deliverables: never line-ending converted on checkout.
+*.pdf                                                -text
+*.pptx                                               -text
+*.mp4                                                -text
+*.wav                                                -text
+*.png                                                -text
