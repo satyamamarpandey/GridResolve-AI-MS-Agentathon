@@ -90,7 +90,37 @@
     "customer_message": {"type": ["object", "null"]},
     "compliance_result": {"type": ["object", "null"]},
     "correction_count": {"type": "integer", "minimum": 0, "maximum": 2},
-    "escalation": {"type": ["object", "null"]},
+    "escalation": {
+      "type": ["object", "null"],
+      "properties": {
+        "reason_codes": {
+          "description": "Every escalation must carry at least one code, and every code must cite the failed claim, the evidence gap, or the policy rule it rests on.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["code", "cites"],
+            "properties": {
+              "code": {
+                "enum": ["UNSUPPORTED_CLAIM", "EVIDENCE_GAP", "POLICY_RULE_VIOLATED", "RECORD_CONFLICT", "STALE_POLICY", "PROMPT_INJECTION_SUSPECTED", "TOOL_FAILURE", "AUTHORITY_EXCEEDED", "MISSING_DECISION_REASONS"]
+              },
+              "cites": {
+                "type": "object",
+                "minProperties": 1,
+                "properties": {
+                  "claim_id": {"type": "string"},
+                  "evidence_id": {"type": "string"},
+                  "policy_id": {"type": "string"},
+                  "rule": {"type": "string"}
+                },
+                "additionalProperties": false
+              },
+              "note": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
     "final_disposition": {"type": ["string", "null"]},
     "audit_record": {"type": ["object", "null"]}
   }

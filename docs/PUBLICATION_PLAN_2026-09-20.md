@@ -18,7 +18,7 @@ are modified and the items below are untracked.
 | `control-center/src/data/foundryRuns.ts` | The recorded facts the status page shows |
 | `scripts/build_submission_deck.py`, `scripts/capture_control_center.py`, `scripts/run_local_suites.ps1` | Rebuild the deck, the application captures and the local totals |
 | `submission/video/narration_text.py` | The narration, shared by the script and the subtitles |
-| `submission/final/21_FOUNDERZ_SUBMISSION_TEXT.md`, `submission/final/GridResolve_AI_Submission_Deck.pptx`, `submission/final/deck-assets/` | Submission text, the deck and its derived crop |
+| `submission/final/21_FOUNDERZ_SUBMISSION_TEXT.md`, `submission/final/GridResolve_AI_Deck.pptx`, `submission/final/deck-assets/` | Submission text, the deck and its derived crop |
 | `evidence/app-screenshots/APP01, APP02, APP04, APP09, APP09b` and `superseded_2026-09-20_v5/` | Current application captures, and the earlier ones kept as history |
 | `evidence/screenshots/S02.png`, `S04.png`, `S09.png` | The redacted v5-era Foundry captures, kept as history |
 | `.gitattributes` | Line ending rules |
@@ -29,7 +29,7 @@ are modified and the items below are untracked.
 | `docs/FOUNDRY_CAPABILITY_INVENTORY.md`, `docs/SECURITY_AND_GOVERNANCE_EVIDENCE.md`, `docs/OPERATIONS_MONITORING_AND_COST.md`, `docs/ROUTINES_SKILLS_TOOLS_MEMORY_DESIGN.md` | Added 2026-09-21 |
 | `scripts/export_runtime_evidence.py`, `scripts/redact_foundry_captures.py`, the Runtime Evidence view in `control-center/` | Added 2026-09-21 |
 | `evidence/screenshots/F10-WORKFLOW.png`, `F10-COMPLIANCE.png`, `evidence/app-screenshots/APP10.png` | Redacted Foundry captures and the new application capture |
-| `submission/video/GridResolve_Final_Video.mp4` | Final cut 2026-09-22: 172.0 s, 1920x1080, about 7 MB, well under GitHub's 100 MB file limit. The submission PDF is `submission/final/GridResolve_AI_Agentathon_PDF.pdf` |
+| `submission/video/GridResolve_Final_Video.mp4` | Final cut 2026-09-22: 172.0 s, 1920x1080, about 7 MB, well under GitHub's 100 MB file limit. The submission PDF is `submission/final/GridResolve_AI_PDF.pdf` |
 
 ## Must stay out
 

@@ -8,13 +8,17 @@ Submitted to the Microsoft Agent-a-thon, Level 3 Architect.
 | Item | Where |
 |---|---|
 | **Read this first** | [`submission/final/JUDGE_NARRATIVE.md`](submission/final/JUDGE_NARRATIVE.md), plain language, no prior knowledge assumed |
-| **Final submission PDF** | [`submission/final/GridResolve_AI_Agentathon_PDF.pdf`](submission/final/GridResolve_AI_Agentathon_PDF.pdf), eleven pages, letter size. This is the document I submit |
+| **Final submission PDF** | [`submission/final/GridResolve_AI_PDF.pdf`](submission/final/GridResolve_AI_PDF.pdf), eleven pages, letter size. This is the document I submit |
 | **Final video** | [`submission/video/GridResolve_Final_Video.mp4`](submission/video/GridResolve_Final_Video.mp4), 172.0 seconds, 1920x1080, about 7 MB, my own recorded narration at its own speed, authentic Foundry captures and a live Foundry screen recording with the project name covered, the Control Center, and slides built from the final run's evidence. This is the video I submit. Transcript: [`submission/video/FINAL_VIDEO_SCRIPT.md`](submission/video/FINAL_VIDEO_SCRIPT.md) |
-| Supporting deck, ten slides | [`submission/final/GridResolve_AI_Submission_Deck.pptx`](submission/final/GridResolve_AI_Submission_Deck.pptx), optional supporting material |
+| Supporting deck, ten slides | [`submission/final/GridResolve_AI_Deck.pptx`](submission/final/GridResolve_AI_Deck.pptx), optional supporting material |
 | Case walkthrough | [`docs/JUDGE_WALKTHROUGH_SYN-CASE-4003.md`](docs/JUDGE_WALKTHROUGH_SYN-CASE-4003.md), seven stages end to end |
 | Runtime evidence | [`evidence/runtime/`](evidence/runtime/), three unmodified run folders. Result: [`docs/FINAL_RUN_RESULT_2026-09-20.md`](docs/FINAL_RUN_RESULT_2026-09-20.md) |
 | Screenshots | [`submission/final/18_SCREENSHOT_MANIFEST.md`](submission/final/18_SCREENSHOT_MANIFEST.md) |
 | Validation report | [`docs/FINAL_VALIDATION_REPORT.md`](docs/FINAL_VALIDATION_REPORT.md) |
+| Coverage matrix and metrics | [`docs/COVERAGE_MATRIX.md`](docs/COVERAGE_MATRIX.md), 46 cases mapped to seven failure dimensions, branch coverage and rates at n = 3 |
+| Annotated trace | [`docs/ANNOTATED_TRACE_SYN-CASE-4003.md`](docs/ANNOTATED_TRACE_SYN-CASE-4003.md), every agent's prompt and output from the passing run |
+| Escalation reason codes | [`docs/ESCALATION_REASON_CODES.md`](docs/ESCALATION_REASON_CODES.md), structured codes with citations, enforced offline, not yet in a hosted run |
+| Hosted control center | https://pandeysatyam.com/GridResolve-AI-MS-Agentathon/ (GitHub Pages, static, synthetic data only) |
 
 **In one paragraph.** A customer's bill rose from $152.80 to $203.40 and they are
 certain the meter is broken. Nine specialist agents investigate as one governed

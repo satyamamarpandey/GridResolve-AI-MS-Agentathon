@@ -6,6 +6,9 @@ reading only. Runs 1 and 2 are expected to fail several checks. That is the
 history, and the checks are not adjusted per run.
 
 Run: python -m evaluation.run_checks
+
+With --escalation it instead prints the escalation reason-code check for each
+run and writes nothing, so dataset D stays exactly as frozen.
 """
 from __future__ import annotations
 
@@ -79,7 +82,24 @@ def matrix(results: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def main() -> int:
+def compute_escalation(evidence_root: str = EVIDENCE) -> tuple[dc.CheckResult, ...]:
+    """The escalation reason-code check over every run. Writes nothing."""
+    return tuple(
+        result
+        for run in load_all(evidence_root)
+        for result in dc.run_escalation(
+            run, reference_for(str(run.case.get("case_id")))))
+
+
+def escalation_matrix(results: tuple[dc.CheckResult, ...]) -> str:
+    return "\n".join("%-42s %-14s %s" % (r.run, r.verdict, r.detail)
+                     for r in results)
+
+
+def main(argv: tuple[str, ...] = tuple(sys.argv[1:])) -> int:
+    if "--escalation" in argv:
+        sys.stdout.write(escalation_matrix(compute_escalation()) + "\n")
+        return 0
     results = compute()
     os.makedirs(os.path.dirname(RESULTS_PATH), exist_ok=True)
     with open(RESULTS_PATH, "w", encoding="utf-8", newline="\n") as handle:

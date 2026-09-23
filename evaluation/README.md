@@ -104,6 +104,22 @@ What this shows:
   instructions or in the prepared label. The implementation is frozen, so I
   have changed neither.
 
+  **Adjudicated 2026-09-23, after external review.** The prepared vocabulary
+  conflates two axes. NO_SUPPORTED_ROOT_CAUSE is a verdict on the customer's
+  claim (the meter-failure claim is unsupported), and that verdict is already
+  carried by `expected_route: REJECT_UNSUPPORTED_METER_CLAIM`. USAGE_SUPPORTED
+  is the explanation of the bill (actual reads support the usage). For
+  SYN-CASE-4003 both are true at once, so the planner's label is correct on the
+  root-cause axis and the prepared label was on the wrong axis. The runner
+  also strips the prepared label from agent input as a leak guard
+  (`runner/case.py`), so the planner could never have echoed it. The fix is on
+  the pack side: `expected_root_cause` for SYN-CASE-4003 becomes
+  USAGE_SUPPORTED in the synthetic pack, the evaluation suite, the expected
+  output file and the UI fixture, and dataset D is regenerated. That change is
+  held until the next hosted run so the frozen counts here, in the manifest
+  and in the submitted PDF (12 of 13) keep describing the runs that actually
+  happened. Runs 1 and 2 (MULTI_FACTOR) would still fail after the fix.
+
 ## Limits
 
 - The two wording checks (meter fault claims, credit promises) are sentence

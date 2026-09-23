@@ -24,7 +24,7 @@ from pptx.enum.text import PP_ALIGN
 from pptx.util import Emu, Inches, Pt
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, "submission", "final", "GridResolve_AI_Submission_Deck.pptx")
+OUT = os.path.join(ROOT, "submission", "final", "GridResolve_AI_Deck.pptx")
 
 REPO_URL = "https://github.com/satyamamarpandey/GridResolve-AI-MS-Agentathon"
 

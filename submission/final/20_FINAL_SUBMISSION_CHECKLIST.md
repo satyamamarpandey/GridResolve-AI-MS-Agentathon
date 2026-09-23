@@ -18,10 +18,10 @@ not judged "regardless of reason or fault".
 
 | Rule | Requirement | Status |
 | --- | --- | --- |
-| Entry information | A video, "no more than 3 minutes in duration and 150MB in size", via the Founderz platform | **FINAL**: `submission/video/GridResolve_Final_Video.mp4`, 172.0 seconds, about 7 MB. The PDF to attach is `submission/final/GridResolve_AI_Agentathon_PDF.pdf`, eleven pages. Watch it once with sound before uploading |
+| Entry information | A video, "no more than 3 minutes in duration and 150MB in size", via the Founderz platform | **FINAL**: `submission/video/GridResolve_Final_Video.mp4`, 172.0 seconds, about 7 MB. The PDF to attach is `submission/final/GridResolve_AI_PDF.pdf`, eleven pages. Watch it once with sound before uploading |
 | Entry information | "a brief written description of the issue the AI agent addresses, the impact of the AI agent, and how the agent was built using ... Microsoft Foundry" | Ready: `02_SUBMISSION_100_WORDS.md`, `01_EXECUTIVE_SUMMARY.md`. Paste-ready text is in `21_FOUNDERZ_SUBMISSION_TEXT.md` |
 | AI agent | "a clear purpose and audience, a summary of how it was built and refined, screen shots and example interactions and key lessons learned" | Ready: deck slides 1, 3, 4 and 6, `JUDGE_NARRATIVE.md` sections 3 and 6 |
-| Supporting documentation | Optional. "PPTX, PDF, DOCX, DOC, PPT or TXT" | Ready: `GridResolve_AI_Submission_Deck.pptx`, eight slides. Markdown is **not** an accepted format, so export `JUDGE_NARRATIVE.md` to PDF if you want to attach it |
+| Supporting documentation | Optional. "PPTX, PDF, DOCX, DOC, PPT or TXT" | Ready: `GridResolve_AI_Deck.pptx`, eight slides. Markdown is **not** an accepted format, so export `JUDGE_NARRATIVE.md` to PDF if you want to attach it |
 | Video | "Demonstrates the innovation, impact, and usability of the AI agent" | Script covers all three |
 | Original work | The entry, the documentation and the video "must be the participant's original work", and videos, "including but not limited to, their filming, editing, graphic design", "must be solely the work of the participant" | **Your decision.** The narration is your own voice. The slides and the video assembly are produced by scripts in this repository, written with AI assistance. Read that rule and decide whether you are comfortable, or re-edit the video yourself from the rendered frames in `submission/video/build/` |
 | Judging | Up to 30 points each for innovation, usability and impact, 90 in total | The deck and narrative are organised around these |
@@ -50,7 +50,7 @@ not judged "regardless of reason or fault".
    issue, the impact, and how it was built with Microsoft Foundry. If the form
    has separate fields, the text is already split that way. If it has a
    character limit, use the 100 word version.
-5. Attach `GridResolve_AI_Submission_Deck.pptx` as supporting documentation.
+5. Attach `GridResolve_AI_Deck.pptx` as supporting documentation.
    Optionally attach a PDF export of `JUDGE_NARRATIVE.md`.
 6. If the form has a link field, give the public repository URL, after the push.
 7. Submit, then reopen the entry and confirm the video plays and the text saved.

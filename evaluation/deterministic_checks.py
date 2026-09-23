@@ -568,6 +568,67 @@ def check_root_cause(run: RunRecord, ref: Reference) -> CheckResult:
                        "%s." % (stated, ref.expected_root_cause))
 
 
+# ------------------------------------------------ escalation reason codes
+#
+# Kept outside ALL_CHECKS on purpose. Dataset D (deterministic_results.json)
+# and the counts printed in the submission were frozen with the thirteen
+# checks above. This check runs through run_escalation() and the
+# evaluation.escalation_reasons module, so the frozen dataset is unchanged.
+
+REASON_CODES: frozenset[str] = frozenset((
+    "UNSUPPORTED_CLAIM", "EVIDENCE_GAP", "POLICY_RULE_VIOLATED",
+    "RECORD_CONFLICT", "STALE_POLICY", "PROMPT_INJECTION_SUSPECTED",
+    "TOOL_FAILURE", "AUTHORITY_EXCEEDED", "MISSING_DECISION_REASONS"))
+CITATION_KEYS: tuple[str, ...] = ("claim_id", "evidence_id", "policy_id", "rule")
+
+
+def reason_codes_of(run: RunRecord) -> tuple[Any, ...]:
+    """Reason codes the compliance agent recorded, top level or under escalation."""
+    data = run.data_of(COMPLIANCE_AGENT)
+    codes = data.get("reason_codes")
+    if codes is None:
+        escalation = data.get("escalation")
+        codes = escalation.get("reason_codes") \
+            if isinstance(escalation, Mapping) else None
+    return tuple(codes) if isinstance(codes, (list, tuple)) else ()
+
+
+def _citation_problems(index: int, entry: Any) -> tuple[str, ...]:
+    if not isinstance(entry, Mapping):
+        return ("reason code %d is not an object" % index,)
+    problems = []
+    code = entry.get("code")
+    if code not in REASON_CODES:
+        problems.append("reason code %d has unknown code %r" % (index, code))
+    cites = entry.get("cites")
+    cited = {k: v for k, v in cites.items()
+             if k in CITATION_KEYS and isinstance(v, str) and v.strip()} \
+        if isinstance(cites, Mapping) else {}
+    if not cited:
+        problems.append("reason code %d (%s) cites no claim_id, evidence_id, "
+                        "policy_id or rule" % (index, code))
+    return tuple(problems)
+
+
+def check_escalation_reason_codes(run: RunRecord, ref: Reference) -> CheckResult:
+    check_id = "escalation_reason_codes"
+    route = (run.analysis.get("route") or {}).get("route")
+    if route != ROUTE_ESCALATED:
+        return CheckResult(check_id, run.run_id, NOT_APPLICABLE,
+                           "The platform route is %s, not an escalation."
+                           % route)
+    codes = reason_codes_of(run)
+    problems = ["the escalation carries no structured reason codes"] \
+        if not codes else []
+    problems += [p for i, entry in enumerate(codes, 1)
+                 for p in _citation_problems(i, entry)]
+    cited = ", ".join(sorted({str(e.get("code")) for e in codes
+                              if isinstance(e, Mapping)}))
+    return _result(check_id, run, problems,
+                   "%d reason code(s) recorded (%s), each citing a claim, "
+                   "evidence item or policy rule." % (len(codes), cited))
+
+
 Check = Callable[[RunRecord, Reference], CheckResult]
 
 ALL_CHECKS: tuple[Check, ...] = (
@@ -589,3 +650,10 @@ ALL_CHECKS: tuple[Check, ...] = (
 
 def run_all(run: RunRecord, ref: Reference) -> tuple[CheckResult, ...]:
     return tuple(check(run, ref) for check in ALL_CHECKS)
+
+
+ESCALATION_CHECKS: tuple[Check, ...] = (check_escalation_reason_codes,)
+
+
+def run_escalation(run: RunRecord, ref: Reference) -> tuple[CheckResult, ...]:
+    return tuple(check(run, ref) for check in ESCALATION_CHECKS)
