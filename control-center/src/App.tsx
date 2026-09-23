@@ -5,6 +5,7 @@ import EvidenceExplorer from "./views/EvidenceExplorer";
 import AgentWorkflow from "./views/AgentWorkflow";
 import CustomerAssistant from "./views/CustomerAssistant";
 import SupervisorReview from "./views/SupervisorReview";
+import SupervisorFeedback from "./views/SupervisorFeedback";
 import Governance from "./views/Governance";
 import Evaluations from "./views/Evaluations";
 import SystemStatus from "./views/SystemStatus";
@@ -107,6 +108,14 @@ const NAV: readonly NavGroup[] = [
         hint: "Human decision point",
         icon: icon(<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M19 8v6M22 11h-6" /></>),
         view: SupervisorReview,
+      },
+      {
+        id: "feedback",
+        label: "Supervisor Feedback",
+        hint: "Human decisions recorded",
+        icon: icon(<><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /><path d="M9 10l2 2 4-4" /></>),
+        view: SupervisorFeedback,
+        chip: "Offline simulation",
       },
       {
         id: "governance",

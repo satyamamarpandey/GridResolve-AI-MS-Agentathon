@@ -867,7 +867,7 @@ def main():
     check("the prepared case passes the runner's synthetic-only validator",
           valid is True, str(valid)[:80])
     check("the prepared case is NOT registered, so it cannot be run by accident",
-          case_mod.available_cases() == ("SYN-CASE-4003",))
+          "SYN-CASE-4021" not in case_mod.available_cases())
     rec = doc["synthetic_account_records"]
     rate = rec["rate_components"]
     check("its billing arithmetic is internally consistent",

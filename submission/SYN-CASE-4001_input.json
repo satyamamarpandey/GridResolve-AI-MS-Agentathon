@@ -1,0 +1,95 @@
+{
+  "case_id": "SYN-CASE-4001",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "data_classification": "SYNTHETIC_ONLY",
+  "customer_request": "My July bill is higher than my June bill and I would like to understand why. I am not disputing the charge and I am not asking for a credit. Please explain what changed.",
+  "synthetic_account_records": {
+    "account_id": "SYN-ACCT-0001",
+    "meter_id": "SYN-MTR-0001",
+    "service_type": "electric",
+    "rate_components": {
+      "energy_charge_usd_per_kwh": 0.21,
+      "fixed_charge_usd_per_period": 10.00
+    },
+    "billing_history": [
+      {
+        "record_id": "SYN-BILL-0001-06",
+        "period_start": "2026-06-01",
+        "period_end": "2026-06-30",
+        "billing_days": 30,
+        "kwh_billed": 480,
+        "amount_usd": 110.8,
+        "read_type_end": "actual"
+      },
+      {
+        "record_id": "SYN-BILL-0001-07",
+        "period_start": "2026-07-01",
+        "period_end": "2026-07-31",
+        "billing_days": 31,
+        "kwh_billed": 720,
+        "amount_usd": 161.2,
+        "read_type_end": "actual"
+      }
+    ],
+    "meter_reads": [
+      {
+        "record_id": "SYN-READ-0001-A",
+        "read_date": "2026-06-30",
+        "read_type": "actual",
+        "register_kwh": 18440
+      },
+      {
+        "record_id": "SYN-READ-0001-B",
+        "read_date": "2026-07-31",
+        "read_type": "actual",
+        "register_kwh": 19160
+      }
+    ],
+    "meter_events": [],
+    "meter_event_note": "No meter events recorded between 2026-06-01 and 2026-07-31.",
+    "diagnostic_records": [
+      {
+        "record_id": "SYN-DIAG-0001-01",
+        "diagnostic_date": "2026-07-28",
+        "type": "remote_self_test",
+        "result": "PASS",
+        "tamper_flag": false,
+        "register_fault_flag": false
+      }
+    ],
+    "usage_history_kwh": [
+      {
+        "period": "2025-06",
+        "kwh": 470
+      },
+      {
+        "period": "2025-07",
+        "kwh": 705
+      },
+      {
+        "period": "2025-08",
+        "kwh": 690
+      },
+      {
+        "period": "2026-04",
+        "kwh": 430
+      },
+      {
+        "period": "2026-05",
+        "kwh": 450
+      },
+      {
+        "period": "2026-06",
+        "kwh": 480
+      },
+      {
+        "period": "2026-07",
+        "kwh": 720
+      }
+    ],
+    "adjustments": [],
+    "prior_contacts": []
+  }
+}

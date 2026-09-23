@@ -10,6 +10,11 @@ Safety model, in one place:
 
 `execute` is the only command that can spend money, and it refuses to run
 without the exact confirmation phrase, an explicit cap, and a clean run ledger.
+
+The runner interprets one workflow version, v10 by default. Setting the
+environment variable GRIDRESOLVE_WORKFLOW_VERSION=11 selects the bounded
+correction design (runner/workflow_v11.py); the live-definition check then
+refuses to run unless the published workflow is that version.
 """
 from __future__ import annotations
 
@@ -139,7 +144,7 @@ def _cmd_verify_api(args: argparse.Namespace) -> int:
         if not blockers:
             print("  [PASS] %-40s v%s, enabled, not a draft"
                   % ("live workflow is the reviewed version",
-                     ex.workflow_map.WORKFLOW_VERSION))
+                     ex.wv.active_version()))
         for d in ex.configuration_defects(client, args.case):
             ok = False
             print("  [FAIL] %s" % redactor.text(d))

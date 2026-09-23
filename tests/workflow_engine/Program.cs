@@ -7,6 +7,11 @@
 // scenario.json: { "input": "<first user message>",
 //                  "agents": { "<AgentName>": "<the text that agent replies with>" } }
 //
+// A reply may also be a JSON array of strings. The agent then gives them in
+// invocation order, one per invocation, and running out is an error, so a
+// correction route (v11) can script a rejected draft followed by a corrected one.
+// A plain string still means the same reply on every invocation.
+//
 // Prints one line per observed fact, then a JSON summary on the last line:
 //   EXECUTED <action id>      an action completed
 //   INVOKED  <agent name>     the engine asked the provider to run that agent
@@ -32,8 +37,8 @@ if (args.Length != 2)
 
 using JsonDocument scenario = JsonDocument.Parse(File.ReadAllText(args[1]));
 string input = scenario.RootElement.GetProperty("input").GetString() ?? string.Empty;
-Dictionary<string, string> replies = scenario.RootElement.GetProperty("agents")
-    .EnumerateObject().ToDictionary(p => p.Name, p => p.Value.GetString() ?? string.Empty);
+Dictionary<string, ScriptedReplies> replies = scenario.RootElement.GetProperty("agents")
+    .EnumerateObject().ToDictionary(p => p.Name, p => ScriptedReplies.From(p.Value));
 
 ScriptedProvider provider = new(replies);
 List<string> executed = [], sent = [], failed = [];
@@ -77,7 +82,30 @@ foreach (string name in provider.Invoked) Console.WriteLine("INVOKED  " + name);
 Console.WriteLine(JsonSerializer.Serialize(new { executed, invoked = provider.Invoked, sent, failed, inputs = provider.Inputs }));
 return 0;
 
-internal sealed class ScriptedProvider(Dictionary<string, string> replies) : ResponseAgentProvider
+internal sealed class ScriptedReplies
+{
+    private readonly string? _same;
+    private readonly List<string> _sequence = [];
+    private int _next;
+
+    private ScriptedReplies(string? same, IEnumerable<string> sequence)
+    {
+        _same = same;
+        _sequence.AddRange(sequence);
+    }
+
+    public static ScriptedReplies From(JsonElement value) => value.ValueKind switch
+    {
+        JsonValueKind.Array => new ScriptedReplies(null,
+            value.EnumerateArray().Select(e => e.GetString() ?? string.Empty)),
+        _ => new ScriptedReplies(value.GetString() ?? string.Empty, []),
+    };
+
+    /// <summary>The reply for the next invocation, or null when a sequence is exhausted.</summary>
+    public string? Take() => _same ?? (_next < _sequence.Count ? _sequence[_next++] : null);
+}
+
+internal sealed class ScriptedProvider(Dictionary<string, ScriptedReplies> replies) : ResponseAgentProvider
 {
     private readonly Dictionary<string, List<ChatMessage>> _conversations = [];
     public List<string> Invoked { get; } = [];
@@ -115,9 +143,11 @@ internal sealed class ScriptedProvider(Dictionary<string, string> replies) : Res
         Inputs.Add(new InvocationInput(agentId,
             given.Select(m => new GivenMessage(m.Role.Value, m.Text)).ToList(),
             visible.Count == 0 ? "none" : visible[^1].Role.Value));
-        if (!replies.TryGetValue(agentId, out string? text))
+        string? text = replies.TryGetValue(agentId, out ScriptedReplies? scripted) ? scripted.Take() : null;
+        if (text is null)
         {
-            throw new InvalidOperationException("The scenario scripts no reply for agent " + agentId);
+            throw new InvalidOperationException("The scenario scripts no reply for agent " + agentId
+                + " (none given, or its scripted sequence is exhausted)");
         }
         string messageId = "msg_" + Guid.NewGuid().ToString("N");
         if (conversationId is not null)

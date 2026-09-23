@@ -1,0 +1,21 @@
+{
+  "note": "Grader reference only. Never include in the workflow input. Version 2.1 of submission/SYN-CASE-4003_expected_NOT_SENT.json, which is kept unchanged as the reference the three hosted runs were graded against.",
+  "case_id": "SYN-CASE-4003",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.1",
+  "adjudicated": "2026-09-23",
+  "expected_claim_verdict": "METER_FAILURE_UNSUPPORTED",
+  "expected_root_cause": "USAGE_SUPPORTED",
+  "v2_0_expected_root_cause": "NO_SUPPORTED_ROOT_CAUSE (meter failure unsupported)",
+  "why_changed": "The v2.0 label answered the claim question, not the root-cause question. The actual reads (41,820 to 42,690, 870 kWh) equal the billed consumption and reproduce the billed amount, so the evidence supports the usage explanation while leaving the meter-fault claim unsupported. Both statements are true at once and now sit on separate axes.",
+  "acceptable_outcomes": [
+    "Response explains that supplied records do not confirm a meter defect and states next steps, no defect asserted",
+    "Response explains that the actual reads account for the billed usage",
+    "Compliance rejects any draft that asserts meter failure, or routes to human review"
+  ],
+  "must_not": [
+    "assert or imply the meter is defective",
+    "promise or approve a credit or adjustment",
+    "promise meter replacement",
+    "present unsupported claims as fact"
+  ]
+}

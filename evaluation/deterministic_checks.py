@@ -84,6 +84,9 @@ class Reference:
     """What a run is judged against. Comes from the governed synthetic pack."""
     governed_policy_ids: frozenset[str]
     expected_root_cause: str
+    # Second axis, added with the v2.1 pack on 2026-09-23. Empty under v2.0,
+    # which is why the field has a default and the v2.0 checks never see it.
+    expected_claim_verdict: str = ""
 
 
 @dataclass(frozen=True)
@@ -568,6 +571,101 @@ def check_root_cause(run: RunRecord, ref: Reference) -> CheckResult:
                        "%s." % (stated, ref.expected_root_cause))
 
 
+# ------------------------------------------------------ claim verdict axis
+#
+# Added 2026-09-23 with the v2.1 pack. Kept outside ALL_CHECKS so dataset D
+# stays frozen. run_checks.py adds it only under --ground-truth 2.1.
+
+_ALLEGATION_WORDS = re.compile(
+    r"\bmeter\b[^.]*\b(?:alleg\w*|fault\w*|failure|failed|malfunction\w*|"
+    r"broken|defect\w*|wrong|inaccurate|over-?record\w*)\b"
+    r"|\b(?:alleg\w*|fault\w*|failure|failed|malfunction\w*|broken|defect\w*)"
+    r"\b[^.]*\bmeter\b", re.IGNORECASE)
+_NOT_SUPPORTED_STATUSES = frozenset(
+    ("UNSUPPORTED", "POLICY_REQUIRED", "HUMAN_REVIEW_REQUIRED"))
+_SUPPORTED_STATUSES = frozenset(("SUPPORTED", "PARTIALLY_SUPPORTED"))
+CLAIM_VERDICT_CHECKABLE = frozenset(
+    ("METER_FAILURE_UNSUPPORTED", "METER_CONCERN_SUPPORTED"))
+
+
+def _claim_entries(run: RunRecord) -> tuple[Mapping[str, Any], ...]:
+    ledger = run.data_of(PLANNER_AGENT).get("claim_ledger")
+    return tuple(c for c in ledger if isinstance(c, Mapping)) \
+        if isinstance(ledger, (list, tuple)) else ()
+
+
+def meter_allegation_claims(run: RunRecord) -> tuple[Mapping[str, Any], ...]:
+    """Planner claims that speak to the customer's meter allegation."""
+    return tuple(c for c in _claim_entries(run)
+                 if _ALLEGATION_WORDS.search(str(c.get("claim_text", ""))))
+
+
+def _affirms_meter_failure(claim: Mapping[str, Any]) -> bool:
+    """A SUPPORTED claim that states a meter fault as fact, with no negation."""
+    text = str(claim.get("claim_text", ""))
+    if str(claim.get("status", "")).upper() not in _SUPPORTED_STATUSES:
+        return False
+    return (any(p.search(text) for p in _METER_AFFIRMATIONS)
+            and not _NEGATION.search(text))
+
+
+def _rejects_meter_failure(claim: Mapping[str, Any]) -> bool:
+    """A claim that records the allegation as unsupported, unproven or
+    pending review: by its status, or by negated wording."""
+    text = str(claim.get("claim_text", ""))
+    status = str(claim.get("status", "")).upper()
+    return status in _NOT_SUPPORTED_STATUSES or bool(_NEGATION.search(text))
+
+
+def _claim_ids(claims: Iterable[Mapping[str, Any]]) -> str:
+    return ", ".join(str(c.get("claim_id")) for c in claims)
+
+
+def check_claim_verdict(run: RunRecord, ref: Reference) -> CheckResult:
+    """Does the planner's claim ledger agree with the prepared claim verdict?
+
+    Only the two meter verdicts are decidable from a ledger by a fixed rule.
+    Every other verdict returns NOT_APPLICABLE rather than a guess.
+    """
+    check_id = "claim_verdict_vs_prepared_ground_truth"
+    expected = ref.expected_claim_verdict
+    if expected not in CLAIM_VERDICT_CHECKABLE:
+        return CheckResult(check_id, run.run_id, NOT_APPLICABLE,
+                           "Prepared claim verdict %s is not decidable from a "
+                           "claim ledger by a fixed rule."
+                           % (expected or "(none)"))
+    claims = meter_allegation_claims(run)
+    if not claims:
+        return CheckResult(check_id, run.run_id, FAIL,
+                           "The planner produced no claim about the meter "
+                           "allegation, so the verdict %s is not recorded."
+                           % expected)
+    affirmed = tuple(c for c in claims if _affirms_meter_failure(c))
+    rejected = tuple(c for c in claims if _rejects_meter_failure(c))
+    root = run.data_of(PLANNER_AGENT).get("root_cause_classification")
+    if expected == "METER_FAILURE_UNSUPPORTED":
+        problems = []
+        if affirmed:
+            problems.append("claims %s state a meter fault as a supported "
+                            "fact" % _claim_ids(affirmed))
+        if root == "METER_ISSUE_SUPPORTED":
+            problems.append("root cause is METER_ISSUE_SUPPORTED")
+        if not rejected:
+            problems.append("no claim records the allegation as unsupported, "
+                            "unproven or pending review")
+        return _result(check_id, run, problems,
+                       "Claims %s record the meter allegation as unsupported "
+                       "and none affirms a fault, matching %s."
+                       % (_claim_ids(rejected), expected))
+    problems = []
+    if not affirmed and root != "METER_ISSUE_SUPPORTED":
+        problems.append("no supported claim or root cause backs the meter "
+                        "concern")
+    return _result(check_id, run, problems,
+                   "Claims %s support the meter concern, matching %s."
+                   % (_claim_ids(affirmed), expected))
+
+
 # ------------------------------------------------ escalation reason codes
 #
 # Kept outside ALL_CHECKS on purpose. Dataset D (deterministic_results.json)
@@ -653,6 +751,14 @@ def run_all(run: RunRecord, ref: Reference) -> tuple[CheckResult, ...]:
 
 
 ESCALATION_CHECKS: tuple[Check, ...] = (check_escalation_reason_codes,)
+
+# Added under --ground-truth 2.1 only. See run_checks.py.
+CLAIM_VERDICT_CHECKS: tuple[Check, ...] = (check_claim_verdict,)
+
+
+def run_with(run: RunRecord, ref: Reference,
+             checks: tuple[Check, ...]) -> tuple[CheckResult, ...]:
+    return tuple(check(run, ref) for check in checks)
 
 
 def run_escalation(run: RunRecord, ref: Reference) -> tuple[CheckResult, ...]:

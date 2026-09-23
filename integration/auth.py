@@ -39,6 +39,7 @@ class Permission(Enum):
     READ_ADJUSTMENTS = "READ_ADJUSTMENTS"
     APPEND_AUDIT = "APPEND_AUDIT"
     READ_AUDIT = "READ_AUDIT"
+    RECORD_REVIEW = "RECORD_REVIEW"
 
 
 class _RoleTable(Mapping[Role, FrozenSet[Permission]]):
@@ -76,10 +77,11 @@ ROLE_PERMISSIONS: Mapping[Role, FrozenSet[Permission]] = _RoleTable({
         Permission.READ_EVIDENCE, Permission.SEND_MESSAGE, Permission.ASSIGN_REVIEW,
         Permission.APPEND_AUDIT}),
     Role.HUMAN_REVIEWER: frozenset({
-        Permission.READ_EVIDENCE, Permission.REQUEST_ADJUSTMENT, Permission.READ_ADJUSTMENTS}),
+        Permission.READ_EVIDENCE, Permission.REQUEST_ADJUSTMENT, Permission.READ_ADJUSTMENTS,
+        Permission.RECORD_REVIEW}),
     Role.HUMAN_BILLING_SUPERVISOR: frozenset({
         Permission.READ_EVIDENCE, Permission.REQUEST_ADJUSTMENT, Permission.READ_ADJUSTMENTS,
-        Permission.AUTHORIZE_ADJUSTMENT}),
+        Permission.AUTHORIZE_ADJUSTMENT, Permission.RECORD_REVIEW}),
     Role.AUDITOR: frozenset({Permission.READ_AUDIT}),
 })
 

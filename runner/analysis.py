@@ -14,9 +14,10 @@ from __future__ import annotations
 import json
 import os
 import re
+from types import ModuleType
 from typing import Final
 
-from . import workflow_map
+from . import workflow_map, workflow_versions
 
 RELEASE_NOT_RELEASED = "NOT_RELEASED"
 RELEASE_CUSTOMER_MESSAGE = "DELIVERED_CUSTOMER_MESSAGE"
@@ -401,10 +402,15 @@ def audit_check(items: list[dict], workflow_label: str,
 
 
 def analyze(items: list[dict], actions: list[dict], workflow_name: str,
-            workflow_label: str) -> dict:
-    """Everything derived from one run's captured items and action events."""
+            workflow_label: str, route_map: ModuleType | None = None) -> dict:
+    """Everything derived from one run's captured items and action events.
+
+    `route_map` is the action map of the workflow version that ran, v10 unless
+    the caller says otherwise. The caller knows the version; this module does
+    not guess it from the environment.
+    """
     observed = participation(items, workflow_name)
-    route = workflow_map.describe_route(
+    route = (route_map or workflow_map).describe_route(
         [a["action_id"] for a in actions if isinstance(a.get("action_id"), str)],
         [a["previous_action_id"] for a in actions
          if isinstance(a.get("previous_action_id"), str)])
@@ -455,10 +461,12 @@ def analyze_run_dir(run_dir: str) -> dict:
 
     preflight = load("00_preflight.json")
     name = str(preflight.get("workflow"))
-    label = "%s v%s" % (name, preflight.get("workflow_version"))
+    version = str(preflight.get("workflow_version"))
+    label = "%s v%s" % (name, version)
     actions = load("04_workflow_actions.json")
     result = analyze(items_of(load("07_conversation_items.json")),
-                     actions if isinstance(actions, list) else [], name, label)
+                     actions if isinstance(actions, list) else [], name, label,
+                     route_map=workflow_versions.for_version(version))
     events = 0
     with open(os.path.join(run_dir, "02_events.jsonl"), encoding="utf-8") as handle:
         events = sum(1 for line in handle if line.strip())

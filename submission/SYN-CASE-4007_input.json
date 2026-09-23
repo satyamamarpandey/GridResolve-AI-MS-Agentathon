@@ -1,0 +1,81 @@
+{
+  "case_id": "SYN-CASE-4007",
+  "workflow_version": "GridResolveAIWorkflow v11",
+  "dataset_version": "GRIDRESOLVE-SYNTH-2.0",
+  "policy_version": "GRIDRESOLVE-POLICY-2.0",
+  "data_classification": "SYNTHETIC_ONLY",
+  "customer_request": "My July bill is far higher than June and I think the meter reading used for the bill is wrong. Please check the reading against the meter and correct the bill if it does not match.",
+  "synthetic_account_records": {
+    "account_id": "SYN-ACCT-0007",
+    "meter_id": "SYN-MTR-0007",
+    "service_type": "electric",
+    "rate_components": {
+      "energy_charge_usd_per_kwh": 0.22,
+      "fixed_charge_usd_per_period": 12.00
+    },
+    "billing_history": [
+      {
+        "record_id": "SYN-BILL-0007-06",
+        "period_start": "2026-06-01",
+        "period_end": "2026-06-30",
+        "billing_days": 30,
+        "kwh_billed": 600,
+        "amount_usd": 144.00,
+        "read_type_end": "actual"
+      },
+      {
+        "record_id": "SYN-BILL-0007-07",
+        "period_start": "2026-07-01",
+        "period_end": "2026-07-31",
+        "billing_days": 31,
+        "kwh_billed": 910,
+        "amount_usd": 212.2,
+        "read_type_end": "actual"
+      }
+    ],
+    "meter_reads": [
+      {
+        "record_id": "SYN-READ-0007-A",
+        "read_date": "2026-06-30",
+        "read_type": "actual",
+        "register_kwh": 30500
+      },
+      {
+        "record_id": "SYN-READ-0007-B",
+        "read_date": "2026-07-31",
+        "read_type": "actual",
+        "register_kwh": 31150
+      }
+    ],
+    "meter_events": [
+      {
+        "record_id": "SYN-EVT-0007-01",
+        "event_date": "2026-07-14",
+        "type": "communication_loss",
+        "detail": "Remote read link unavailable for 36 hours. The event log does not state whether the register value was affected."
+      }
+    ],
+    "meter_event_note": "One meter event recorded between 2026-06-01 and 2026-07-31, see meter_events. No remote self-test has been run on this meter since 2026-03-02.",
+    "diagnostic_records": [],
+    "usage_history_kwh": [
+      {
+        "period": "2026-04",
+        "kwh": 560
+      },
+      {
+        "period": "2026-05",
+        "kwh": 580
+      },
+      {
+        "period": "2026-06",
+        "kwh": 600
+      },
+      {
+        "period": "2026-07",
+        "kwh": 910
+      }
+    ],
+    "adjustments": [],
+    "prior_contacts": []
+  }
+}

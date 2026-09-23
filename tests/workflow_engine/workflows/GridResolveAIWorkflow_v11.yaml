@@ -1,0 +1,689 @@
+kind: workflow
+trigger:
+  kind: OnConversationStart
+  id: trigger_wf
+  actions:
+    - kind: InvokeAzureAgent
+      id: node-1789696603365
+      agent:
+        name: CaseTriageAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: "WORKFLOW STEP 1 of 9: CaseTriageAgent. Task: classify the case in the first user message, state the customer concern and the material allegations, and list the investigation steps required. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+      output:
+        autoSend: false
+        messages: Local.VarTriage
+    - kind: InvokeAzureAgent
+      id: node-1789696645054
+      agent:
+        name: AccountEvidenceAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: "WORKFLOW STEP 2 of 9: AccountEvidenceAgent. Every assistant message above was written by a different specialist agent, not by you. Task: build the evidence ledger for the case in the first user message, using only its synthetic_account_records. Record the billing records, the read type of each meter read, meter events and diagnostics as evidence entries with evidence identifiers, and list anything missing or contradictory. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, including evidence_ledger."
+      output:
+        autoSend: false
+        messages: Local.VarEvidence
+    - kind: InvokeAzureAgent
+      id: node-1789696697430
+      agent:
+        name: UsageAnomalyAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: "WORKFLOW STEP 3 of 9: UsageAnomalyAgent. Every assistant message above was written by a different specialist agent, not by you. Task: compare consumption and billing across the periods in the case records, using the step 2 evidence ledger where one is present and the case records in the first user message otherwise. State separately which explanations the evidence supports and which it does not. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+      output:
+        autoSend: false
+        messages: Local.VarUsage
+    - kind: InvokeAzureAgent
+      id: node-1789696718717
+      agent:
+        name: PolicyKnowledgeAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: "WORKFLOW STEP 4 of 9: PolicyKnowledgeAgent. Every assistant message above was written by a different specialist agent, not by you. Task: map the governed policies in your policy ledger to this case. Give the policy identifiers that apply, the conditions any statement about the meter must meet, and the requirements for adjustments and for human approval. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, including policy_ledger."
+      output:
+        autoSend: false
+        messages: Local.VarPolicy
+    - kind: InvokeAzureAgent
+      id: node-1789696778418
+      agent:
+        name: ResolutionPlannerAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: "WORKFLOW STEP 5 of 9: ResolutionPlannerAgent. Every assistant message above was written by a different specialist agent, not by you. Task: propose a resolution supported by the step 2 evidence, step 3 usage and step 4 policy outputs above, giving the evidence and policy basis for every claim. If one of those outputs is missing or is not a JSON object, say so in the plan and do not fill the gap yourself. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with the JSON object your OUTPUT contract requires, starting with an opening brace, followed by the single CASE_FOLLOWUP token line your instructions define."
+      output:
+        autoSend: false
+        messages: Local.VarPlan
+    - kind: InvokeAzureAgent
+      id: node-1789696813306
+      agent:
+        name: CustomerCommunicationAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: "WORKFLOW STEP 6 of 9: CustomerCommunicationAgent. Every assistant message above was written by a different specialist agent, not by you. Task: write the customer message from the claims the step 5 plan supports. Complete all six customer-facing fields in plain language that stands on its own. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your output schema requires."
+      output:
+        autoSend: false
+        messages: Local.VarCustomerDraft
+        responseObject: Local.VarCustomerMessage
+    - kind: InvokeAzureAgent
+      id: node-1789696841174
+      agent:
+        name: EvidenceComplianceAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: "WORKFLOW STEP 7 of 9: EvidenceComplianceAgent. Every assistant message above was written by a different specialist agent, not by you. Task: review the customer message drafted in step 6 against the step 2 evidence, step 3 usage, step 4 policy and step 5 plan outputs above. Run your checks and record which failed, with reasons. Decide only whether that message is safe to release. Whether the underlying case still needs a person is decided separately by the workflow, and is not by itself a reason to reject a message that is otherwise safe. If an output you need is missing or is not a JSON object, record that as a failed check and do not repair it. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON decision object your OUTPUT contract requires, starting with an opening brace, followed by the single ROUTE_DECISION token line your instructions define. The token line alone is not a complete response."
+      output:
+        autoSend: false
+        messages: Local.Var1497
+    - kind: ConditionGroup
+      id: node-1789696874113
+      conditions:
+        - condition: '=And(With({t: Last(Local.Var1497).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_REJECT" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")))), !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessage.customer_summary, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessage.what_we_reviewed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessage.what_we_found, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessage.why_bill_changed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessage.what_happens_next, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessage.customer_action_needed, Char(10), ""), Char(13), ""), Char(9), ""))), With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarEvidence).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""evidence_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarUsage).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""usage_summary""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarPolicy).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""policy_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.Var1497).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s)))'
+          id: if-node-approved-release
+          actions:
+            - kind: SendActivity
+              id: node-release-approved-message
+              activity: |-
+                {Local.VarCustomerMessage.customer_summary}
+
+                What we reviewed
+                {Local.VarCustomerMessage.what_we_reviewed}
+
+                What we found
+                {Local.VarCustomerMessage.what_we_found}
+
+                Why your bill changed
+                {Local.VarCustomerMessage.why_bill_changed}
+
+                What happens next
+                {Local.VarCustomerMessage.what_happens_next}
+
+                What we need from you
+                {Local.VarCustomerMessage.customer_action_needed}
+            - kind: ConditionGroup
+              id: node-case-followup-gate
+              conditions:
+                - condition: '=With({t: Last(Local.VarPlan).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("CASE_FOLLOWUP::HUMAN_REQUIRED" in t) && (Len(t) - Len(Substitute(t, "CASE_FOLLOWUP::NONE_REQUIRED", "")) = Len("CASE_FOLLOWUP::NONE_REQUIRED")) && ("CASE_FOLLOWUP::NONE_REQUIRED" exactin l) && (Len(l) = Len("CASE_FOLLOWUP::NONE_REQUIRED"))))'
+                  id: if-node-no-human-followup
+                  actions:
+                    - kind: SetVariable
+                      id: node-record-no-followup
+                      variable: Local.VarCaseFollowUp
+                      value: ="NONE_REQUIRED"
+                - condition: "true"
+                  id: if-node-human-followup
+                  actions:
+                    - kind: InvokeAzureAgent
+                      id: node-followup-handoff
+                      agent:
+                        name: EscalationCoordinatorAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message was approved and released, and the step 5 follow-up line did not clear the case of further human work. Task: prepare the human review package for the open case work. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                      output:
+                        autoSend: true
+                        messages: Local.VarFollowUpHandoff
+        - condition: '=With({t: Last(Local.Var1497).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_APPROVED" in t) && !("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE")) && ("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE")))) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.Var1497).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s))'
+          id: if-node-a1-reject-rewrite
+          actions:
+            - kind: InvokeAzureAgent
+              id: node-a1-rewrite-comms
+              agent:
+                name: CustomerCommunicationAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: "WORKFLOW STEP 6 of 9, CORRECTION ATTEMPT 1 of 2: CustomerCommunicationAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the most recent EvidenceComplianceAgent output above did not accept the customer message and asked for a rewrite. Nothing has been sent to the customer. Task: read the correction_instructions, failed_checks and reason_codes in that output and change only the wording it identified. Keep every claim, fact and policy interpretation of the most recent ResolutionPlannerAgent plan above unchanged. Complete all six customer-facing fields in plain language that stands on its own. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your output schema requires."
+              output:
+                autoSend: false
+                messages: Local.VarCustomerDraftA1Rw
+                responseObject: Local.VarCustomerMessageA1Rw
+            - kind: InvokeAzureAgent
+              id: node-a1-rewrite-compliance
+              agent:
+                name: EvidenceComplianceAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: "WORKFLOW STEP 7 of 9, CORRECTION ATTEMPT 1 of 2: EvidenceComplianceAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: an earlier review did not accept the customer message, and the most recent CustomerCommunicationAgent output above is the corrected draft. Task: review that corrected message against the step 2 evidence, step 3 usage, step 4 policy and the most recent ResolutionPlannerAgent plan above. Run your checks and record which failed, with reasons and reason codes. Decide only whether that message is safe to release; whether the case still needs a person is routed separately by the workflow and is not by itself a reason to reject. If an output you need is missing or is not a JSON object, record that as a failed check and do not repair it. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON decision object your OUTPUT contract requires, starting with an opening brace, followed by the single ROUTE_DECISION token line your instructions define. The token line alone is not a complete response."
+              output:
+                autoSend: false
+                messages: Local.VarComplianceA1Rw
+            - kind: ConditionGroup
+              id: node-a1-rewrite-gate
+              conditions:
+                - condition: '=And(With({t: Last(Local.VarComplianceA1Rw).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_REJECT" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")))), !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rw.customer_summary, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rw.what_we_reviewed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rw.what_we_found, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rw.why_bill_changed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rw.what_happens_next, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rw.customer_action_needed, Char(10), ""), Char(13), ""), Char(9), ""))), With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarEvidence).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""evidence_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarUsage).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""usage_summary""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarPolicy).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""policy_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1Rw).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s)))'
+                  id: if-node-a1-rewrite-approved-release
+                  actions:
+                    - kind: SendActivity
+                      id: node-a1-rewrite-release-approved-message
+                      activity: |-
+                        {Local.VarCustomerMessageA1Rw.customer_summary}
+
+                        What we reviewed
+                        {Local.VarCustomerMessageA1Rw.what_we_reviewed}
+
+                        What we found
+                        {Local.VarCustomerMessageA1Rw.what_we_found}
+
+                        Why your bill changed
+                        {Local.VarCustomerMessageA1Rw.why_bill_changed}
+
+                        What happens next
+                        {Local.VarCustomerMessageA1Rw.what_happens_next}
+
+                        What we need from you
+                        {Local.VarCustomerMessageA1Rw.customer_action_needed}
+                    - kind: ConditionGroup
+                      id: node-a1-rewrite-case-followup-gate
+                      conditions:
+                        - condition: '=With({t: Last(Local.VarPlan).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("CASE_FOLLOWUP::HUMAN_REQUIRED" in t) && (Len(t) - Len(Substitute(t, "CASE_FOLLOWUP::NONE_REQUIRED", "")) = Len("CASE_FOLLOWUP::NONE_REQUIRED")) && ("CASE_FOLLOWUP::NONE_REQUIRED" exactin l) && (Len(l) = Len("CASE_FOLLOWUP::NONE_REQUIRED"))))'
+                          id: if-node-a1-rewrite-no-human-followup
+                          actions:
+                            - kind: SetVariable
+                              id: node-a1-rewrite-record-no-followup
+                              variable: Local.VarCaseFollowUp
+                              value: ="NONE_REQUIRED"
+                        - condition: "true"
+                          id: if-node-a1-rewrite-human-followup
+                          actions:
+                            - kind: InvokeAzureAgent
+                              id: node-a1-rewrite-followup-handoff
+                              agent:
+                                name: EscalationCoordinatorAgent
+                              conversationId: =System.ConversationId
+                              input:
+                                messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message drafted in the most recent CustomerCommunicationAgent output above was accepted by the step 7 review and released, after 1 automated correction attempt(s), and the most recent step 5 follow-up line did not clear the case of further human work. Task: prepare the human review package for the open case work, and include every earlier review decision and reason code above. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                              output:
+                                autoSend: true
+                                messages: Local.VarFollowUpHandoff
+                - condition: '=With({t: Last(Local.VarComplianceA1Rw).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_APPROVED" in t) && !("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE")) && ("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE")))) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1Rw).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s))'
+                  id: if-node-a1-rewrite-a2-reject-rewrite
+                  actions:
+                    - kind: InvokeAzureAgent
+                      id: node-a1-rewrite-a2-rewrite-comms
+                      agent:
+                        name: CustomerCommunicationAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 6 of 9, CORRECTION ATTEMPT 2 of 2: CustomerCommunicationAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the most recent EvidenceComplianceAgent output above did not accept the customer message and asked for a rewrite. Nothing has been sent to the customer. Task: read the correction_instructions, failed_checks and reason_codes in that output and change only the wording it identified. Keep every claim, fact and policy interpretation of the most recent ResolutionPlannerAgent plan above unchanged. Complete all six customer-facing fields in plain language that stands on its own. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your output schema requires."
+                      output:
+                        autoSend: false
+                        messages: Local.VarCustomerDraftA1RwA2Rw
+                        responseObject: Local.VarCustomerMessageA1RwA2Rw
+                    - kind: InvokeAzureAgent
+                      id: node-a1-rewrite-a2-rewrite-compliance
+                      agent:
+                        name: EvidenceComplianceAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 7 of 9, CORRECTION ATTEMPT 2 of 2: EvidenceComplianceAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: an earlier review did not accept the customer message, and the most recent CustomerCommunicationAgent output above is the corrected draft. Task: review that corrected message against the step 2 evidence, step 3 usage, step 4 policy and the most recent ResolutionPlannerAgent plan above. Run your checks and record which failed, with reasons and reason codes. Decide only whether that message is safe to release; whether the case still needs a person is routed separately by the workflow and is not by itself a reason to reject. If an output you need is missing or is not a JSON object, record that as a failed check and do not repair it. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON decision object your OUTPUT contract requires, starting with an opening brace, followed by the single ROUTE_DECISION token line your instructions define. The token line alone is not a complete response."
+                      output:
+                        autoSend: false
+                        messages: Local.VarComplianceA1RwA2Rw
+                    - kind: ConditionGroup
+                      id: node-a1-rewrite-a2-rewrite-gate
+                      conditions:
+                        - condition: '=And(With({t: Last(Local.VarComplianceA1RwA2Rw).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_REJECT" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")))), !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rw.customer_summary, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rw.what_we_reviewed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rw.what_we_found, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rw.why_bill_changed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rw.what_happens_next, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rw.customer_action_needed, Char(10), ""), Char(13), ""), Char(9), ""))), With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarEvidence).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""evidence_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarUsage).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""usage_summary""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarPolicy).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""policy_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1RwA2Rw).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s)))'
+                          id: if-node-a1-rewrite-a2-rewrite-approved-release
+                          actions:
+                            - kind: SendActivity
+                              id: node-a1-rewrite-a2-rewrite-release-approved-message
+                              activity: |-
+                                {Local.VarCustomerMessageA1RwA2Rw.customer_summary}
+
+                                What we reviewed
+                                {Local.VarCustomerMessageA1RwA2Rw.what_we_reviewed}
+
+                                What we found
+                                {Local.VarCustomerMessageA1RwA2Rw.what_we_found}
+
+                                Why your bill changed
+                                {Local.VarCustomerMessageA1RwA2Rw.why_bill_changed}
+
+                                What happens next
+                                {Local.VarCustomerMessageA1RwA2Rw.what_happens_next}
+
+                                What we need from you
+                                {Local.VarCustomerMessageA1RwA2Rw.customer_action_needed}
+                            - kind: ConditionGroup
+                              id: node-a1-rewrite-a2-rewrite-case-followup-gate
+                              conditions:
+                                - condition: '=With({t: Last(Local.VarPlan).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("CASE_FOLLOWUP::HUMAN_REQUIRED" in t) && (Len(t) - Len(Substitute(t, "CASE_FOLLOWUP::NONE_REQUIRED", "")) = Len("CASE_FOLLOWUP::NONE_REQUIRED")) && ("CASE_FOLLOWUP::NONE_REQUIRED" exactin l) && (Len(l) = Len("CASE_FOLLOWUP::NONE_REQUIRED"))))'
+                                  id: if-node-a1-rewrite-a2-rewrite-no-human-followup
+                                  actions:
+                                    - kind: SetVariable
+                                      id: node-a1-rewrite-a2-rewrite-record-no-followup
+                                      variable: Local.VarCaseFollowUp
+                                      value: ="NONE_REQUIRED"
+                                - condition: "true"
+                                  id: if-node-a1-rewrite-a2-rewrite-human-followup
+                                  actions:
+                                    - kind: InvokeAzureAgent
+                                      id: node-a1-rewrite-a2-rewrite-followup-handoff
+                                      agent:
+                                        name: EscalationCoordinatorAgent
+                                      conversationId: =System.ConversationId
+                                      input:
+                                        messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message drafted in the most recent CustomerCommunicationAgent output above was accepted by the step 7 review and released, after 2 automated correction attempt(s), and the most recent step 5 follow-up line did not clear the case of further human work. Task: prepare the human review package for the open case work, and include every earlier review decision and reason code above. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                                      output:
+                                        autoSend: true
+                                        messages: Local.VarFollowUpHandoff
+                        - condition: "true"
+                          id: if-node-a1-rewrite-a2-rewrite-failclosed-escalate
+                          actions:
+                            - kind: InvokeAzureAgent
+                              id: node-a1-rewrite-a2-rewrite-escalate
+                              agent:
+                                name: EscalationCoordinatorAgent
+                              conversationId: =System.ConversationId
+                              input:
+                                messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message was not released. The step 7 review did not accept it after 2 automated correction attempt(s), the workflow permits at most 2, or a required specialist output or customer field was incomplete. Nothing has been sent to the customer. Task: prepare the human review package. List every decision, failed check, reason code and correction instruction in the EvidenceComplianceAgent outputs above, in order, and list any specialist output above that is missing or is not a JSON object. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                              output:
+                                autoSend: true
+                                messages: Local.VarEscalation
+                - condition: '=With({t: Last(Local.VarComplianceA1Rw).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_APPROVED" in t) && !("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN")) && ("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN")))) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1Rw).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s))'
+                  id: if-node-a1-rewrite-a2-reject-replan
+                  actions:
+                    - kind: InvokeAzureAgent
+                      id: node-a1-rewrite-a2-replan-planner
+                      agent:
+                        name: ResolutionPlannerAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 5 of 9, CORRECTION ATTEMPT 2 of 2: ResolutionPlannerAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the most recent EvidenceComplianceAgent output above did not accept the plan and asked for a replan. Nothing has been sent to the customer. Task: read the correction_instructions, unsupported_claim_ids, failed_checks and reason_codes in that output, then propose a corrected resolution supported only by the step 2 evidence, step 3 usage and step 4 policy outputs above, with the evidence and policy basis for every claim. Drop or mark UNSUPPORTED any claim the evidence does not support. Do not fill an evidence gap yourself; if evidence is missing, say so in the plan. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your OUTPUT contract requires, starting with an opening brace, followed by the single CASE_FOLLOWUP token line your instructions define."
+                      output:
+                        autoSend: false
+                        messages: Local.VarPlanA1RwA2Rp
+                    - kind: InvokeAzureAgent
+                      id: node-a1-rewrite-a2-replan-comms
+                      agent:
+                        name: CustomerCommunicationAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 6 of 9, CORRECTION ATTEMPT 2 of 2: CustomerCommunicationAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the plan was corrected after the most recent EvidenceComplianceAgent review above. Nothing has been sent to the customer. Task: write a new customer message from the claims the most recent ResolutionPlannerAgent plan above supports, and do not carry over wording from the earlier draft that the review identified. Complete all six customer-facing fields in plain language that stands on its own. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your output schema requires."
+                      output:
+                        autoSend: false
+                        messages: Local.VarCustomerDraftA1RwA2Rp
+                        responseObject: Local.VarCustomerMessageA1RwA2Rp
+                    - kind: InvokeAzureAgent
+                      id: node-a1-rewrite-a2-replan-compliance
+                      agent:
+                        name: EvidenceComplianceAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 7 of 9, CORRECTION ATTEMPT 2 of 2: EvidenceComplianceAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: an earlier review did not accept the customer message, and the most recent CustomerCommunicationAgent output above is the corrected draft. Task: review that corrected message against the step 2 evidence, step 3 usage, step 4 policy and the most recent ResolutionPlannerAgent plan above. Run your checks and record which failed, with reasons and reason codes. Decide only whether that message is safe to release; whether the case still needs a person is routed separately by the workflow and is not by itself a reason to reject. If an output you need is missing or is not a JSON object, record that as a failed check and do not repair it. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON decision object your OUTPUT contract requires, starting with an opening brace, followed by the single ROUTE_DECISION token line your instructions define. The token line alone is not a complete response."
+                      output:
+                        autoSend: false
+                        messages: Local.VarComplianceA1RwA2Rp
+                    - kind: ConditionGroup
+                      id: node-a1-rewrite-a2-replan-gate
+                      conditions:
+                        - condition: '=And(With({t: Last(Local.VarComplianceA1RwA2Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_REJECT" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")))), !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rp.customer_summary, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rp.what_we_reviewed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rp.what_we_found, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rp.why_bill_changed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rp.what_happens_next, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RwA2Rp.customer_action_needed, Char(10), ""), Char(13), ""), Char(9), ""))), With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarEvidence).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""evidence_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarUsage).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""usage_summary""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarPolicy).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""policy_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1RwA2Rp).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s)))'
+                          id: if-node-a1-rewrite-a2-replan-approved-release
+                          actions:
+                            - kind: SendActivity
+                              id: node-a1-rewrite-a2-replan-release-approved-message
+                              activity: |-
+                                {Local.VarCustomerMessageA1RwA2Rp.customer_summary}
+
+                                What we reviewed
+                                {Local.VarCustomerMessageA1RwA2Rp.what_we_reviewed}
+
+                                What we found
+                                {Local.VarCustomerMessageA1RwA2Rp.what_we_found}
+
+                                Why your bill changed
+                                {Local.VarCustomerMessageA1RwA2Rp.why_bill_changed}
+
+                                What happens next
+                                {Local.VarCustomerMessageA1RwA2Rp.what_happens_next}
+
+                                What we need from you
+                                {Local.VarCustomerMessageA1RwA2Rp.customer_action_needed}
+                            - kind: ConditionGroup
+                              id: node-a1-rewrite-a2-replan-case-followup-gate
+                              conditions:
+                                - condition: '=With({t: Last(Local.VarPlanA1RwA2Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("CASE_FOLLOWUP::HUMAN_REQUIRED" in t) && (Len(t) - Len(Substitute(t, "CASE_FOLLOWUP::NONE_REQUIRED", "")) = Len("CASE_FOLLOWUP::NONE_REQUIRED")) && ("CASE_FOLLOWUP::NONE_REQUIRED" exactin l) && (Len(l) = Len("CASE_FOLLOWUP::NONE_REQUIRED"))))'
+                                  id: if-node-a1-rewrite-a2-replan-no-human-followup
+                                  actions:
+                                    - kind: SetVariable
+                                      id: node-a1-rewrite-a2-replan-record-no-followup
+                                      variable: Local.VarCaseFollowUp
+                                      value: ="NONE_REQUIRED"
+                                - condition: "true"
+                                  id: if-node-a1-rewrite-a2-replan-human-followup
+                                  actions:
+                                    - kind: InvokeAzureAgent
+                                      id: node-a1-rewrite-a2-replan-followup-handoff
+                                      agent:
+                                        name: EscalationCoordinatorAgent
+                                      conversationId: =System.ConversationId
+                                      input:
+                                        messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message drafted in the most recent CustomerCommunicationAgent output above was accepted by the step 7 review and released, after 2 automated correction attempt(s), and the most recent step 5 follow-up line did not clear the case of further human work. Task: prepare the human review package for the open case work, and include every earlier review decision and reason code above. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                                      output:
+                                        autoSend: true
+                                        messages: Local.VarFollowUpHandoff
+                        - condition: "true"
+                          id: if-node-a1-rewrite-a2-replan-failclosed-escalate
+                          actions:
+                            - kind: InvokeAzureAgent
+                              id: node-a1-rewrite-a2-replan-escalate
+                              agent:
+                                name: EscalationCoordinatorAgent
+                              conversationId: =System.ConversationId
+                              input:
+                                messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message was not released. The step 7 review did not accept it after 2 automated correction attempt(s), the workflow permits at most 2, or a required specialist output or customer field was incomplete. Nothing has been sent to the customer. Task: prepare the human review package. List every decision, failed check, reason code and correction instruction in the EvidenceComplianceAgent outputs above, in order, and list any specialist output above that is missing or is not a JSON object. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                              output:
+                                autoSend: true
+                                messages: Local.VarEscalation
+                - condition: "true"
+                  id: if-node-a1-rewrite-failclosed-escalate
+                  actions:
+                    - kind: InvokeAzureAgent
+                      id: node-a1-rewrite-escalate
+                      agent:
+                        name: EscalationCoordinatorAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message was not released. The step 7 review did not accept it after 1 automated correction attempt(s), the workflow permits at most 2, or a required specialist output or customer field was incomplete. Nothing has been sent to the customer. Task: prepare the human review package. List every decision, failed check, reason code and correction instruction in the EvidenceComplianceAgent outputs above, in order, and list any specialist output above that is missing or is not a JSON object. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                      output:
+                        autoSend: true
+                        messages: Local.VarEscalation
+        - condition: '=With({t: Last(Local.Var1497).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_APPROVED" in t) && !("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN")) && ("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN")))) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.Var1497).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s))'
+          id: if-node-a1-reject-replan
+          actions:
+            - kind: InvokeAzureAgent
+              id: node-a1-replan-planner
+              agent:
+                name: ResolutionPlannerAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: "WORKFLOW STEP 5 of 9, CORRECTION ATTEMPT 1 of 2: ResolutionPlannerAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the most recent EvidenceComplianceAgent output above did not accept the plan and asked for a replan. Nothing has been sent to the customer. Task: read the correction_instructions, unsupported_claim_ids, failed_checks and reason_codes in that output, then propose a corrected resolution supported only by the step 2 evidence, step 3 usage and step 4 policy outputs above, with the evidence and policy basis for every claim. Drop or mark UNSUPPORTED any claim the evidence does not support. Do not fill an evidence gap yourself; if evidence is missing, say so in the plan. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your OUTPUT contract requires, starting with an opening brace, followed by the single CASE_FOLLOWUP token line your instructions define."
+              output:
+                autoSend: false
+                messages: Local.VarPlanA1Rp
+            - kind: InvokeAzureAgent
+              id: node-a1-replan-comms
+              agent:
+                name: CustomerCommunicationAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: "WORKFLOW STEP 6 of 9, CORRECTION ATTEMPT 1 of 2: CustomerCommunicationAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the plan was corrected after the most recent EvidenceComplianceAgent review above. Nothing has been sent to the customer. Task: write a new customer message from the claims the most recent ResolutionPlannerAgent plan above supports, and do not carry over wording from the earlier draft that the review identified. Complete all six customer-facing fields in plain language that stands on its own. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your output schema requires."
+              output:
+                autoSend: false
+                messages: Local.VarCustomerDraftA1Rp
+                responseObject: Local.VarCustomerMessageA1Rp
+            - kind: InvokeAzureAgent
+              id: node-a1-replan-compliance
+              agent:
+                name: EvidenceComplianceAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: "WORKFLOW STEP 7 of 9, CORRECTION ATTEMPT 1 of 2: EvidenceComplianceAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: an earlier review did not accept the customer message, and the most recent CustomerCommunicationAgent output above is the corrected draft. Task: review that corrected message against the step 2 evidence, step 3 usage, step 4 policy and the most recent ResolutionPlannerAgent plan above. Run your checks and record which failed, with reasons and reason codes. Decide only whether that message is safe to release; whether the case still needs a person is routed separately by the workflow and is not by itself a reason to reject. If an output you need is missing or is not a JSON object, record that as a failed check and do not repair it. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON decision object your OUTPUT contract requires, starting with an opening brace, followed by the single ROUTE_DECISION token line your instructions define. The token line alone is not a complete response."
+              output:
+                autoSend: false
+                messages: Local.VarComplianceA1Rp
+            - kind: ConditionGroup
+              id: node-a1-replan-gate
+              conditions:
+                - condition: '=And(With({t: Last(Local.VarComplianceA1Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_REJECT" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")))), !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rp.customer_summary, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rp.what_we_reviewed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rp.what_we_found, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rp.why_bill_changed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rp.what_happens_next, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1Rp.customer_action_needed, Char(10), ""), Char(13), ""), Char(9), ""))), With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarEvidence).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""evidence_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarUsage).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""usage_summary""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarPolicy).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""policy_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1Rp).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s)))'
+                  id: if-node-a1-replan-approved-release
+                  actions:
+                    - kind: SendActivity
+                      id: node-a1-replan-release-approved-message
+                      activity: |-
+                        {Local.VarCustomerMessageA1Rp.customer_summary}
+
+                        What we reviewed
+                        {Local.VarCustomerMessageA1Rp.what_we_reviewed}
+
+                        What we found
+                        {Local.VarCustomerMessageA1Rp.what_we_found}
+
+                        Why your bill changed
+                        {Local.VarCustomerMessageA1Rp.why_bill_changed}
+
+                        What happens next
+                        {Local.VarCustomerMessageA1Rp.what_happens_next}
+
+                        What we need from you
+                        {Local.VarCustomerMessageA1Rp.customer_action_needed}
+                    - kind: ConditionGroup
+                      id: node-a1-replan-case-followup-gate
+                      conditions:
+                        - condition: '=With({t: Last(Local.VarPlanA1Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("CASE_FOLLOWUP::HUMAN_REQUIRED" in t) && (Len(t) - Len(Substitute(t, "CASE_FOLLOWUP::NONE_REQUIRED", "")) = Len("CASE_FOLLOWUP::NONE_REQUIRED")) && ("CASE_FOLLOWUP::NONE_REQUIRED" exactin l) && (Len(l) = Len("CASE_FOLLOWUP::NONE_REQUIRED"))))'
+                          id: if-node-a1-replan-no-human-followup
+                          actions:
+                            - kind: SetVariable
+                              id: node-a1-replan-record-no-followup
+                              variable: Local.VarCaseFollowUp
+                              value: ="NONE_REQUIRED"
+                        - condition: "true"
+                          id: if-node-a1-replan-human-followup
+                          actions:
+                            - kind: InvokeAzureAgent
+                              id: node-a1-replan-followup-handoff
+                              agent:
+                                name: EscalationCoordinatorAgent
+                              conversationId: =System.ConversationId
+                              input:
+                                messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message drafted in the most recent CustomerCommunicationAgent output above was accepted by the step 7 review and released, after 1 automated correction attempt(s), and the most recent step 5 follow-up line did not clear the case of further human work. Task: prepare the human review package for the open case work, and include every earlier review decision and reason code above. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                              output:
+                                autoSend: true
+                                messages: Local.VarFollowUpHandoff
+                - condition: '=With({t: Last(Local.VarComplianceA1Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_APPROVED" in t) && !("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE")) && ("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE")))) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1Rp).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s))'
+                  id: if-node-a1-replan-a2-reject-rewrite
+                  actions:
+                    - kind: InvokeAzureAgent
+                      id: node-a1-replan-a2-rewrite-comms
+                      agent:
+                        name: CustomerCommunicationAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 6 of 9, CORRECTION ATTEMPT 2 of 2: CustomerCommunicationAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the most recent EvidenceComplianceAgent output above did not accept the customer message and asked for a rewrite. Nothing has been sent to the customer. Task: read the correction_instructions, failed_checks and reason_codes in that output and change only the wording it identified. Keep every claim, fact and policy interpretation of the most recent ResolutionPlannerAgent plan above unchanged. Complete all six customer-facing fields in plain language that stands on its own. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your output schema requires."
+                      output:
+                        autoSend: false
+                        messages: Local.VarCustomerDraftA1RpA2Rw
+                        responseObject: Local.VarCustomerMessageA1RpA2Rw
+                    - kind: InvokeAzureAgent
+                      id: node-a1-replan-a2-rewrite-compliance
+                      agent:
+                        name: EvidenceComplianceAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 7 of 9, CORRECTION ATTEMPT 2 of 2: EvidenceComplianceAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: an earlier review did not accept the customer message, and the most recent CustomerCommunicationAgent output above is the corrected draft. Task: review that corrected message against the step 2 evidence, step 3 usage, step 4 policy and the most recent ResolutionPlannerAgent plan above. Run your checks and record which failed, with reasons and reason codes. Decide only whether that message is safe to release; whether the case still needs a person is routed separately by the workflow and is not by itself a reason to reject. If an output you need is missing or is not a JSON object, record that as a failed check and do not repair it. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON decision object your OUTPUT contract requires, starting with an opening brace, followed by the single ROUTE_DECISION token line your instructions define. The token line alone is not a complete response."
+                      output:
+                        autoSend: false
+                        messages: Local.VarComplianceA1RpA2Rw
+                    - kind: ConditionGroup
+                      id: node-a1-replan-a2-rewrite-gate
+                      conditions:
+                        - condition: '=And(With({t: Last(Local.VarComplianceA1RpA2Rw).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_REJECT" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")))), !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rw.customer_summary, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rw.what_we_reviewed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rw.what_we_found, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rw.why_bill_changed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rw.what_happens_next, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rw.customer_action_needed, Char(10), ""), Char(13), ""), Char(9), ""))), With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarEvidence).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""evidence_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarUsage).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""usage_summary""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarPolicy).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""policy_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1RpA2Rw).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s)))'
+                          id: if-node-a1-replan-a2-rewrite-approved-release
+                          actions:
+                            - kind: SendActivity
+                              id: node-a1-replan-a2-rewrite-release-approved-message
+                              activity: |-
+                                {Local.VarCustomerMessageA1RpA2Rw.customer_summary}
+
+                                What we reviewed
+                                {Local.VarCustomerMessageA1RpA2Rw.what_we_reviewed}
+
+                                What we found
+                                {Local.VarCustomerMessageA1RpA2Rw.what_we_found}
+
+                                Why your bill changed
+                                {Local.VarCustomerMessageA1RpA2Rw.why_bill_changed}
+
+                                What happens next
+                                {Local.VarCustomerMessageA1RpA2Rw.what_happens_next}
+
+                                What we need from you
+                                {Local.VarCustomerMessageA1RpA2Rw.customer_action_needed}
+                            - kind: ConditionGroup
+                              id: node-a1-replan-a2-rewrite-case-followup-gate
+                              conditions:
+                                - condition: '=With({t: Last(Local.VarPlanA1Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("CASE_FOLLOWUP::HUMAN_REQUIRED" in t) && (Len(t) - Len(Substitute(t, "CASE_FOLLOWUP::NONE_REQUIRED", "")) = Len("CASE_FOLLOWUP::NONE_REQUIRED")) && ("CASE_FOLLOWUP::NONE_REQUIRED" exactin l) && (Len(l) = Len("CASE_FOLLOWUP::NONE_REQUIRED"))))'
+                                  id: if-node-a1-replan-a2-rewrite-no-human-followup
+                                  actions:
+                                    - kind: SetVariable
+                                      id: node-a1-replan-a2-rewrite-record-no-followup
+                                      variable: Local.VarCaseFollowUp
+                                      value: ="NONE_REQUIRED"
+                                - condition: "true"
+                                  id: if-node-a1-replan-a2-rewrite-human-followup
+                                  actions:
+                                    - kind: InvokeAzureAgent
+                                      id: node-a1-replan-a2-rewrite-followup-handoff
+                                      agent:
+                                        name: EscalationCoordinatorAgent
+                                      conversationId: =System.ConversationId
+                                      input:
+                                        messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message drafted in the most recent CustomerCommunicationAgent output above was accepted by the step 7 review and released, after 2 automated correction attempt(s), and the most recent step 5 follow-up line did not clear the case of further human work. Task: prepare the human review package for the open case work, and include every earlier review decision and reason code above. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                                      output:
+                                        autoSend: true
+                                        messages: Local.VarFollowUpHandoff
+                        - condition: "true"
+                          id: if-node-a1-replan-a2-rewrite-failclosed-escalate
+                          actions:
+                            - kind: InvokeAzureAgent
+                              id: node-a1-replan-a2-rewrite-escalate
+                              agent:
+                                name: EscalationCoordinatorAgent
+                              conversationId: =System.ConversationId
+                              input:
+                                messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message was not released. The step 7 review did not accept it after 2 automated correction attempt(s), the workflow permits at most 2, or a required specialist output or customer field was incomplete. Nothing has been sent to the customer. Task: prepare the human review package. List every decision, failed check, reason code and correction instruction in the EvidenceComplianceAgent outputs above, in order, and list any specialist output above that is missing or is not a JSON object. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                              output:
+                                autoSend: true
+                                messages: Local.VarEscalation
+                - condition: '=With({t: Last(Local.VarComplianceA1Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_APPROVED" in t) && !("ROUTE_DECISION::GRIDRESOLVE_REJECT_REWRITE" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN")) && ("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_REJECT_REPLAN")))) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1Rp).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s))'
+                  id: if-node-a1-replan-a2-reject-replan
+                  actions:
+                    - kind: InvokeAzureAgent
+                      id: node-a1-replan-a2-replan-planner
+                      agent:
+                        name: ResolutionPlannerAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 5 of 9, CORRECTION ATTEMPT 2 of 2: ResolutionPlannerAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the most recent EvidenceComplianceAgent output above did not accept the plan and asked for a replan. Nothing has been sent to the customer. Task: read the correction_instructions, unsupported_claim_ids, failed_checks and reason_codes in that output, then propose a corrected resolution supported only by the step 2 evidence, step 3 usage and step 4 policy outputs above, with the evidence and policy basis for every claim. Drop or mark UNSUPPORTED any claim the evidence does not support. Do not fill an evidence gap yourself; if evidence is missing, say so in the plan. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your OUTPUT contract requires, starting with an opening brace, followed by the single CASE_FOLLOWUP token line your instructions define."
+                      output:
+                        autoSend: false
+                        messages: Local.VarPlanA1RpA2Rp
+                    - kind: InvokeAzureAgent
+                      id: node-a1-replan-a2-replan-comms
+                      agent:
+                        name: CustomerCommunicationAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 6 of 9, CORRECTION ATTEMPT 2 of 2: CustomerCommunicationAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the plan was corrected after the most recent EvidenceComplianceAgent review above. Nothing has been sent to the customer. Task: write a new customer message from the claims the most recent ResolutionPlannerAgent plan above supports, and do not carry over wording from the earlier draft that the review identified. Complete all six customer-facing fields in plain language that stands on its own. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON object your output schema requires."
+                      output:
+                        autoSend: false
+                        messages: Local.VarCustomerDraftA1RpA2Rp
+                        responseObject: Local.VarCustomerMessageA1RpA2Rp
+                    - kind: InvokeAzureAgent
+                      id: node-a1-replan-a2-replan-compliance
+                      agent:
+                        name: EvidenceComplianceAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 7 of 9, CORRECTION ATTEMPT 2 of 2: EvidenceComplianceAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: an earlier review did not accept the customer message, and the most recent CustomerCommunicationAgent output above is the corrected draft. Task: review that corrected message against the step 2 evidence, step 3 usage, step 4 policy and the most recent ResolutionPlannerAgent plan above. Run your checks and record which failed, with reasons and reason codes. Decide only whether that message is safe to release; whether the case still needs a person is routed separately by the workflow and is not by itself a reason to reject. If an output you need is missing or is not a JSON object, record that as a failed check and do not repair it. No operator is present and no confirmation will be given. Respond now, in this single reply, with the JSON decision object your OUTPUT contract requires, starting with an opening brace, followed by the single ROUTE_DECISION token line your instructions define. The token line alone is not a complete response."
+                      output:
+                        autoSend: false
+                        messages: Local.VarComplianceA1RpA2Rp
+                    - kind: ConditionGroup
+                      id: node-a1-replan-a2-replan-gate
+                      conditions:
+                        - condition: '=And(With({t: Last(Local.VarComplianceA1RpA2Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("GRIDRESOLVE_ESCALATE" in t) && !("GRIDRESOLVE_REJECT" in t) && (Len(t) - Len(Substitute(t, "ROUTE_DECISION::GRIDRESOLVE_APPROVED", "")) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")) && ("ROUTE_DECISION::GRIDRESOLVE_APPROVED" exactin l) && (Len(l) = Len("ROUTE_DECISION::GRIDRESOLVE_APPROVED")))), !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rp.customer_summary, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rp.what_we_reviewed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rp.what_we_found, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rp.why_bill_changed, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rp.what_happens_next, Char(10), ""), Char(13), ""), Char(9), ""))) && !IsBlank(Trim(Substitute(Substitute(Substitute(Local.VarCustomerMessageA1RpA2Rp.customer_action_needed, Char(10), ""), Char(13), ""), Char(9), ""))), With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarEvidence).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""evidence_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarUsage).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""usage_summary""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarPolicy).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""policy_id""" in s)) && With({s: Trim(Substitute(Substitute(Substitute(Last(Local.VarComplianceA1RpA2Rp).Text, Char(10), ""), Char(13), ""), Char(9), ""))}, StartsWith(s, "{") && ("""decision""" in s)))'
+                          id: if-node-a1-replan-a2-replan-approved-release
+                          actions:
+                            - kind: SendActivity
+                              id: node-a1-replan-a2-replan-release-approved-message
+                              activity: |-
+                                {Local.VarCustomerMessageA1RpA2Rp.customer_summary}
+
+                                What we reviewed
+                                {Local.VarCustomerMessageA1RpA2Rp.what_we_reviewed}
+
+                                What we found
+                                {Local.VarCustomerMessageA1RpA2Rp.what_we_found}
+
+                                Why your bill changed
+                                {Local.VarCustomerMessageA1RpA2Rp.why_bill_changed}
+
+                                What happens next
+                                {Local.VarCustomerMessageA1RpA2Rp.what_happens_next}
+
+                                What we need from you
+                                {Local.VarCustomerMessageA1RpA2Rp.customer_action_needed}
+                            - kind: ConditionGroup
+                              id: node-a1-replan-a2-replan-case-followup-gate
+                              conditions:
+                                - condition: '=With({t: Last(Local.VarPlanA1RpA2Rp).Text}, With({l: Trim(Last(Filter(Split(Substitute(t, Char(13), ""), Char(10)), !IsBlank(Trim(Value)))).Value)}, !IsBlank(t) && !("CASE_FOLLOWUP::HUMAN_REQUIRED" in t) && (Len(t) - Len(Substitute(t, "CASE_FOLLOWUP::NONE_REQUIRED", "")) = Len("CASE_FOLLOWUP::NONE_REQUIRED")) && ("CASE_FOLLOWUP::NONE_REQUIRED" exactin l) && (Len(l) = Len("CASE_FOLLOWUP::NONE_REQUIRED"))))'
+                                  id: if-node-a1-replan-a2-replan-no-human-followup
+                                  actions:
+                                    - kind: SetVariable
+                                      id: node-a1-replan-a2-replan-record-no-followup
+                                      variable: Local.VarCaseFollowUp
+                                      value: ="NONE_REQUIRED"
+                                - condition: "true"
+                                  id: if-node-a1-replan-a2-replan-human-followup
+                                  actions:
+                                    - kind: InvokeAzureAgent
+                                      id: node-a1-replan-a2-replan-followup-handoff
+                                      agent:
+                                        name: EscalationCoordinatorAgent
+                                      conversationId: =System.ConversationId
+                                      input:
+                                        messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message drafted in the most recent CustomerCommunicationAgent output above was accepted by the step 7 review and released, after 2 automated correction attempt(s), and the most recent step 5 follow-up line did not clear the case of further human work. Task: prepare the human review package for the open case work, and include every earlier review decision and reason code above. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                                      output:
+                                        autoSend: true
+                                        messages: Local.VarFollowUpHandoff
+                        - condition: "true"
+                          id: if-node-a1-replan-a2-replan-failclosed-escalate
+                          actions:
+                            - kind: InvokeAzureAgent
+                              id: node-a1-replan-a2-replan-escalate
+                              agent:
+                                name: EscalationCoordinatorAgent
+                              conversationId: =System.ConversationId
+                              input:
+                                messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message was not released. The step 7 review did not accept it after 2 automated correction attempt(s), the workflow permits at most 2, or a required specialist output or customer field was incomplete. Nothing has been sent to the customer. Task: prepare the human review package. List every decision, failed check, reason code and correction instruction in the EvidenceComplianceAgent outputs above, in order, and list any specialist output above that is missing or is not a JSON object. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                              output:
+                                autoSend: true
+                                messages: Local.VarEscalation
+                - condition: "true"
+                  id: if-node-a1-replan-failclosed-escalate
+                  actions:
+                    - kind: InvokeAzureAgent
+                      id: node-a1-replan-escalate
+                      agent:
+                        name: EscalationCoordinatorAgent
+                      conversationId: =System.ConversationId
+                      input:
+                        messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message was not released. The step 7 review did not accept it after 1 automated correction attempt(s), the workflow permits at most 2, or a required specialist output or customer field was incomplete. Nothing has been sent to the customer. Task: prepare the human review package. List every decision, failed check, reason code and correction instruction in the EvidenceComplianceAgent outputs above, in order, and list any specialist output above that is missing or is not a JSON object. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+                      output:
+                        autoSend: true
+                        messages: Local.VarEscalation
+        - condition: "true"
+          id: if-node-failclosed-escalate
+          actions:
+            - kind: InvokeAzureAgent
+              id: node-1789697115060
+              agent:
+                name: EscalationCoordinatorAgent
+              conversationId: =System.ConversationId
+              input:
+                messages: "WORKFLOW STEP 8 of 9: EscalationCoordinatorAgent. Every assistant message above was written by a different specialist agent, not by you. Workflow state: the customer message was not released. Either the step 7 review did not approve it, or a required specialist output or customer field was incomplete. Nothing has been sent to the customer. Task: prepare the human review package, and list any specialist output above that is missing or is not a JSON object. No operator is present and no confirmation will be given. Do not describe what you will do. Respond now, in this single reply, with only the JSON object your OUTPUT contract requires, starting with an opening brace."
+              output:
+                autoSend: true
+                messages: Local.VarEscalation
+    - kind: InvokeAzureAgent
+      id: node-1789697069548
+      agent:
+        name: CaseAuditAgent
+      conversationId: =System.ConversationId
+      input:
+        messages: "WORKFLOW STEP 9 of 9: CaseAuditAgent. Every assistant message above was written by a different specialist agent, not by you. Task: write the terminal audit record from the conversation above. Each specialist output follows a WORKFLOW STEP message naming the agent that wrote it. Record an agent as invoked only if a WORKFLOW STEP message names it, and as NOT_INVOKED only if none does. Record an output as RECEIVED only if it is a JSON object, and as MISSING_OR_MALFORMED otherwise. Copy the compliance decision from the most recent step 7 output and its final ROUTE_DECISION line, never from the wording of the customer message. Record correction_count as the number of CORRECTION ATTEMPT messages above, and every earlier step 7 decision with its failed checks and reason codes, in order. Record every fact you cannot read in this conversation, including every agent version, as NOT_OBSERVED. No operator is present and no confirmation will be given. Respond now, in this single reply, with only the JSON object your output contract requires."
+      output:
+        autoSend: true
+        messages: Local.VarAudit
+id: ""
+name: GridResolveAIWorkflow

@@ -19,6 +19,10 @@ Submitted to the Microsoft Agent-a-thon, Level 3 Architect.
 | Annotated trace | [`docs/ANNOTATED_TRACE_SYN-CASE-4003.md`](docs/ANNOTATED_TRACE_SYN-CASE-4003.md), every agent's prompt and output from the passing run |
 | Escalation reason codes | [`docs/ESCALATION_REASON_CODES.md`](docs/ESCALATION_REASON_CODES.md), structured codes with citations, enforced offline, not yet in a hosted run |
 | Hosted control center | https://pandeysatyam.com/GridResolve-AI-MS-Agentathon/ (GitHub Pages, static, synthetic data only) |
+| Post-review work status | [`docs/POST_REVIEW_WORK_STATUS_2026-09-23.md`](docs/POST_REVIEW_WORK_STATUS_2026-09-23.md), gaps, zero-cost completions, cost bound and the proposed, not yet approved, hosted batch |
+| Workflow v11 correction routes | [`docs/WORKFLOW_V11_CORRECTION_ROUTES.md`](docs/WORKFLOW_V11_CORRECTION_ROUTES.md), bounded rewrite and replan, local proof only |
+| Root-cause adjudication | [`docs/ROOT_CAUSE_ADJUDICATION.md`](docs/ROOT_CAUSE_ADJUDICATION.md), ground truth v2.1, v2.0 results frozen |
+| Supervisor feedback loop | [`docs/SUPERVISOR_FEEDBACK_LOOP.md`](docs/SUPERVISOR_FEEDBACK_LOOP.md), no actual human decision recorded yet |
 
 **In one paragraph.** A customer's bill rose from $152.80 to $203.40 and they are
 certain the meter is broken. Nine specialist agents investigate as one governed

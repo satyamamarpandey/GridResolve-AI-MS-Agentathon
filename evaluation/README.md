@@ -120,6 +120,43 @@ What this shows:
   and in the submitted PDF (12 of 13) keep describing the runs that actually
   happened. Runs 1 and 2 (MULTI_FACTOR) would still fail after the fix.
 
+## Ground truth v2.1, added 2026-09-23
+
+The adjudication above is now formal. `gridresolve_synthetic_pack_v2_1.json`
+splits the prepared label into two axes, `expected_claim_verdict` (what the
+customer alleged and whether the evidence supports it) and
+`expected_root_cause` (what explanation the billing evidence supports). For
+SYN-CASE-4003 that is METER_FAILURE_UNSUPPORTED and USAGE_SUPPORTED. The v2.0
+pack, suite and dataset D are unchanged and remain the record of what the
+three runs were graded against.
+
+```
+python -m evaluation.run_checks --ground-truth 2.1
+```
+
+judges the same three evidence folders against the v2.1 pack with one more
+check, `claim_verdict_vs_prepared_ground_truth`, which reads the planner's
+claim ledger and, for the two meter verdicts only, decides by claim status and
+the same negation-guarded wording rule as the customer-text check. Any other
+verdict is NOT_APPLICABLE, not a guess. The check sits in
+`CLAIM_VERDICT_CHECKS`, outside `ALL_CHECKS`, and the output goes to
+`gridresolve_deterministic_results_v2_1.json` at the repository root, not into
+this package, so dataset D and this package's file count are untouched.
+
+```
+check                                    v6      v9      v10
+                                    (v2.0 / v2.1 ground truth)
+root_cause_vs_prepared_ground_truth      FAIL/FAIL  FAIL/FAIL  FAIL/PASS
+claim_verdict_vs_prepared_ground_truth   n.a./PASS  n.a./PASS  n.a./PASS
+passed, of 13 (v2.0) and of 14 (v2.1)    6/7        6/7        12/14
+```
+
+Read it as: the final run's one failure was on the label axis. Runs 1 and 2
+still fail root cause (MULTI_FACTOR) and their six other checks. No run was
+re-executed. `tests/test_evaluation_v2_1.py` asserts every number above and
+that dataset D equals the blob committed at HEAD. Full account:
+`docs/ROOT_CAUSE_ADJUDICATION.md`.
+
 ## Limits
 
 - The two wording checks (meter fault claims, credit promises) are sentence

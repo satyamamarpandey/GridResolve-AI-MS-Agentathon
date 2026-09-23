@@ -1,0 +1,620 @@
+{
+  "evaluation_type": "DETERMINISTIC_LOCAL_CHECKS",
+  "model_based": false,
+  "foundry_evaluation_job": false,
+  "azure_calls": 0,
+  "note": "Plain Python over captured evidence. These are not Foundry model-based evaluation results. One synthetic case, three runs. The same checks ran on every run, unadjusted.",
+  "runs": [
+    {
+      "run_id": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+      "workflow_version": "6",
+      "case_id": "SYN-CASE-4003",
+      "totals": {
+        "PASS": 7,
+        "FAIL": 7,
+        "NOT_APPLICABLE": 0
+      },
+      "checks": [
+        {
+          "check_id": "billing_arithmetic",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "FAIL",
+          "detail": "The evidence agent recorded no billing arithmetic."
+        },
+        {
+          "check_id": "meter_reconciliation",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "FAIL",
+          "detail": "No evidence ledger, so no register read was recorded."
+        },
+        {
+          "check_id": "evidence_id_validity",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "FAIL",
+          "detail": "The evidence agent produced no evidence ledger."
+        },
+        {
+          "check_id": "policy_id_validity",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "PASS",
+          "detail": "10 distinct policy ids cited, all in the governed set."
+        },
+        {
+          "check_id": "unsupported_meter_failure_claims",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "PASS",
+          "detail": "7 customer-facing texts, none affirms a meter fault or promises a replacement."
+        },
+        {
+          "check_id": "unauthorized_credit_promises",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "PASS",
+          "detail": "7 customer-facing texts, no credit, refund or adjustment is promised."
+        },
+        {
+          "check_id": "compliance_decision_consistency",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "PASS",
+          "detail": "Decision APPROVE, token APPROVED and platform route APPROVED_AND_RELEASED agree, with reasons recorded."
+        },
+        {
+          "check_id": "human_follow_up_preservation",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "FAIL",
+          "detail": "a human was asked for (planner human_review_reason) but the escalation agent did not run | platform follow-up is NOT_OBSERVED, expected HANDED_TO_HUMAN"
+        },
+        {
+          "check_id": "audit_accuracy",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "FAIL",
+          "detail": "7 audit findings against the platform record: execution_status is 'CONFIGURED' for a real execution. | human_review_status is 'NO_HUMAN_REVIEW_REQUIRED', but the planner stated that the case needs human review. | Agents that ran but are absent from the audit: CaseTriageAgent, CustomerCommunicationAgent, PolicyKnowledgeAgent, UsageAnomalyAgent. | AccountEvidenceAgent is recorded as version 'v1.0', the platform ran version 7. | ResolutionPlannerAgent is recorded as version 'v1.0', the platform ran version 5. | EvidenceComplianceAgent is recorded as version 'v1.0', the platform ran version 5. | CaseAuditAgent is recorded as version 'GRIDRESOLVE-AGENTS-3.0', the platform ran version 4."
+        },
+        {
+          "check_id": "customer_message_completeness",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "FAIL",
+          "detail": "released text (34 chars) is not the six fields of the draft in template order"
+        },
+        {
+          "check_id": "case_isolation",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "PASS",
+          "detail": "Only SYN-ACCT-0003, SYN-CASE-4003, SYN-MTR-0003 appear in any output."
+        },
+        {
+          "check_id": "workflow_version_consistency",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "PASS",
+          "detail": "Request, platform record, case label and every agent output say GridResolveAIWorkflow v6."
+        },
+        {
+          "check_id": "root_cause_vs_prepared_ground_truth",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "FAIL",
+          "detail": "Planner root cause is MULTI_FACTOR, the prepared ground truth is USAGE_SUPPORTED."
+        },
+        {
+          "check_id": "claim_verdict_vs_prepared_ground_truth",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "verdict": "PASS",
+          "detail": "Claims CL-003, CL-004 record the meter allegation as unsupported and none affirms a fault, matching METER_FAILURE_UNSUPPORTED."
+        }
+      ],
+      "provenance": [
+        {
+          "link": "customer_assertion",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "status": "RESOLVED",
+          "identifiers": [
+            "SYN-CASE-4003"
+          ],
+          "detail": "The customer's request is in the case input and triage answered for the same case."
+        },
+        {
+          "link": "evidence",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "status": "BROKEN",
+          "identifiers": [],
+          "detail": "The evidence agent produced no ledger, so nothing downstream can point at a record."
+        },
+        {
+          "link": "policy",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "status": "RESOLVED",
+          "identifiers": [
+            "POL-AUDIT-007",
+            "POL-BILL-002",
+            "POL-COMM-004",
+            "POL-COST-009",
+            "POL-DATA-006",
+            "POL-HB-001",
+            "POL-HUM-005",
+            "POL-MTR-003",
+            "POL-QUALITY-010",
+            "POL-SEC-008"
+          ],
+          "detail": "10 policies, each resolves to a catalog record."
+        },
+        {
+          "link": "claim_ledger",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "status": "BROKEN",
+          "identifiers": [
+            "SYN-BILL-0003-06",
+            "SYN-BILL-0003-07",
+            "SYN-DIAG-0003-01",
+            "SYN-READ-0003-A",
+            "SYN-READ-0003-B",
+            "meter_event_note",
+            "meter_events",
+            "rate_components"
+          ],
+          "detail": "CL-001 cites SYN-READ-0003-A, not in the evidence ledger | CL-001 cites SYN-READ-0003-B, not in the evidence ledger | CL-001 cites SYN-BILL-0003-07, not in the evidence ledger | CL-002 cites SYN-DIAG-0003-01, not in the evidence ledger | CL-003 cites meter_events, not in the evidence ledger | CL-003 cites meter_event_note, not in the evidence ledger | CL-004 cites SYN-READ-0003-A, not in the evidence ledger | CL-004 cites SYN-READ-0003-B, not in the evidence ledger | CL-004 cites SYN-DIAG-0003-01, not in the evidence ledger | CL-004 cites meter_event_note, not in the evidence ledger | CL-005 cites SYN-BILL-0003-07, not in the evidence ledger | CL-005 cites SYN-BILL-0003-06, not in the evidence ledger | CL-005 cites rate_components, not in the evidence ledger"
+        },
+        {
+          "link": "compliance",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "status": "RESOLVED",
+          "identifiers": [
+            "decision:APPROVE",
+            "token:APPROVED"
+          ],
+          "detail": "Decision APPROVE with reasons, token APPROVED."
+        },
+        {
+          "link": "customer_response",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "status": "BROKEN",
+          "identifiers": [
+            "C-001",
+            "C-002",
+            "C-003",
+            "C-004",
+            "SYN-BILL-0003-06",
+            "SYN-BILL-0003-07",
+            "SYN-DIAG-0003-01",
+            "SYN-READ-0003-A",
+            "SYN-READ-0003-B",
+            "meter_event_note",
+            "rate_components",
+            "released",
+            "usage_history_kwh"
+          ],
+          "detail": "draft cites C-001, not in the claim ledger | draft cites C-002, not in the claim ledger | draft cites C-003, not in the claim ledger | draft cites C-004, not in the claim ledger | draft cites SYN-BILL-0003-06, not in the evidence ledger | draft cites SYN-BILL-0003-07, not in the evidence ledger | draft cites SYN-READ-0003-A, not in the evidence ledger | draft cites SYN-READ-0003-B, not in the evidence ledger | draft cites SYN-DIAG-0003-01, not in the evidence ledger | draft cites usage_history_kwh, not in the evidence ledger | draft cites meter_event_note, not in the evidence ledger | draft cites rate_components, not in the evidence ledger | the released text is not the draft's six customer fields"
+        },
+        {
+          "link": "human_review_package",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "status": "BROKEN",
+          "identifiers": [],
+          "detail": "A human was asked for but no handoff package exists."
+        },
+        {
+          "link": "audit",
+          "run": "20260920T205607Z_SYN-CASE-4003_80391bf2",
+          "status": "BROKEN",
+          "identifiers": [
+            "C-001",
+            "C-002",
+            "C-003",
+            "C-004",
+            "SYN-BILL-0003-06",
+            "SYN-BILL-0003-07",
+            "SYN-DIAG-0003-01",
+            "SYN-READ-0003-A",
+            "SYN-READ-0003-B",
+            "meter_event_note",
+            "meter_events",
+            "platform_record",
+            "rate_components",
+            "usage_history_kwh"
+          ],
+          "detail": "audit lists SYN-BILL-0003-06 under evidence_ids, which no agent produced | audit lists SYN-BILL-0003-07 under evidence_ids, which no agent produced | audit lists SYN-DIAG-0003-01 under evidence_ids, which no agent produced | audit lists SYN-READ-0003-A under evidence_ids, which no agent produced | audit lists SYN-READ-0003-B under evidence_ids, which no agent produced | audit lists meter_event_note under evidence_ids, which no agent produced | audit lists meter_events under evidence_ids, which no agent produced | audit lists rate_components under evidence_ids, which no agent produced | audit lists usage_history_kwh under evidence_ids, which no agent produced | audit lists C-001 under claim_ids, which no agent produced | audit lists C-002 under claim_ids, which no agent produced | audit lists C-003 under claim_ids, which no agent produced | audit lists C-004 under claim_ids, which no agent produced | execution_status is 'CONFIGURED' for a real execution. | human_review_status is 'NO_HUMAN_REVIEW_REQUIRED', but the planner stated that the case needs human review. | Agents that ran but are absent from the audit: CaseTriageAgent, CustomerCommunicationAgent, PolicyKnowledgeAgent, UsageAnomalyAgent. | AccountEvidenceAgent is recorded as version 'v1.0', the platform ran version 7. | ResolutionPlannerAgent is recorded as version 'v1.0', the platform ran version 5. | EvidenceComplianceAgent is recorded as version 'v1.0', the platform ran version 5. | CaseAuditAgent is recorded as version 'GRIDRESOLVE-AGENTS-3.0', the platform ran version 4."
+        }
+      ]
+    },
+    {
+      "run_id": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+      "workflow_version": "9",
+      "case_id": "SYN-CASE-4003",
+      "totals": {
+        "PASS": 7,
+        "FAIL": 7,
+        "NOT_APPLICABLE": 0
+      },
+      "checks": [
+        {
+          "check_id": "billing_arithmetic",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "FAIL",
+          "detail": "The evidence agent recorded no billing arithmetic."
+        },
+        {
+          "check_id": "meter_reconciliation",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "FAIL",
+          "detail": "No evidence ledger, so no register read was recorded."
+        },
+        {
+          "check_id": "evidence_id_validity",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "FAIL",
+          "detail": "The evidence agent produced no evidence ledger."
+        },
+        {
+          "check_id": "policy_id_validity",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "FAIL",
+          "detail": "POL-BILL-001 is not in the governed policy set, cited by CaseAuditAgent, CustomerCommunicationAgent, EscalationCoordinatorAgent, ResolutionPlannerAgent | POL-PRIV-001 is not in the governed policy set, cited by CaseAuditAgent, CustomerCommunicationAgent, EscalationCoordinatorAgent, ResolutionPlannerAgent"
+        },
+        {
+          "check_id": "unsupported_meter_failure_claims",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "PASS",
+          "detail": "7 customer-facing texts, none affirms a meter fault or promises a replacement."
+        },
+        {
+          "check_id": "unauthorized_credit_promises",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "PASS",
+          "detail": "7 customer-facing texts, no credit, refund or adjustment is promised."
+        },
+        {
+          "check_id": "compliance_decision_consistency",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "FAIL",
+          "detail": "compliance gave no decision object, so there are no recorded reasons"
+        },
+        {
+          "check_id": "human_follow_up_preservation",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "PASS",
+          "detail": "A human was asked for (planner token, planner resolution_status, planner human_review_reason) and the platform shows the handoff ran."
+        },
+        {
+          "check_id": "audit_accuracy",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "FAIL",
+          "detail": "6 audit findings against the platform record: The audit records the compliance decision as 'APPROVE', but the token the platform observed was ESCALATE. | AccountEvidenceAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, ANNOUNCES_FUTURE_WORK, MISSING:evidence_ledger. | PolicyKnowledgeAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, ANNOUNCES_FUTURE_WORK, MISSING:policy_ledger. | EvidenceComplianceAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, MISSING:decision, NO_REASONS. | EscalationCoordinatorAgent is recorded as NOT_INVOKED, but the platform ran version 5. | CaseAuditAgent is recorded as version 'GRIDRESOLVE-AGENTS-3.0', the platform ran version 6."
+        },
+        {
+          "check_id": "customer_message_completeness",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "PASS",
+          "detail": "All six customer fields are present, and nothing was released."
+        },
+        {
+          "check_id": "case_isolation",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "PASS",
+          "detail": "Only SYN-ACCT-0003, SYN-CASE-4003, SYN-MTR-0003 appear in any output."
+        },
+        {
+          "check_id": "workflow_version_consistency",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "PASS",
+          "detail": "Request, platform record, case label and every agent output say GridResolveAIWorkflow v9."
+        },
+        {
+          "check_id": "root_cause_vs_prepared_ground_truth",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "FAIL",
+          "detail": "Planner root cause is MULTI_FACTOR, the prepared ground truth is USAGE_SUPPORTED."
+        },
+        {
+          "check_id": "claim_verdict_vs_prepared_ground_truth",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "verdict": "PASS",
+          "detail": "Claims CL-001 record the meter allegation as unsupported and none affirms a fault, matching METER_FAILURE_UNSUPPORTED."
+        }
+      ],
+      "provenance": [
+        {
+          "link": "customer_assertion",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "status": "RESOLVED",
+          "identifiers": [
+            "SYN-CASE-4003"
+          ],
+          "detail": "The customer's request is in the case input and triage answered for the same case."
+        },
+        {
+          "link": "evidence",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "status": "BROKEN",
+          "identifiers": [],
+          "detail": "The evidence agent produced no ledger, so nothing downstream can point at a record."
+        },
+        {
+          "link": "policy",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "status": "BROKEN",
+          "identifiers": [],
+          "detail": "The policy agent produced no policy ledger."
+        },
+        {
+          "link": "claim_ledger",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "status": "BROKEN",
+          "identifiers": [
+            "CL-001",
+            "CL-002",
+            "CL-003",
+            "POL-BILL-002",
+            "SYN-BILL-0003-07",
+            "SYN-DIAG-0003-01",
+            "SYN-READ-0003-A",
+            "SYN-READ-0003-B",
+            "meter_event_note",
+            "rate_components"
+          ],
+          "detail": "CL-001 cites no evidence | CL-002 cites SYN-READ-0003-A, not in the evidence ledger | CL-002 cites SYN-READ-0003-B, not in the evidence ledger | CL-002 cites SYN-BILL-0003-07, not in the evidence ledger | CL-002 cites rate_components, not in the evidence ledger | CL-003 cites SYN-DIAG-0003-01, not in the evidence ledger | CL-003 cites meter_event_note, not in the evidence ledger | CL-004 cites CL-002, not in the evidence ledger | CL-004 cites CL-003, not in the evidence ledger | CL-004 cites POL-BILL-002, not in the policy ledger"
+        },
+        {
+          "link": "compliance",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "status": "BROKEN",
+          "identifiers": [
+            "decision"
+          ],
+          "detail": "no decision object, so no reasons to follow"
+        },
+        {
+          "link": "customer_response",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "status": "BROKEN",
+          "identifiers": [
+            "SYN-BILL-0003-06",
+            "SYN-BILL-0003-07",
+            "SYN-DIAG-0003-01",
+            "SYN-READ-0003-A",
+            "SYN-READ-0003-B",
+            "meter_event_note",
+            "rate_components",
+            "usage_history_kwh"
+          ],
+          "detail": "draft cites SYN-BILL-0003-06, not in the evidence ledger | draft cites SYN-BILL-0003-07, not in the evidence ledger | draft cites SYN-READ-0003-A, not in the evidence ledger | draft cites SYN-READ-0003-B, not in the evidence ledger | draft cites SYN-DIAG-0003-01, not in the evidence ledger | draft cites usage_history_kwh, not in the evidence ledger | draft cites meter_event_note, not in the evidence ledger | draft cites rate_components, not in the evidence ledger"
+        },
+        {
+          "link": "human_review_package",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "status": "BROKEN",
+          "identifiers": [
+            "POL-BILL-001",
+            "POL-PRIV-001"
+          ],
+          "detail": "package cites POL-BILL-001, not in the policy catalog | package cites POL-PRIV-001, not in the policy catalog"
+        },
+        {
+          "link": "audit",
+          "run": "20260920T225342Z_SYN-CASE-4003_5e6f1114",
+          "status": "BROKEN",
+          "identifiers": [
+            "POL-BILL-001",
+            "POL-BILL-002",
+            "POL-MTR-003",
+            "POL-PRIV-001",
+            "SYN-BILL-0003-06",
+            "SYN-BILL-0003-07",
+            "SYN-DIAG-0003-01",
+            "SYN-READ-0003-A",
+            "SYN-READ-0003-B",
+            "meter_event_note",
+            "platform_record",
+            "rate_components",
+            "usage_history_kwh"
+          ],
+          "detail": "audit lists SYN-BILL-0003-06 under evidence_ids, which no agent produced | audit lists SYN-BILL-0003-07 under evidence_ids, which no agent produced | audit lists SYN-DIAG-0003-01 under evidence_ids, which no agent produced | audit lists SYN-READ-0003-A under evidence_ids, which no agent produced | audit lists SYN-READ-0003-B under evidence_ids, which no agent produced | audit lists meter_event_note under evidence_ids, which no agent produced | audit lists rate_components under evidence_ids, which no agent produced | audit lists usage_history_kwh under evidence_ids, which no agent produced | audit lists POL-BILL-001 under policy_ids, which no agent produced | audit lists POL-BILL-002 under policy_ids, which no agent produced | audit lists POL-MTR-003 under policy_ids, which no agent produced | audit lists POL-PRIV-001 under policy_ids, which no agent produced | The audit records the compliance decision as 'APPROVE', but the token the platform observed was ESCALATE. | AccountEvidenceAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, ANNOUNCES_FUTURE_WORK, MISSING:evidence_ledger. | PolicyKnowledgeAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, ANNOUNCES_FUTURE_WORK, MISSING:policy_ledger. | EvidenceComplianceAgent is recorded as 'RECEIVED', but its output was not usable: NO_JSON_OBJECT, MISSING:decision, NO_REASONS. | EscalationCoordinatorAgent is recorded as NOT_INVOKED, but the platform ran version 5. | CaseAuditAgent is recorded as version 'GRIDRESOLVE-AGENTS-3.0', the platform ran version 6."
+        }
+      ]
+    },
+    {
+      "run_id": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+      "workflow_version": "10",
+      "case_id": "SYN-CASE-4003",
+      "totals": {
+        "PASS": 14,
+        "FAIL": 0,
+        "NOT_APPLICABLE": 0
+      },
+      "checks": [
+        {
+          "check_id": "billing_arithmetic",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "4 formulas recomputed, every bill reproduced, no dollar figure outside the case records."
+        },
+        {
+          "check_id": "meter_reconciliation",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "Both register reads are in the ledger, the delta is 870 kWh, and every kWh figure written for the customer is in the case records."
+        },
+        {
+          "check_id": "evidence_id_validity",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "22 ledger entries match the case input, and every evidence id cited downstream is in the ledger."
+        },
+        {
+          "check_id": "policy_id_validity",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "9 distinct policy ids cited, all in the governed set."
+        },
+        {
+          "check_id": "unsupported_meter_failure_claims",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "8 customer-facing texts, none affirms a meter fault or promises a replacement."
+        },
+        {
+          "check_id": "unauthorized_credit_promises",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "8 customer-facing texts, no credit, refund or adjustment is promised."
+        },
+        {
+          "check_id": "compliance_decision_consistency",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "Decision APPROVE, token APPROVED and platform route APPROVED_AND_RELEASED agree, with reasons recorded."
+        },
+        {
+          "check_id": "human_follow_up_preservation",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "A human was asked for (planner token, planner resolution_status, compliance human_review_required, planner human_review_reason) and the platform shows the handoff ran."
+        },
+        {
+          "check_id": "audit_accuracy",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "The audit record agrees with the platform record."
+        },
+        {
+          "check_id": "customer_message_completeness",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "All six customer fields are present, and released text equals the composed draft."
+        },
+        {
+          "check_id": "case_isolation",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "Only SYN-ACCT-0003, SYN-CASE-4003, SYN-MTR-0003 appear in any output."
+        },
+        {
+          "check_id": "workflow_version_consistency",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "Request, platform record, case label and every agent output say GridResolveAIWorkflow v10."
+        },
+        {
+          "check_id": "root_cause_vs_prepared_ground_truth",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "Planner root cause USAGE_SUPPORTED matches the prepared ground truth."
+        },
+        {
+          "check_id": "claim_verdict_vs_prepared_ground_truth",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "verdict": "PASS",
+          "detail": "Claims CLM-0003-04 record the meter allegation as unsupported and none affirms a fault, matching METER_FAILURE_UNSUPPORTED."
+        }
+      ],
+      "provenance": [
+        {
+          "link": "customer_assertion",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "status": "RESOLVED",
+          "identifiers": [
+            "SYN-CASE-4003"
+          ],
+          "detail": "The customer's request is in the case input and triage answered for the same case."
+        },
+        {
+          "link": "evidence",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "status": "RESOLVED",
+          "identifiers": [
+            "EVID-BILL-0003-06-AMT",
+            "EVID-BILL-0003-06-DAYS",
+            "EVID-BILL-0003-06-KWH",
+            "EVID-BILL-0003-06-READTYPE",
+            "EVID-BILL-0003-07-AMT",
+            "EVID-BILL-0003-07-DAYS",
+            "EVID-BILL-0003-07-KWH",
+            "EVID-BILL-0003-07-READTYPE",
+            "EVID-DIAG-0003-01-FAULT",
+            "EVID-DIAG-0003-01-RESULT",
+            "EVID-DIAG-0003-01-TAMPER",
+            "EVID-MTR-EVENT-NOTE-0003",
+            "EVID-RATE-ENERGY-0003",
+            "EVID-RATE-FIXED-0003",
+            "EVID-READ-0003-A-REG",
+            "EVID-READ-0003-A-TYPE",
+            "EVID-READ-0003-B-REG",
+            "EVID-READ-0003-B-TYPE",
+            "EVID-USG-HIST-0003-APR",
+            "EVID-USG-HIST-0003-JUL",
+            "EVID-USG-HIST-0003-JUN",
+            "EVID-USG-HIST-0003-MAY"
+          ],
+          "detail": "22 ledger entries, each resolves to a field of the case input with the same value."
+        },
+        {
+          "link": "policy",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "status": "RESOLVED",
+          "identifiers": [
+            "POL-AUDIT-007",
+            "POL-BILL-002",
+            "POL-COMM-004",
+            "POL-DATA-006",
+            "POL-HB-001",
+            "POL-HUM-005",
+            "POL-MTR-003",
+            "POL-QUALITY-010",
+            "POL-SEC-008"
+          ],
+          "detail": "9 policies, each resolves to a catalog record."
+        },
+        {
+          "link": "claim_ledger",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "status": "RESOLVED",
+          "identifiers": [
+            "CLM-0003-01",
+            "CLM-0003-02",
+            "CLM-0003-03",
+            "CLM-0003-04"
+          ],
+          "detail": "4 claims, every evidence and policy id resolves."
+        },
+        {
+          "link": "compliance",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "status": "RESOLVED",
+          "identifiers": [
+            "decision:APPROVE",
+            "token:APPROVED"
+          ],
+          "detail": "Decision APPROVE with reasons, token APPROVED."
+        },
+        {
+          "link": "customer_response",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "status": "RESOLVED",
+          "identifiers": [
+            "CLM-0003-01",
+            "CLM-0003-02",
+            "CLM-0003-03",
+            "CLM-0003-04"
+          ],
+          "detail": "The released text is the draft, and the draft's claim and evidence ids resolve."
+        },
+        {
+          "link": "human_review_package",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "status": "RESOLVED",
+          "identifiers": [
+            "reviewer:Billing Supervisor"
+          ],
+          "detail": "The package names a reviewer and its evidence and policy ids resolve."
+        },
+        {
+          "link": "audit",
+          "run": "20260921T000142Z_SYN-CASE-4003_c2be2b51",
+          "status": "RESOLVED",
+          "identifiers": [
+            "audit:20260921T000142Z_SYN-CASE-4003_c2be2b51"
+          ],
+          "detail": "The audit lists exactly the evidence, claim and policy ids the run produced, and agrees with the platform record."
+        }
+      ]
+    }
+  ],
+  "ground_truth": "GRIDRESOLVE-SYNTH-2.1",
+  "ground_truth_note": "Judged against the adjudicated two-axis labels of 2026-09-23. The historical result under GRIDRESOLVE-SYNTH-2.0 is evaluation/datasets/deterministic_results.json and is unchanged. See docs/ROOT_CAUSE_ADJUDICATION.md."
+}

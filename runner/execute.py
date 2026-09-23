@@ -19,6 +19,7 @@ from . import case as case_mod
 from . import config as cfg
 from . import evidence as ev
 from . import foundry, pricing, workflow_map
+from . import workflow_versions as wv
 from .redaction import for_config
 from .transport import (StreamInterrupted, ThrottledError, TimeoutExceeded,
                         TransportError)
@@ -73,7 +74,7 @@ def preflight(config: cfg.RunnerConfig, case_id: str, cap_usd: float | None,
     # label in the case input is what the terminal audit record will carry. It
     # has to name the version this runner targets, which live_blockers in turn
     # ties to the version actually deployed.
-    expected_label = "%s v%s" % (config.agent_name, workflow_map.WORKFLOW_VERSION)
+    expected_label = "%s v%s" % (config.agent_name, wv.active_version())
     declared_label = loaded.document.get("workflow_version")
     if declared_label != expected_label:
         blockers.append(
@@ -118,20 +119,21 @@ def live_blockers(client: foundry.FoundryAgentClient) -> tuple[str, ...]:
         return ("The workflow agent could not be read.",)
     latest = (agent.get("versions") or {}).get("latest") or {}
     version = str(latest.get("version", ""))
-    if version != workflow_map.WORKFLOW_VERSION:
+    wm = wv.active()
+    if version != wm.WORKFLOW_VERSION:
         found.append("The live workflow is v%s, but this runner interprets v%s."
-                     % (version or "unknown", workflow_map.WORKFLOW_VERSION))
+                     % (version or "unknown", wm.WORKFLOW_VERSION))
     if latest.get("draft") is not False:
         found.append("The latest workflow version is a draft.")
     if agent.get("state") != "enabled":
         found.append("The workflow agent state is %r, not enabled."
                      % agent.get("state"))
     definition = (latest.get("definition") or {}).get("workflow") or ""
-    missing = [a for a in workflow_map.AGENT_ACTIONS if a not in definition]
+    missing = [a for a in wm.AGENT_ACTIONS if a not in definition]
     if missing:
         found.append("The live definition lacks %d expected action id(s), so "
                      "its events could not be interpreted." % len(missing))
-    if workflow_map.APPROVED_TOKEN not in definition:
+    if wm.APPROVED_TOKEN not in definition:
         found.append("The live definition no longer contains the approval "
                      "sentinel.")
     return tuple(found)
@@ -382,7 +384,7 @@ def execute_once(config: cfg.RunnerConfig, case_id: str, cap_usd: float,
         "case_id": checks.case_id,
         "case_sha256": checks.case_sha256,
         "workflow": config.agent_name,
-        "workflow_version": workflow_map.WORKFLOW_VERSION,
+        "workflow_version": wv.active_version(),
         "request_preview": checks.request_preview,
         "cap_usd": cap_usd,
         "price_source": pricing.PRICE_SOURCE,
@@ -529,7 +531,8 @@ def execute_once(config: cfg.RunnerConfig, case_id: str, cap_usd: float,
         or analysis_mod.items_of(latest)
     analysis = analysis_mod.analyze(
         items, actions, config.agent_name,
-        "%s v%s" % (config.agent_name, workflow_map.WORKFLOW_VERSION))
+        "%s v%s" % (config.agent_name, wv.active_version()),
+        route_map=wv.active())
     route = analysis["route"]
     release = analysis["release"]
     if release["outcome"] != analysis_mod.RELEASE_NOT_RELEASED \

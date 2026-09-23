@@ -21,6 +21,21 @@ ROOT: Final = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 CASES: Final = {
     "SYN-CASE-4003": os.path.join("submission", "SYN-CASE-4003_input.json"),
+    # Added 2026-09-23 for the post-review validation. Neither has been sent to
+    # the hosted service. 4001 is the no-follow-up candidate, 4007 the
+    # conflicting-records escalation candidate. See docs/SCENARIO_*_ACCEPTANCE_PLAN.md.
+    "SYN-CASE-4001": os.path.join("submission", "SYN-CASE-4001_input.json"),
+    "SYN-CASE-4007": os.path.join("submission", "SYN-CASE-4007_input.json"),
+}
+
+# The preflight requires the case to declare the workflow version it targets.
+# The canonical SYN-CASE-4003 file is frozen at v10, so a v11 run of the same
+# records uses a copy that differs only in that label. Resolved by the active
+# workflow version (runner/workflow_versions.py); v10 behaviour is unchanged.
+CASES_BY_VERSION: Final = {
+    "SYN-CASE-4003": {
+        "11": os.path.join("submission", "SYN-CASE-4003_v11_input.json"),
+    },
 }
 
 # Substrings that would hand the workflow its own grading key.
@@ -92,7 +107,10 @@ def load(case_id: str, root: str = ROOT) -> CaseInput:
     if case_id not in CASES:
         raise CaseError("Unknown case %r. Supported: %s"
                         % (case_id, ", ".join(available_cases())))
-    path = os.path.join(root, CASES[case_id])
+    from . import workflow_versions as wv  # local import, avoids a cycle
+    relative = CASES_BY_VERSION.get(case_id, {}).get(wv.active_version(),
+                                                     CASES[case_id])
+    path = os.path.join(root, relative)
     if not os.path.isfile(path):
         raise CaseError("Case file not found: %s" % path)
     with open(path, "rb") as fh:
