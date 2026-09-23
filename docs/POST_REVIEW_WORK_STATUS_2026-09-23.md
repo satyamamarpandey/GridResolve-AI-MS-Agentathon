@@ -42,7 +42,7 @@ Everything here is local. No model call, no Foundry write, no publish.
 | --- | --- |
 | Routing and case data | 83 |
 | Synthetic data integrity | 151 |
-| Foundry runner | 357 |
+| Foundry runner | 359 |
 | Evaluation package | 198 |
 | Integration contracts | 138 |
 | Escalation reason codes | 20 |
@@ -52,7 +52,7 @@ Everything here is local. No model call, no Foundry write, no publish.
 | Workflow engine v10 | 91 |
 | Workflow engine v11 | 76 |
 | Control Center | 165 |
-| Total | 1,484 |
+| Total | 1,486 |
 
 Plus the Agent Framework parity check, 11 of 11. The submitted manifest still
 states 1,174; that figure describes the submitted commit and is left as is.
@@ -70,10 +70,13 @@ states 1,174; that figure describes the submitted commit and is left as is.
 | Charges outside model tokens | Application Insights and Log Analytics ingestion, pay per GB, no daily cap set, under the free allowance so far | Azure CLI, read |
 | Reference run | Final run: 94,352 in, 22,433 out, 179.5 s, USD 0.0685 | evidence/runtime |
 
-Conservative upper bound per v11 run, assuming both correction attempts fire:
-about 170,000 input and 40,000 output tokens. At the carried price that is
-USD 0.12. At the highest listed meter it is USD 0.22. The bound used below is
-USD 0.22 per run, with a hard cap of USD 0.30 passed to the runner.
+Cost figures were reconciled on 2026-09-23 in docs/PREFLIGHT_V11_2026-09-23.md,
+section 1, which supersedes the bound first written here. Adopted: applicable
+estimate USD 0.07 to 0.13 per run, conservative bound USD 0.37 per run, runner
+cap USD 0.70 per run. The runner refuses any cap below its modelled worst case
+(USD 0.365 for v11), so the cap of 0.30 first proposed here would have been
+refused. The billed figure for the three historical runs is now visible and
+matches the token-derived figure.
 
 ## 5. Proposed hosted execution, NOT APPROVED, NOT STARTED
 
@@ -82,11 +85,11 @@ USD 0.22 per run, with a hard cap of USD 0.30 passed to the runner.
 | 0a | Publish EvidenceComplianceAgent v7 from agents/EvidenceComplianceAgent.v7.md | No, control plane | USD 0 |
 | 0b | Publish GridResolveAIWorkflow v11 from the tested YAML | No, control plane | USD 0 |
 | 0c | Read back both definitions and compare to the local files | No | USD 0 |
-| 1 | Run SYN-CASE-4007 on v11, expected: escalate at the compliance gate with reason codes, nothing released, human handoff, audit | Yes | USD 0.22, cap 0.30 |
-| 2 | Run SYN-CASE-4001 on v11, expected: release after approval, no-follow-up branch, no handoff | Yes | USD 0.22, cap 0.30 |
-| 3 | Run SYN-CASE-4003 on v11, expected: same route as the final v10 run | Yes | USD 0.22, cap 0.30 |
+| 1 | Run SYN-CASE-4007 on v11, expected: escalate at the compliance gate with reason codes, nothing released, human handoff, audit | Yes | USD 0.37, cap 0.70 |
+| 2 | Run SYN-CASE-4001 on v11, expected: release after approval, no-follow-up branch, no handoff | Yes | USD 0.37, cap 0.70 |
+| 3 | Run SYN-CASE-4003 on v11, expected: same route as the final v10 run | Yes | USD 0.37, cap 0.70 |
 
-Batch upper bound USD 0.66, expected about USD 0.25. Stop conditions: a run
+Batch conservative bound USD 1.10, expected USD 0.25 to 0.40. Stop conditions: a run
 reaching its cap, any HTTP 429, any workflow action id outside the v11 map,
 any billing line that is not Foundry Models or log ingestion.
 

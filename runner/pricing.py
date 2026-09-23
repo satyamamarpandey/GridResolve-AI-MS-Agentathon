@@ -67,6 +67,13 @@ SCENARIOS: Final = (
              "5k visible plus 3k reasoning tokens per agent"),
     Scenario("worst_case", 180_000, 144_000,
              "earlier flat-model maximum, retained as an upper bound"),
+    # Added 2026-09-23 for workflow v11. Its unrolled tree can invoke up to
+    # fifteen agents on one case (nine, plus two replan corrections of three
+    # each), so the conservative per-invocation assumption above is applied to
+    # fifteen invocations instead of nine. Structural maximum, never measured.
+    Scenario("v11_two_replans_conservative", 500_000, 120_000,
+             "5k visible plus 3k reasoning tokens per invocation, fifteen "
+             "invocations, the v11 structural maximum"),
 )
 
 

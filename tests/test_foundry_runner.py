@@ -1615,8 +1615,12 @@ def main():
           round(pricing.SCENARIOS[0].usd, 2) == 0.09)
     check("conservative scenario matches the documented $0.26",
           round(pricing.SCENARIOS[1].usd, 2) == 0.26)
-    check("worst case matches the documented $0.33",
-          round(pricing.worst_case_usd(), 2) == 0.33)
+    check("the v10 flat-model worst case is still the documented $0.33",
+          round(pricing.SCENARIOS[2].usd, 2) == 0.33)
+    check("the v11 structural maximum, fifteen invocations, is the documented $0.365",
+          pricing.SCENARIOS[3].usd == 0.365)
+    check("the cap gate uses the largest scenario, now the v11 maximum",
+          pricing.worst_case_usd() == pricing.SCENARIOS[3].usd)
     check("one million input tokens cost $0.25",
           pricing.cost_usd(1_000_000, 0) == 0.25)
     check("one million output tokens cost $2.00",

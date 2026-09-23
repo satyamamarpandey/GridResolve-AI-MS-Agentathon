@@ -44,23 +44,17 @@ the approval request as its own step.
 
 ## 3. Cost, upper bound
 
-Prices from `docs/COST_ESTIMATE_SYN-CASE-4003.md`: gpt-5-mini, input 0.25,
-output 2.00 USD per 1M tokens, verified 2026-09-18, not a live quote.
-Observed on the three historical runs: 0.0334, 0.0292, 0.0685 USD. The
-conservative per-run figure used here is 0.26 USD (the "Conservative" row of
-that document), and a v11 run with two correction attempts could invoke up to
-five more agents, so its bound is doubled.
+Superseded on 2026-09-23 by docs/PREFLIGHT_V11_2026-09-23.md, section 1,
+which reconciles this table against the measured final run, the v11 tree
+and the billed figure now visible in Azure Cost Management. The figures
+that page adopts: applicable estimate USD 0.07 to 0.13 per run, conservative
+bound USD 0.37 per run (USD 1.10 for three), runner cap USD 0.70 per run.
+The earlier bound of USD 1.30 for three runs assumed 200,000 output tokens
+per run and is withdrawn.
 
-| Run | Bound | Note |
-| --- | --- | --- |
-| SYN-CASE-4007 | 0.52 USD | v11, may take a correction attempt before escalating |
-| SYN-CASE-4001 | 0.26 USD | approve path, no correction expected |
-| SYN-CASE-4003 | 0.52 USD | v11 regression, correction path possible |
-| Batch of three | 1.30 USD | sum of bounds. Expected actual, from history, about 0.25 USD |
-
-Charges outside model tokens: none identified. Application Insights already
-exists and ingests spans; its cost is not visible per run. No evaluation job,
-embedding, search or storage is created by these runs.
+Charges outside model tokens: Application Insights and Log Analytics
+ingestion, pay per GB, no daily cap set, billed USD 0.00 so far. No evaluation
+job, embedding, search or storage is created by these runs.
 
 ## 4. Record template, one row per executed case
 

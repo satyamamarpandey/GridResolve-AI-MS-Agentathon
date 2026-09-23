@@ -20,6 +20,7 @@ Submitted to the Microsoft Agent-a-thon, Level 3 Architect.
 | Escalation reason codes | [`docs/ESCALATION_REASON_CODES.md`](docs/ESCALATION_REASON_CODES.md), structured codes with citations, enforced offline, not yet in a hosted run |
 | Hosted control center | https://pandeysatyam.com/GridResolve-AI-MS-Agentathon/ (GitHub Pages, static, synthetic data only) |
 | Post-review work status | [`docs/POST_REVIEW_WORK_STATUS_2026-09-23.md`](docs/POST_REVIEW_WORK_STATUS_2026-09-23.md), gaps, zero-cost completions, cost bound and the proposed, not yet approved, hosted batch |
+| Preflight for hosted v11 validation | [`docs/PREFLIGHT_V11_2026-09-23.md`](docs/PREFLIGHT_V11_2026-09-23.md), cost reconciliation, live capture, safety checks, the exact approval request. Not approved, not executed |
 | Workflow v11 correction routes | [`docs/WORKFLOW_V11_CORRECTION_ROUTES.md`](docs/WORKFLOW_V11_CORRECTION_ROUTES.md), bounded rewrite and replan, local proof only |
 | Root-cause adjudication | [`docs/ROOT_CAUSE_ADJUDICATION.md`](docs/ROOT_CAUSE_ADJUDICATION.md), ground truth v2.1, v2.0 results frozen |
 | Supervisor feedback loop | [`docs/SUPERVISOR_FEEDBACK_LOOP.md`](docs/SUPERVISOR_FEEDBACK_LOOP.md), no actual human decision recorded yet |
