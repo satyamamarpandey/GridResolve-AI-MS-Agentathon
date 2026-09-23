@@ -4,6 +4,8 @@ import { defineConfig } from 'vitest/config'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub Pages serves the site under /<repo>/; the workflow sets this.
+  base: process.env.VITE_BASE ?? "/",
   plugins: [react()],
   test: {
     // CSS must be processed in tests, otherwise a `?raw` stylesheet import
